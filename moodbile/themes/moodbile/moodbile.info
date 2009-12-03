@@ -1,0 +1,7 @@
+name = Moodbile
+
+js = js/moodbile.js
+js = js/jquery.flick.js
+css = css/moodbile.css
+
+#TODO: Habilitar la opcion de varios js,css
