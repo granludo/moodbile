@@ -11,20 +11,22 @@
 
     <body>
         <div id="container">
-            <div class="box dragy">Hola</div>
-            <header>
-                <h1><a id="sitename" href="#"><?php print $title; ?></a></h1>
-            </header>
-            <nav id="breadcrumb">
+            <div id="content"> <!-- TODO: Cambiar clases content<->wrapper y todo lo que conlleva -->
+                <!--<div class="box dragy">Hola</div>-->
+                <header>
+                    <h1><a id="sitename" href="#"><?php print $title; ?></a></h1>
+                </header>
+                <nav id="breadcrumb">
                 <?php print $breadcrumb; ?>
-            </nav>
-            <div id="wrapper">
-            <!-- El contenido se ira añadiendo aqui mediante JSON -->
+                </nav>
+                <div id="wrapper">
+                    <!-- El contenido se ira añadiendo aqui mediante JSON -->
+                </div>
+                <nav id="toolbar">
+                    <?php print $menu_items; ?>
+                </nav>
             </div>
         </div>
-        <nav id="toolbar">
-            <?php print $menu_items; ?>
-        </nav>
         <?php print $scripts; ?>
   </body>
 </html>

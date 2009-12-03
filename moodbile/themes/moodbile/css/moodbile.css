@@ -1,8 +1,7 @@
 body {font-family: Verdana, Arial, Helvetica;font-size: 1em;background-image: url(../images/background.png); height: 356px;}
 a{text-decoration: none;}
-em{float:right;font-size:0.7em;font-weight:normal;line-height:17px;}
 header {text-align: center; margin-top: 10px;}
-header h1{margin:0 auto; width: 284px; height: 50px; background: url(../images/logo.png);text-indent: -9999px;}
+header h1{margin:0 auto; width: 310px; height: 50px; background:transparent url(../images/logo.png) no-repeat scroll 75px 0; text-indent: -9999px;}
 #container {position:relative; overflow: auto; height: 100%;}
 #wrapper {margin: 10px 0; position: relative; padding-bottom: 60px;}
 nav#toolbar {
@@ -68,9 +67,11 @@ section div:last-child{
 section div {border-bottom: 1px solid #999;padding: 0;}
 section div:last-child {border-bottom: 0;}
 section div div {border-bottom: 0;}
-section div div div {border-bottom: 0;padding: 10px 20px;font-size: 0.8em;}
+
 footer {font-size: 0.8em;text-align: center;}
 
+/* Foro */
+.replyes div, .description, .info .summary {border-bottom: 0;padding: 10px 20px;font-size: 0.7em;}
 /* Navigation icons */
 #courses a{
 display:block; width: 30px; height: 40px;background: url(../images/navigation-icons.png);background-repeat: no-repeat;line-height:70px;text-indent:-3px;}
@@ -85,6 +86,24 @@ display:block; width: 30px; height: 40px;background: url(../images/navigation-ic
 }
 #grade a{
 display:block; width: 30px; height: 40px;background: url(../images/navigation-icons.png);background-repeat: no-repeat;background-position: -120px 0;line-height:70px;text-indent:-6px;
+}
+/* Loading */
+#loading {
+    position: absolute;
+    top: 150px;
+    left: 100px;
+    width: :125px;
+    height: 75px;
+    opacity: 0.75;
+    background: #000;
+    color: #fff;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    background-image: url(../images/preload.gif);
+    background-repeat: no-repeat;
+    background-position: center center;
+    overflow: hidden;
+    line-height: 500px;
 }
 
 /* Courses arrow */
@@ -110,6 +129,21 @@ display:inline-block;
 height:12px;
 text-indent:-9999px;
 width:12px;}
+
+/*Collapsible*/
+.expanded div{ display: block; }
+.collapsed div{ display: none; }
+.collapsed .visible{ display: block; }
+.summary a{font-weight: normal; position: relative;}
+.collapse-icon{background:transparent url(../images/expanded_collapsed.png) no-repeat scroll; position:absolute;right:7px;top:6px;height: 25px; width: 25px; opacity:0.7;}
+.expanded .collapse-icon{background-position: center bottom;}
+.collapsed .collapse-icon{background-position: center top;}
+
+/* extra information */
+.info {position: relative;display: block;}
+.more {font-size:0.6em;padding:0; position: absolute; right:0;top:-30px;}
+.more a{ padding: 3px;}
+.data {font-size:0.8em;font-weight:normal;line-height:17px; padding: 10px 20px;}
 
 /* icons */
 .icon-pdf{
@@ -149,6 +183,13 @@ width:16px;
 }
 .icon-forum{
 background:transparent url(../images/icons.gif) no-repeat scroll 0 -100px;
+display:inline-block;
+height:16px;
+margin-right:5px;
+width:16px;
+}
+.icon-info{
+background:transparent url(../images/icons.gif) no-repeat scroll 0 -122px;
 display:inline-block;
 height:16px;
 margin-right:5px;

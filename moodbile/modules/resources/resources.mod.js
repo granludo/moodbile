@@ -1,32 +1,42 @@
-Moodbile.behaviorsPatterns.resources = function(){
+//TODO: Cambiar estructura de datos
+
+Moodbile.behaviorsPatterns.resources = function(context){
+    var context = context || document;
+    
+    setTimeout(function(){
+        Moodbile.aux.resources(context, Moodbile.enroledCoursesid);
+    }, 700);
+    
     //una vez pulsamos el curso
     $('nav#toolbar li#resources a').live('click', function(){
-        var id = $(this).attr('id');
-        //alert(id);
+        var id = $(this).parent().attr('class');
+        id = id.split(' ');
+        id = id[0];
         
-        //$(this).removeClass('loaded');
         $('section:visible').hide();
-        
-        //Toca comprobar si existe o no la seccion de recursos de un id dado
-        if($('#wrapper').find('.resources-'+id).is('.resources-'+id)) {
-        
-            $('#wrapper .resources-'+id).show();
-        
-        } else {
-        
-            //$(this).addClass('loaded');
-            $('#wrapper').append('<section class="resources-'+id+'"></section>');
-            $.getJSON("dummie/ws.dum.php?jsoncallback=resources", {op: 1}, resources = function(json){
-                $.each(json, function(i, json){
-                    $('#wrapper .resources-'+id).append('<div class="' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
-                });        
-            });
-            
-        }
+        $('.resources-'+id).show();
         
         return false;
     });
+}
+
+Moodbile.aux.resources = function(context, ids){
+    $.each(ids, function(){
+        $('#wrapper').append('<section class="resources-'+ this +'"></section>');
+        $('.resources-'+this).hide();
+    });
     
-    //boton del navegador
-    
+    var op = 1;
+    Moodbile.jsonRequest(context, op, Moodbile.templates.resources);
+}
+
+Moodbile.templates.resources = function(json){
+    $.each(json, function(i, json){
+        var courseid = json.courseid;
+        var resource = json.resource;
+        
+        $('#wrapper .resources-'+courseid).append('<div class="' + resource.id + '"><a href="#"><span class="icon-'+resource.type+'"></span>' + resource.title + '</a><div class="info collapsed"></div></div>');
+        $('#wrapper .resources-'+courseid).find('.'+resource.id).find('.info').append('<div class="more visible"><a href="#" class="collapsible"><span class="icon-info"></span></a></div>');
+        $('#wrapper .resources-'+courseid).find('.'+resource.id).find('.info').append('<div class="description">'+resource.description+'</div>');
+    });
 }

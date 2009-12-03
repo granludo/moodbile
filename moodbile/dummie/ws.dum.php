@@ -5,21 +5,24 @@ switch ($_GET['op']) {
         if(!isset($_GET['courseid'])){
             $courses = array(
                 0 => array(
-                            "id" => "0",
-                            "title" => "Curso 0",
-                            "format" => "topic"
-                          ),
+                    "id" => 0,
+                    "title" => "Comunicacions Audiovisuals",
+                    "format" => "topic",
+                    "summary" => "Trata temas sobre <u>Televison/TDT(DVB-T)</u>"
+                ),
                 1 => array(
-                            "id" => "1",
-                            "title" => "Curso 1",
-                            "format" => "topic"
-                          ),
+                    "id" => 1,
+                    "title" => "Llenguatge i Sistemes Informatics",
+                    "format" => "topic",
+                    "summary" => "Sumario sobre LSI"
+                ),
                 2 => array(
-                            "id" => "2",
-                            "title" => "Curso 2",
-                            "format" => "topic"
-                          )
-                );
+                    "id" => 2,
+                    "title" => "Moodbile",
+                    "format" => "topic",
+                    "summary" => "Curso sobre Moodbile"
+                )
+            );
         
             $json = $_GET["jsoncallback"] . "(" . json_encode($courses) . ")"; //JSONP
         
@@ -29,16 +32,20 @@ switch ($_GET['op']) {
                 "format" => "topic",
                 "sections" => array(
                     0 => array(
-                        "label" => "<h3>Presentacion</h3>",
+                        "summary" => "<h1><u>Presentacion</u></h1>",
+                        "labels" => array()
                     ),
                     1 => array(
-                        "label" => "Tema 1",
+                        "summary" => "Tema 1",
+                        "labels" => array()
                     ),
                     2 => array(
-                        "label" => "Tema 2",
+                        "summary" => "Tema 2",
+                        "labels" => array()
                     ),
                     3 => array(
-                        "label" => "Tema 3",
+                        "summary" => "Tema 3",
+                        "labels" => array()
                     )
                 )
             );
@@ -53,24 +60,90 @@ switch ($_GET['op']) {
     case 1:
         $resources = array(
                 0 => array(
+                    "courseid" => 0,
+                    "resource" => array(
                             "id" => "0",
-                            "title" => "Recurso 0",
+                            "title" => "Percepcio Audiovisual",
                             "type" => "pdf",
+                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
                             "section" => 1
-                          ),
+                    )
+                ),
                 1 => array(
+                    "courseid" => 0,
+                    "resource" => array(
                             "id" => "1",
                             "title" => "Recurso 1",
                             "type" => "doc",
                             "section" => 2
-                          ),
+                    )
+                ),
                 2 => array(
+                    "courseid" => 0,
+                    "resource" => array(
                             "id" => "2",
                             "title" => "Recurso 2",
                             "type" => "pps",
                             "section" => 3
-                          )
-                );
+                    )
+                ),
+                3 => array(
+                    "courseid" => 1,
+                    "resource" => array(
+                            "id" => "0",
+                            "title" => "Percepcio Audiovisual",
+                            "type" => "pdf",
+                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
+                            "section" => 1
+                    )
+                ),
+                4 => array(
+                    "courseid" => 1,
+                    "resource" => array(
+                            "id" => "1",
+                            "title" => "Recurso 1",
+                            "type" => "doc",
+                            "section" => 2
+                    )
+                ),
+                5 => array(
+                    "courseid" => 1,
+                    "resource" => array(
+                            "id" => "2",
+                            "title" => "Recurso 2",
+                            "type" => "pps",
+                            "section" => 3
+                    )
+                ),
+                6 => array(
+                    "courseid" => 2,
+                    "resource" => array(
+                            "id" => "0",
+                            "title" => "Percepcio Audiovisual",
+                            "type" => "pdf",
+                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
+                            "section" => 1
+                    )
+                ),
+                7 => array(
+                    "courseid" => 2,
+                    "resource" => array(
+                            "id" => "1",
+                            "title" => "Recurso 1",
+                            "type" => "doc",
+                            "section" => 2
+                    )
+                ),
+                8 => array(
+                    "courseid" => 2,
+                    "resource" => array(
+                            "id" => 2,
+                            "title" => "Recurso 2",
+                            "type" => "pps",
+                            "section" => 3
+                    )
+                )
+        );
         
         $json = $_GET["jsoncallback"] . "(" . json_encode($resources) . ")"; //JSONP
         
@@ -78,22 +151,75 @@ switch ($_GET['op']) {
         break;
     
     case 2:
-        $grades = array( //Esta estructura de datos es teniendo en cuenta que un profesor vera las notas de todos
+        //Esta estructura de datos es teniendo en cuenta que un profesor vera las notas de todos
+        //En el caso de que sea un estudiante, se le devolvera unicamente la parte del array correspondiente a su usuario.
+        $grades = array(
                  0 => array(
+                    "courseid" => 0,
                     "id" => 50, //id del usuario
+                    "name" => "Imanol",
+                    "lastname" => "Urra Ruiz",
                     "grades" => array(
-                                0 => array(
-                                    'title' => 'Test',
-                                    'grade' => '7.5',
-                                    'type' => 'asigment'
-                                    ),
-                                1 => array(
-                                    'title' => 'Ejercicio Sostenibilidad',
-                                    'grade' => '7.5',
-                                    'type' => 'quiz'
-                                    )
-                                )
-                 )
+                        0 => array(
+                            'id' => '0',
+                            'title' => 'Test',
+                            'grade' => '7.5',
+                            'description' => 'Trabajo sobre Query-by-example',
+                            'type' => 'asigment'
+                        ),
+                        1 => array(
+                            'id' => '1',
+                            'title' => 'Ejercicio Sostenibilidad',
+                            'grade' => '7.5',
+                            'description' => 'Indice de Pobreza Humana <b>(IPH)</b>',
+                            'type' => 'quiz'
+                        )
+                    )
+                ),
+                1 => array(
+                    "courseid" => 1,
+                    "id" => 50, //id del usuario
+                    "name" => "Imanol",
+                    "lastname" => "Urra Ruiz",
+                    "grades" => array(
+                        0 => array(
+                            'id' => '11',
+                            'title' => 'Test',
+                            'grade' => '7.5',
+                            'description' => 'Trabajo sobre Query-by-example',
+                            'type' => 'asigment'
+                        ),
+                        1 => array(
+                            'id' => '12',
+                            'title' => 'Ejercicio Sostenibilidad',
+                            'grade' => '7.5',
+                            'description' => 'Indice de Pobreza Humana <b>(IPH)</b>',
+                            'type' => 'quiz'
+                        )
+                    )
+                ),
+                2 => array(
+                    "courseid" => 1,
+                    "id" => 10, //id del usuario
+                    "name" => "Marc",
+                    "lastname" => "Alier",
+                    "grades" => array(
+                        0 => array(
+                            'id' => '23',
+                            'title' => 'Test',
+                            'grade' => '7.5',
+                            'description' => 'Trabajo sobre Query-by-example',
+                            'type' => 'asigment'
+                        ),
+                        1 => array(
+                            'id' => '24',
+                            'title' => 'Ejercicio Sostenibilidad',
+                            'grade' => '7.5',
+                            'description' => 'Indice de Pobreza Humana <b>(IPH)</b>',
+                            'type' => 'quiz'
+                        )
+                    )
+                )
         );
         
         $json = $_GET["jsoncallback"] . "(" . json_encode($grades) . ")"; //JSONP
@@ -225,20 +351,114 @@ switch ($_GET['op']) {
     case 6:
         $upcomingevents = array(
                 0 => array(
-                "id" => 0,
-                "title" => "Entrega trabajo",
-                "enddata" => "01/10/2009",
-                "type" => "asigment",
-                "section" => 2
-                    ),
+                    "id" => "0",
+                    "courseid" => "0",
+                    "title" => "Entrega trabajo",
+                    "enddata" => "01/10/2009",
+                    "type" => "asigment",
+                    "description" => "Trabajo sobre Query-by-example",
+                    "section" => 2
+                ),
                 1 => array(
-                "id" => 1,
-                "title" => "Entrega trabajo 2",
-                "enddata" => "02/10/2009",
-                "type" => "asigment",
-                "section" => 3
-                    )
-                );
+                    "id" => "1",
+                    "courseid" => "0",
+                    "title" => "Entrega trabajo Wikipedia",
+                    "enddata" => "02/10/2009",
+                    "type" => "asigment",
+                    "description" => "Mejorar entrada sobre CBIR",
+                    "section" => 3
+                ),
+                2 => array(
+                    "id" => "32",
+                    "courseid" => "0",
+                    "title" => "Cuestionario de MPEG-2",
+                    "enddata" => "23/12/2009",
+                    "type" => "quiz",
+                    "description" => "Cuestionario sobre el estandar MPEG-2",
+                    "section" => 2
+                ),
+                3 => array(
+                    "id" => "11",
+                    "courseid" => "1",
+                    "title" => "Limpiar codigo de Moodbile",
+                    "enddata" => "10/1/2009",
+                    "type" => "asigment",
+                    "description" => "Generalizar peticiones, reestructurar llamadas...",
+                    "section" => 3
+                ),
+                4 => array(
+                    "id" => "21",
+                    "courseid" => "0",
+                    "title" => "Crear nueva entrada sobre Query-by-example",
+                    "enddata" => "01/10/2009",
+                    "type" => "asigment",
+                    "description" => "Trabajo sobre Query-by-example",
+                    "section" => 2
+                ),
+                5 => array(
+                    "id" => "22",
+                    "courseid" => "0",
+                    "title" => "Cuestionario sobre los Amos del mundo",
+                    "enddata" => "02/10/2009",
+                    "type" => "quiz",
+                    "description" => "¿Quienes son los amos del mundo segun la presentacion en Desenvolupament. Sostenible?",
+                    "section" => 3
+                ),
+                6 => array(
+                    "id" => "3",
+                    "courseid" => "1",
+                    "title" => "Cuestionario sobre Factor 4",
+                    "enddata" => "01/10/2009",
+                    "type" => "quiz",
+                    "description" => "¿Que es el Factor 4?<br/>¿Que hay que hacer para reducir el consumo de energia?",
+                    "section" => 2
+                ),
+                7 => array(
+                    "id" => "4",
+                    "courseid" => "1",
+                    "title" => "Entrega proyecto Algorismia",
+                    "enddata" => "02/10/2009",
+                    "type" => "asigment",
+                    "description" => "Creacion de un filtro en C++",
+                    "section" => 3
+                ),
+                8 => array(
+                    "id" => "40",
+                    "courseid" => "1",
+                    "title" => "Entrega trabajo",
+                    "enddata" => "01/10/2009",
+                    "type" => "asigment",
+                    "description" => "Trabajo sobre Query-by-example",
+                    "section" => 2
+                ),
+                9 => array(
+                    "id" => "39",
+                    "courseid" => "2",
+                    "title" => "Entrega trabajo 2",
+                    "enddata" => "02/10/2009",
+                    "type" => "asigment",
+                    "description" => "Moodbile",
+                    "section" => 3
+                ),
+                10 => array(
+                    "id" => "23",
+                    "courseid" => "2",
+                    "title" => "Entrega trabajo",
+                    "enddata" => "01/10/2009",
+                    "type" => "asigment",
+                    "description" => "Trabajo sobre Query-by-example",
+                    "section" => 2
+                ),
+                11 => array(
+                    "id" => "12",
+                    "courseid" => "2",
+                    "title" => "Entrega trabajo 2",
+                    "enddata" => "02/10/2009",
+                    "type" => "asigment",
+                    "description" => "Moodbile",
+                    "section" => 3
+                )
+        );
         
         $json = $_GET["jsoncallback"] . "(" . json_encode($upcomingevents) . ")"; //JSONP
         

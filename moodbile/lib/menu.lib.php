@@ -7,21 +7,23 @@ function moodbile_get_menu_items() {
     $active_modules = $CFG['active_modules'];
     
     foreach($active_modules as $module) {
-        if(file_exists('modules/'. $module .'/'. $module .'.info')){
+        if(file_exists('modules/'. $module .'/'. $module .'.info')){ //Si existe archivo, lo analizamos.
             $file_info = file('modules/'. $module .'/'. $module .'.info'); //BASEPATH!  
-        
-            foreach($file_info as $file_info) {
-                $file_info = explode(" = ", $file_info);
             
-                if(!empty($file_info[1])) {
+            //TODO: Hacer que descarte aquellos que no tienen definido un item de menu
+            foreach($file_info as $file_info) {
+                $file_info = explode(" = ", $file_info); //Separamos la fila del fichero en 2
+                
+                if(!empty($file_info[1])) { // Si el item 1 esta vacio, quiere decir que descartemos la fila
                     $info[$file_info[0]] = $file_info[1];
                 }
             }
-        $menu_items[] = $info;
+            if (array_key_exists('menu_item', $info)) {
+                $menu_items[] = $info;
+            }
         }
     }
-     
-    //_debug($menu_items);
+    _debug($info);
     return $menu_items;
 }
 

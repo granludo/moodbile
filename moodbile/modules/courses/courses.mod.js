@@ -3,69 +3,83 @@ Moodbile.behaviorsPatterns.courses = function(context){
     
     $('#wrapper').append('<section class="courses"></section>');
     
-    $.getJSON("dummie/ws.dum.php?jsoncallback=courses", {op: 0}, courses = function(json){
-        $.each(json, function(i, json){
-            $('#wrapper .courses').append('<div class="course '+ json.format +'"><a href="#" id="' + json.id + '">' + json.title + '</a></div>');
-        });
-    });
+    var op = 0;
+    
+    Moodbile.jsonRequest(context, op, Moodbile.templates.courses);
+    
+    //Es necesario esperar un tiempo hasta que se complete el request inicial para 
+    setTimeout(function(){
+        var ncourses = Moodbile.enroledCoursesid.length;
+        var loadInterval = setInterval(function(){
+            ncourses = ncourses-1;
+            Moodbile.aux.frontpage(Moodbile.enroledCoursesid[ncourses]);
+            if(ncourses == 0) clearInterval(loadInterval);
+        }, 500);
+    }, 500);
     
     $('.course a').live('click', function(){
-        var id = $(this).attr('id');
-        var format = $(this).parent().attr('class');
-        format = format.split(' ');
-        format = format[1];
-        //alert(format);
+        var id = $(this).parent().attr('id');
         
-        Moodbile.aux.frontpage(id);
+        $('section:visible').hide();
+        $('.frontpage-'+id).show();
     });
     
     //funcion para el caso de pulsar el icono de navegacion
     $('nav#toolbar li#courses a').live('click', function(){
-        //$('section:visible').hide();
+        $('section:visible').hide();
         $('section.courses').show();
         
         return false;
     });
 }
 
-Moodbile.aux.frontpage = function(id){
-        //alert('hello');
-        $('section:visible').hide();
-        
-        //Toca comprobar si existe o no la seccion de recursos de un id dado
-        if($('#wrapper').find('.frontpage-'+id).is('.frontpage-'+id)) {
-        
-            $('#wrapper .frontpage-'+id).show();
-        
-        } else {
-            $('#wrapper').append('<section class="frontpage-'+id+' dragy"></section>');
+Moodbile.templates.courses = function(json) {
+    $.each(json, function(i, json){
+        $('#wrapper .courses').append('<div id="' + json.id + '" class="course '+ json.format +'"><a title="'+ json.title +'" href="#" class="course-title">' + json.title + '</a><div class="info collapsed"></div></div>');
+        $('#'+json.id).find('.info').append('<div class="more visible"><a href="#" class="collapsible">Mas info.</a></div>');
+        $('#'+json.id).find('.info').append('<div class="summary">'+json.summary+'</div>');
             
-            //Pedimos datos sobre el curso
-            $.getJSON("dummie/ws.dum.php?jsoncallback=courses", {op: 0, courseid: id}, courses = function(json){
-            
-                $.each(json.sections, function(i, data){
-                    $('#wrapper .frontpage-'+id).append('<div id="' + i + '"><div class="label">' + data.label + '</div></div>');
-                });
-            });
-            
-            //Pedimos recursos
-            $.getJSON("dummie/ws.dum.php?jsoncallback=resources", {op: 1}, resources = function(json){
-                $.each(json, function(i, json){
-                    $('#wrapper .frontpage-'+id).find('#'+json.section).append('<div class="' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
-                });        
-            });
-            
-            $.getJSON("dummie/ws.dum.php?jsoncallback=events", {op: 6}, events = function(json){
-                $.each(json, function(i, json){
-                    $('#wrapper .frontpage-'+id).find('#'+json.section).append('<div class="' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
-                });        
-            });
-            
-            $.getJSON("dummie/ws.dum.php?jsoncallback=forums", {op: 3}, forums = function(json){
-                $.each(json, function(i, json){
-                    $('#wrapper .frontpage-'+id).find('#'+json.section).append('<div class="forum ' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
-                });        
-            });
+        Moodbile.enroledCoursesid[i] = json.id;
+    });
+}
 
-        } 
+Moodbile.aux.frontpage = function(id){
+    $('#wrapper').append('<section class="frontpage-'+id+'"></section>');
+    $('.frontpage-'+id).hide();
+              
+    Moodbile.aux.getPetitions(id);
+}
+
+Moodbile.aux.getPetitions = function(id) {
+    
+    $.getJSON("dummie/ws.dum.php?jsoncallback=courses", {op: 0, courseid: id}, courses = function(json) { 
+        var expanded = 1;
+        $.each(json.sections, function(i, data){
+            if (expanded == 1){
+                $('#wrapper .frontpage-'+id).append('<div id="' + i + '" class="expanded"><div class="summary visible"><a href="#" class="collapsible">' + data.summary + '<span class="collapse-icon"></span></a></div></div>');
+                expanded += 1;
+            } else {
+                $('#wrapper .frontpage-'+id).append('<div id="' + i + '" class="collapsed"><div class="summary visible"><a href="#" class="collapsible">' + data.summary + '<span class="collapse-icon"></span></a></div></div>');
+            }
+        });
+        
+        $.getJSON("dummie/ws.dum.php?jsoncallback=resources", {op: 1}, resources = function(json) {
+            $.each(json, function(i, json){
+                $('#wrapper .frontpage-'+id).find('#'+json.section).append('<div class="' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
+            });
+            
+            $.getJSON("dummie/ws.dum.php?jsoncallback=events", {op: 6}, events = function(json) {
+                $.each(json, function(i, json){
+                    $('#wrapper .frontpage-'+id).find('#'+json.section).append('<div class="' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
+                });
+                
+                $.getJSON("dummie/ws.dum.php?jsoncallback=forums", {op: 3}, forums = function(json) {
+                    $.each(json, function(i, json){
+                        $('#wrapper .frontpage-'+id).find('#'+json.section).append('<div class="forum ' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
+                    });
+                });
+                   
+            });      
+        });
+    });
 }
