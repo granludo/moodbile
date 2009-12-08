@@ -32,7 +32,7 @@ Moodbile.templates.grade = function(json){
         var courseid = json.courseid;
         var grades = json.grades;
         
-        $('#wrapper .grade-'+ courseid).append('<h6>'+json.name+' '+json.lastname+'</h6>');
+        $('#wrapper .grade-'+ courseid).append('<h6><a href="#" class="user '+json.id+'">'+json.name+' '+json.lastname+'</a></h6>');
         
         $.each(grades, function(i, grades){
             $('#wrapper .grade-'+ courseid).append('<div class="' + grades.id + '"><a href="#"><span class="icon-'+grades.type+'"></span>' + grades.title + '</a><div class="info collapsed"></div></div>');

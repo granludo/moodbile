@@ -31,7 +31,6 @@ function moodbile_load_libs($exception = 'core'){
 function moodbile_include_modules(){
     global $CFG;
     
-    
     $basepath = $CFG['basepath'];
     $active_modules = $CFG['active_modules'];
     

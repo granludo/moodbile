@@ -467,8 +467,21 @@ switch ($_GET['op']) {
     
     case 7:
         $user = array(
-            "id"
+            "id" => 20,
+            "name" => "Imanol",
+            "lastname" => "Urra Ruiz",
+            "email" => "index02@gmail.com",
+            "courses" => array(
+                0 => "Comunicacions Audiovisuals",
+                1 => "Llenguatge i Sistemes Informatics",
+                2 => "Moodbile"
+            ),
+            "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f1.jpg",
+            "roles" => "",
         );
-    
+        
+        $json = $_GET["jsoncallback"] . "(" . json_encode($user) . ")"; //JSONP
+        
+        echo $json;
         break;
 }

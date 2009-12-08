@@ -4,7 +4,7 @@ Moodbile.wsurl = "dummie/ws.dum.php";
 Moodbile.enroledCoursesid = []; //Array donde dentro se guardan los ids de los cursos del cual el usuario esta enrolado
 
 //Funcion que ejecuta los comportamientos de los js de cada modulo
-Moodbile.attachBehaviors = function(context){
+Moodbile.attachBehaviors = function(context) {
     var context = context || document;
     jQuery.each(Moodbile.behaviorsPatterns, function() {
       this(context);
@@ -12,13 +12,13 @@ Moodbile.attachBehaviors = function(context){
     });
 }
 
-Moodbile.jsonRequest = function(context, op, callbackFunction){
+Moodbile.jsonRequest = function(context, op, callbackFunction) {
     $.getJSON(Moodbile.wsurl +'?jsoncallback=?', {op: op}, callbackFunction);
 }
 
 Moodbile.behaviorsPatterns.breadcrumb = function(context){
     //Acciones cuando se usa el breadcrums
-    $('nav#breadcrumb li#level-1 a').live('click', function(){
+    $('nav#breadcrumb li#level-1 a').live('click', function() {
         var id = $(this).parent().parent().attr('class');
         
         if($('#wrapper').find('.frontpage-'+id).is('.frontpage-'+id)) {
@@ -30,7 +30,7 @@ Moodbile.behaviorsPatterns.breadcrumb = function(context){
         
         return false;
     });
-    $('nav#breadcrumb li#level-2 a').live('click', function(){
+    $('nav#breadcrumb li#level-2 a').live('click', function() {
         var id = $(this).parent().parent().attr('class');
         
         if($('#wrapper').find('.forums-'+id).is('.forums-'+id)) {
@@ -132,14 +132,15 @@ Moodbile.aux.loading = function(op) {
 }
 
 Moodbile.aux.infoViewer = function(info) {
-    $('#content').next('<section id="info-viewer">'+info+'</section>').hide();
+    $('#container').append('<section id="info-viewer"><div class="content">'+info+'</div></section>');
+    $('#info-viewer').height($(window).height()-20);
 }
 
-Moodbile.behaviorsPatterns.collapsible = function(){
+Moodbile.behaviorsPatterns.collapsible = function() {
     //Prevent CSS
     $(".collapsible").live('click', function(){
         //TODO: Mejorarlo, aprender a crear eventos.
-        if ($(this).parent().parent().is('.expanded')){
+        if($(this).parent().parent().is('.expanded')) {
             $(this).parent().parent().removeClass('expanded');
             $(this).parent().parent().addClass('collapsed');
         } else {

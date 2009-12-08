@@ -22,6 +22,8 @@ Moodbile.behaviorsPatterns.courses = function(context){
         
         $('section:visible').hide();
         $('.frontpage-'+id).show();
+        
+        return false;
     });
     
     //funcion para el caso de pulsar el icono de navegacion
@@ -36,7 +38,7 @@ Moodbile.behaviorsPatterns.courses = function(context){
 Moodbile.templates.courses = function(json) {
     $.each(json, function(i, json){
         $('#wrapper .courses').append('<div id="' + json.id + '" class="course '+ json.format +'"><a title="'+ json.title +'" href="#" class="course-title">' + json.title + '</a><div class="info collapsed"></div></div>');
-        $('#'+json.id).find('.info').append('<div class="more visible"><a href="#" class="collapsible">Mas info.</a></div>');
+        $('#'+json.id).find('.info').append('<div class="more visible"><a href="#" class="collapsible"><span class="icon-info"/></a></div>');
         $('#'+json.id).find('.info').append('<div class="summary">'+json.summary+'</div>');
             
         Moodbile.enroledCoursesid[i] = json.id;

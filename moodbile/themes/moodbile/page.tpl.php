@@ -10,11 +10,12 @@
     </head>
 
     <body>
-        <div id="container">
+        <div id="container" class="content">
             <div id="content"> <!-- TODO: Cambiar clases content<->wrapper y todo lo que conlleva -->
                 <!--<div class="box dragy">Hola</div>-->
                 <header>
                     <h1><a id="sitename" href="#"><?php print $title; ?></a></h1>
+                    <div class="avatar"></div>
                 </header>
                 <nav id="breadcrumb">
                 <?php print $breadcrumb; ?>

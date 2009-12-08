@@ -2,7 +2,11 @@ body {font-family: Verdana, Arial, Helvetica;font-size: 1em;background-image: ur
 a{text-decoration: none;}
 header {text-align: center; margin-top: 10px;}
 header h1{margin:0 auto; width: 310px; height: 50px; background:transparent url(../images/logo.png) no-repeat scroll 75px 0; text-indent: -9999px;}
-#container {position:relative; overflow: auto; height: 100%;}
+ul {list-style-image:none;
+list-style-position:outside;
+list-style-type:none;}
+ul li{padding: 5px; }
+.content {position:relative; overflow: auto; height: 100%;}
 #wrapper {margin: 10px 0; position: relative; padding-bottom: 60px;}
 nav#toolbar {
     font-size: 0.6em;
@@ -115,14 +119,15 @@ background: url(../images/arrows.png);background-repeat: no-repeat;background-po
 nav#breadcrumb {font-size: 0.7em; margin: 5px 8px;}
 nav#breadcrumb ul li{display: inline; padding: 0 2px;}
 nav#breadcrumb a{
-display: none;
-color: #000;
-background: url(../images/breadcrumb.png);
-background-repeat: no-repeat;
-background-position: right 0;
-padding-right: 15px;
-font-weight: bold;
+    display: none;
+    color: #000;
+    background: url(../images/breadcrumb.png);
+    background-repeat: no-repeat;
+    background-position: right 0;
+    padding-right: 15px;
+    font-weight: bold;
 }
+
 nav#breadcrumb li:last-child a{ background-image: none;}
 nav#breadcrumb li#home span{background:transparent url(../images/breadcrumb.png) no-repeat scroll center bottom;
 display:inline-block;
@@ -141,59 +146,67 @@ width:12px;}
 
 /* extra information */
 .info {position: relative;display: block;}
-.more {font-size:0.6em;padding:0; position: absolute; right:0;top:-30px;}
-.more a{ padding: 3px;}
+.more {font-size:0.6em;padding:0; position: absolute; right:0;top:-28px;}
+.courses .more {right:16px;}
+.more a{padding: 3px;}
 .data {font-size:0.8em;font-weight:normal;line-height:17px; padding: 10px 20px;}
+
+/* info-viewer */
+#info-viewer {}
+#info-viewer div {padding: 10px;}
+#info-viewer div a{padding: 0;}
+#info-viewer .avatar {border: 1px solid #999;float:left;height:50px;overflow:hidden;margin-right:5px;width:50px; -moz-border-radius: 0; -webkit-border-radius: 0;}
+#info-viewer .avatar img {margin-left:-11px;margin-top:-11px;width:75px;}
+#info-viewer .user {border-bottom: 1px solid #999;}
 
 /* icons */
 .icon-pdf{
-background:transparent url(../images/icons.gif) no-repeat scroll 0 -1px;
-display:inline-block;
-height:16px;
-margin-right:5px;
-width:16px;
+    background:transparent url(../images/icons.gif) no-repeat scroll 0 -1px;
+    display:inline-block;
+    height:16px;
+    margin-right:5px;
+    width:16px;
 }
 .icon-doc{
-background:transparent url(../images/icons.gif) no-repeat scroll 0 -21px;
-display:inline-block;
-height:16px;
-margin-right:5px;
-width:16px;
+    background:transparent url(../images/icons.gif) no-repeat scroll 0 -21px;
+    display:inline-block;
+    height:16px;
+    margin-right:5px;
+    width:16px;
 }
 .icon-pps{
-background:transparent url(../images/icons.gif) no-repeat scroll 0 -42px;
-display:inline-block;
-height:16px;
-margin-right:5px;
-width:16px;
+    background:transparent url(../images/icons.gif) no-repeat scroll 0 -42px;
+    display:inline-block;
+    height:16px;
+    margin-right:5px;
+    width:16px;
 }
 .icon-asigment{
-background:transparent url(../images/icons.gif) no-repeat scroll 0 -62px;
-display:inline-block;
-height:16px;
-margin-right:5px;
-width:16px;
+    background:transparent url(../images/icons.gif) no-repeat scroll 0 -62px;
+    display:inline-block;
+    height:16px;
+    margin-right:5px;
+    width:16px;
 }
 .icon-quiz{
-background:transparent url(../images/icons.gif) no-repeat scroll 0 -82px;
-display:inline-block;
-height:16px;
-margin-right:5px;
-width:16px;
+    background:transparent url(../images/icons.gif) no-repeat scroll 0 -82px;
+    display:inline-block;
+    height:16px;
+    margin-right:5px;
+    width:16px;
 }
 .icon-forum{
-background:transparent url(../images/icons.gif) no-repeat scroll 0 -100px;
-display:inline-block;
-height:16px;
-margin-right:5px;
-width:16px;
+    background:transparent url(../images/icons.gif) no-repeat scroll 0 -100px;
+    display:inline-block;
+    height:16px;
+    margin-right:5px;
+    width:16px;
 }
 .icon-info{
-background:transparent url(../images/icons.gif) no-repeat scroll 0 -122px;
-display:inline-block;
-height:16px;
-margin-right:5px;
-width:16px;
+    background:transparent url(../images/icons.gif) no-repeat scroll 0 -122px;
+    display:inline-block;
+    height:16px;
+    width:16px;
 }
 
 /* TEST */

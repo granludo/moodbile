@@ -42,14 +42,33 @@ Moodbile.templates.participants = function(json){
         });
     });
 }*/
-Moodbile.behaviorsPatterns.user = function(){
+
+Moodbile.behaviorsPatterns.user = function(context){
+    var context = context || document;
+    
     $('.user').live('click', function(){
-        var op = 10;
+        var op = 7;
+        $('#content').hide();
+        Moodbile.aux.loading(true);
         Moodbile.jsonRequest(context, op, Moodbile.templates.user);
+        
+        return false;
     });
 }
 
 Moodbile.templates.user = function (json) {
-    var username = '<h6>'+ json.name +'</h6>';
-    var
+    var avatar = '<div class="avatar"><img alt="'+ json.name +' '+ json.lastname +'" src="'+ json.avatar +'" /></div>';
+    var user = '<div class="user"><h6>'+ json.name +' '+ json.lastname +'<h6></div>';
+    var email = '<div class="email"><a href="mailto:'+ json.email +'">'+ json.email +'</a></div>';
+    
+    var courses = json.courses;
+    var courseslist = '<ul class="courses-list">';
+    $.each(courses, function() {
+        courseslist = courseslist + '<li>' + this + '</li>';
+    });
+    courseslist = courseslist + '</ul>';
+    
+    var html = avatar + user + email + courseslist;
+    Moodbile.aux.infoViewer(html);
+    Moodbile.aux.loading(false);
 }
