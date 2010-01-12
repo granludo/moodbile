@@ -1,51 +1,89 @@
 <?
 switch ($_GET['op']) {
-    case 0:
-    
-        if(!isset($_GET['courseid'])){
+    case "courses":
             $courses = array(
                 0 => array(
                     "id" => 0,
                     "title" => "Comunicacions Audiovisuals",
                     "format" => "topic",
-                    "summary" => "Trata temas sobre <u>Televison/TDT(DVB-T)</u>"
+                    "summary" => "Trata temas sobre <u>Televison/TDT(DVB-T)</u>",
+                    "sections" => array(
+                        0 => array(
+                            "sectionid" => 10,
+                            "summary" => "<h1><u>Presentacion</u></h1>",
+                            "labels" => array()
+                        ),
+                        1 => array(
+                            "sectionid" => 11,
+                            "summary" => "Tema 1",
+                            "labels" => array()
+                        ),
+                        2 => array(
+                            "sectionid" => 12,
+                            "summary" => "Tema 2",
+                            "labels" => array()
+                        ),
+                        3 => array(
+                            "sectionid" => 13,
+                            "summary" => "Tema 3",
+                            "labels" => array()
+                        )
+                    )
                 ),
                 1 => array(
                     "id" => 1,
                     "title" => "Llenguatge i Sistemes Informatics",
                     "format" => "topic",
-                    "summary" => "Sumario sobre LSI"
+                    "summary" => "Sumario sobre LSI",
+                    "sections" => array(
+                        0 => array(
+                            "sectionid" => 20,
+                            "summary" => "<h1><u>Presentacion</u></h1>",
+                            "labels" => array()
+                        ),
+                        1 => array(
+                            "sectionid" => 21,
+                            "summary" => "Tema 1",
+                            "labels" => array()
+                        ),
+                        2 => array(
+                            "sectionid" => 22,
+                            "summary" => "Tema 2",
+                            "labels" => array()
+                        ),
+                        3 => array(
+                            "sectionid" => 23,
+                            "summary" => "Tema 3",
+                            "labels" => array()
+                        )
+                    )
                 ),
                 2 => array(
                     "id" => 2,
                     "title" => "Moodbile",
                     "format" => "topic",
-                    "summary" => "Curso sobre Moodbile"
-                )
-            );
-        
-            $json = $_GET["jsoncallback"] . "(" . json_encode($courses) . ")"; //JSONP
-        
-            echo $json;
-        } else {
-            $courses = array(
-                "format" => "topic",
-                "sections" => array(
-                    0 => array(
-                        "summary" => "<h1><u>Presentacion</u></h1>",
-                        "labels" => array()
-                    ),
-                    1 => array(
-                        "summary" => "Tema 1",
-                        "labels" => array()
-                    ),
-                    2 => array(
-                        "summary" => "Tema 2",
-                        "labels" => array()
-                    ),
-                    3 => array(
-                        "summary" => "Tema 3",
-                        "labels" => array()
+                    "summary" => "Curso sobre Moodbile",
+                    "sections" => array(
+                        0 => array(
+                            "sectionid" => 30,
+                            "summary" => "<h1><u>Presentacion</u></h1>",
+                            "labels" => array()
+                        ),
+                        1 => array(
+                            "sectionid" => 31,
+                            "summary" => "Recursos",
+                            "labels" => array()
+                        ),
+                        2 => array(
+                            "sectionid" => 32,
+                            "summary" => "Documentacion",
+                            "labels" => array()
+                        ),
+                        3 => array(
+                            "sectionid" => 33,
+                            "summary" => "Otros",
+                            "labels" => array()
+                        )
                     )
                 )
             );
@@ -53,11 +91,10 @@ switch ($_GET['op']) {
             $json = $_GET["jsoncallback"] . "(" . json_encode($courses) . ")"; //JSONP
         
             echo $json;
-        }
         
         break;
     
-    case 1:
+    case "resources":
         $resources = array(
                 0 => array(
                     "courseid" => 0,
@@ -66,7 +103,7 @@ switch ($_GET['op']) {
                             "title" => "Percepcio Audiovisual",
                             "type" => "pdf",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
-                            "section" => 1
+                            "section" => 11
                     )
                 ),
                 1 => array(
@@ -75,7 +112,8 @@ switch ($_GET['op']) {
                             "id" => "1",
                             "title" => "Recurso 1",
                             "type" => "doc",
-                            "section" => 2
+                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
+                            "section" => 12
                     )
                 ),
                 2 => array(
@@ -84,7 +122,8 @@ switch ($_GET['op']) {
                             "id" => "2",
                             "title" => "Recurso 2",
                             "type" => "pps",
-                            "section" => 3
+                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
+                            "section" => 13
                     )
                 ),
                 3 => array(
@@ -94,7 +133,7 @@ switch ($_GET['op']) {
                             "title" => "Percepcio Audiovisual",
                             "type" => "pdf",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
-                            "section" => 1
+                            "section" => 21
                     )
                 ),
                 4 => array(
@@ -103,7 +142,7 @@ switch ($_GET['op']) {
                             "id" => "1",
                             "title" => "Recurso 1",
                             "type" => "doc",
-                            "section" => 2
+                            "section" => 22
                     )
                 ),
                 5 => array(
@@ -112,35 +151,35 @@ switch ($_GET['op']) {
                             "id" => "2",
                             "title" => "Recurso 2",
                             "type" => "pps",
-                            "section" => 3
+                            "section" => 23
                     )
                 ),
                 6 => array(
                     "courseid" => 2,
                     "resource" => array(
                             "id" => "0",
-                            "title" => "Percepcio Audiovisual",
+                            "title" => "Funciones ajax en Moodbile",
                             "type" => "pdf",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
-                            "section" => 1
+                            "section" => 31
                     )
                 ),
                 7 => array(
                     "courseid" => 2,
                     "resource" => array(
                             "id" => "1",
-                            "title" => "Recurso 1",
+                            "title" => "Breadcrumb en Moodbile",
                             "type" => "doc",
-                            "section" => 2
+                            "section" => 32
                     )
                 ),
                 8 => array(
                     "courseid" => 2,
                     "resource" => array(
                             "id" => 2,
-                            "title" => "Recurso 2",
+                            "title" => "¿Que es Moodbile?",
                             "type" => "pps",
-                            "section" => 3
+                            "section" => 33
                     )
                 )
         );
@@ -150,7 +189,7 @@ switch ($_GET['op']) {
         echo $json;
         break;
     
-    case 2:
+    case "grades":
         //Esta estructura de datos es teniendo en cuenta que un profesor vera las notas de todos
         //En el caso de que sea un estudiante, se le devolvera unicamente la parte del array correspondiente a su usuario.
         $grades = array(
@@ -159,6 +198,7 @@ switch ($_GET['op']) {
                     "id" => 50, //id del usuario
                     "name" => "Imanol",
                     "lastname" => "Urra Ruiz",
+                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
                     "grades" => array(
                         0 => array(
                             'id' => '0',
@@ -181,6 +221,7 @@ switch ($_GET['op']) {
                     "id" => 50, //id del usuario
                     "name" => "Imanol",
                     "lastname" => "Urra Ruiz",
+                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
                     "grades" => array(
                         0 => array(
                             'id' => '11',
@@ -203,6 +244,7 @@ switch ($_GET['op']) {
                     "id" => 10, //id del usuario
                     "name" => "Marc",
                     "lastname" => "Alier",
+                    "avatar" => "http://a1.twimg.com/profile_images/311190482/ludo_cartoon_suny_bigger.jpg",
                     "grades" => array(
                         0 => array(
                             'id' => '23',
@@ -227,25 +269,54 @@ switch ($_GET['op']) {
         echo $json;
         break;
     
-    case 3:
+    case "grade":
+        
+        if($_GET['gradeid'] == 0) {
+            $grade = array(
+                'id' => '0',
+                'title' => 'Test',
+                'grade' => '7.5',
+                'description' => 'Trabajo sobre Query-by-example',
+                'type' => 'asigment'
+            );
+        }
+        if($_GET['gradeid'] == 1) {
+            $grade = array(
+                'id' => '1',
+                'title' => 'Ejercicio Sostenibilidad',
+                'grade' => '7.5',
+                'description' => 'Indice de Pobreza Humana <b>(IPH)</b>',
+                'type' => 'quiz'
+            );
+        }
+        
+        $json = $_GET["jsoncallback"] . "(" . json_encode($grade) . ")"; //JSONP
+        
+        echo $json;
+        break;
+    
+    case "forums":
         $forums = array(
-                 0 => array( //la key sera la id del foro
+                 0 => array(
                     "id" => 0,
+                    "courseid" => 0,
                     "title" => "Foro generico",
                     "type" => "forum",
-                    "section" => 0
+                    "section" => 10
                  ),
-                 1 => array( //la key sera la id del foro
+                 1 => array(
                     "id" => 1,
+                    "courseid" => 0,
                     "title" => "Foro generico 2",
                     "type" => "forum",
-                    "section" => 0
+                    "section" => 10
                  ),
-                 2 => array( //la key sera la id del foro
+                 2 => array(
                     "id" => 2,
+                    "courseid" => 0,
                     "title" => "Foro generico 3",
                     "type" => "forum",
-                    "section" => 2
+                    "section" => 12
                  )
         );
         
@@ -254,37 +325,16 @@ switch ($_GET['op']) {
         echo $json;
         break;
     
-    case 4:
+    case "posts":
         $posts = array(
-                 0 => array( //la key sera la id del foro
+                 0 => array(
                     "id" => 0,
+                    "forumid" => 0,
                     "title" => "¿Que es esto?",
-                    "author" => "Pepito"
-                 ),
-                 1 => array( //la key sera la id del foro
-                    "id" => 1,
-                    "title" => "Post generico",
-                    "author" => "Pepito"
-                 ),
-                 2 => array( //la key sera la id del foro
-                    "id" => 2,
-                    "title" => "Post generico 1",
-                    "author" => "Pepito"
-                 )
-        );
-        
-        $json = $_GET["jsoncallback"] . "(" . json_encode($posts) . ")"; //JSONP
-        
-        echo $json;
-        break;
-        
-    case 5:
-        $posts = array(
-                 0 => array( //la key sera la id post
-                    "id" => 0,
-                    "title" => "¿Que es esto?",
-                    "author" => "Pepito",
-                    "msg" => "Esto es una aplicacion web que usa los web services de moodle",
+                    "name" => "Imanol",
+                    "lastname" => "Urra Ruiz",
+                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
+                    "msg" => "Esto es una aplicación web que usa los web services de moodle",
                     "replyes" => array(
                         3 => array( //la key sera la id post
                             "id" => 3,
@@ -300,55 +350,60 @@ switch ($_GET['op']) {
                         )
                     )
                  ),
-                 
-                 1 => array( //la key sera la id del foro
+                 1 => array(
                     "id" => 1,
-                    "title" => "Post generico",
-                    "author" => "Pepito",
+                    "forumid" => 0,
+                    "title" => "eBooks",
+                    "name" => "Imanol",
+                    "lastname" => "Urra Ruiz",
+                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
+                    "msg" => "eBooks es el nuevo gadget navideño",
+                    "replyes" => array(
+                        3 => array( //la key sera la id post
+                            "id" => 3,
+                            "title" => "Re: ¿Que es esto?",
+                            "author" => "Joan",
+                            "msg" => "y que son los eBooks?"
+                        ),
+                         4 => array( //la key sera la id post
+                            "id" => 4,
+                            "title" => "Re: Re: ¿Que es esto?",
+                            "author" => "Pepito",
+                            "msg" => "Libros electronicos con tinta electronica"
+                        )
+                    )
+                 ),
+                 2 => array(
+                    "id" => 2,
+                    "forumid" => 0,
+                    "title" => "Post generico 1",
+                    "name" => "Imanol",
+                    "lastname" => "Urra Ruiz",
+                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
                     "msg" => "Esto es una aplicacion web que usa los web services de moodle",
                     "replyes" => array(
-                        5 => array( //la key sera la id post
-                            "id" => 5,
-                            "title" => "Re: Post generico",
+                        3 => array( //la key sera la id post
+                            "id" => 3,
+                            "title" => "Re: ¿Que es esto?",
                             "author" => "Joan",
                             "msg" => "y en que esta basado?"
                         ),
-                        6 => array( //la key sera la id post
-                            "id" => 6,
-                            "title" => "Re: Post generico",
+                         4 => array( //la key sera la id post
+                            "id" => 4,
+                            "title" => "Re: ¿Que es esto?",
                             "author" => "Pepito",
                             "msg" => "PHP + JS(jQuery) + HTML5"
                         )
                     )
-                 ),
-                 2 => array( //la key sera la id del foro
-                    "id" => 2,
-                    "title" => "Post generico 1",
-                    "author" => "Pepito",
-                    "msg" => "Esto es una aplicacion web que usa los web services de moodle",
-                    "replyes" => array(
-                        7 => array( //la key sera la id post
-                            "id" => 7,
-                            "title" => "Re: ¿Que es esto?",
-                            "author" => "Joan",
-                            "msg" => "y en que esta basado?"
-                        ),
-                        8 => array( //la key sera la id post
-                            "id" => 8,
-                            "title" => "Re: ¿Que es esto?",
-                            "author" => "Pepito",
-                            "msg" => "PHP + JS(jQuery) + HTML5"
-                       )
-                    )
                  )
         );
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($posts[$_GET['postid']]) . ")"; //JSONP
+        $json = $_GET["jsoncallback"] . "(" . json_encode($posts) . ")"; //JSONP
         
         echo $json;
         break;
 
-    case 6:
+    case "events":
         $upcomingevents = array(
                 0 => array(
                     "id" => 0,
@@ -357,7 +412,7 @@ switch ($_GET['op']) {
                     "enddata" => "01/10/2009",
                     "type" => "asigment",
                     "description" => "Trabajo sobre Query-by-example",
-                    "section" => 2
+                    "section" => 12
                 ),
                 1 => array(
                     "id" => 1,
@@ -366,7 +421,7 @@ switch ($_GET['op']) {
                     "enddata" => "02/10/2009",
                     "type" => "asigment",
                     "description" => "Mejorar entrada sobre CBIR",
-                    "section" => 3
+                    "section" => 13
                 ),
                 2 => array(
                     "id" => 32,
@@ -375,7 +430,7 @@ switch ($_GET['op']) {
                     "enddata" => "23/12/2009",
                     "type" => "quiz",
                     "description" => "Cuestionario sobre el estandar MPEG-2",
-                    "section" => 2
+                    "section" => 12
                 ),
                 3 => array(
                     "id" => 11,
@@ -384,7 +439,7 @@ switch ($_GET['op']) {
                     "enddata" => "10/1/2009",
                     "type" => "asigment",
                     "description" => "Generalizar peticiones, reestructurar llamadas...",
-                    "section" => 3
+                    "section" => 23
                 ),
                 4 => array(
                     "id" => 21,
@@ -393,7 +448,7 @@ switch ($_GET['op']) {
                     "enddata" => "01/10/2009",
                     "type" => "asigment",
                     "description" => "Trabajo sobre Query-by-example",
-                    "section" => 2
+                    "section" => 12
                 ),
                 5 => array(
                     "id" => 22,
@@ -402,7 +457,7 @@ switch ($_GET['op']) {
                     "enddata" => "02/10/2009",
                     "type" => "quiz",
                     "description" => "¿Quienes son los amos del mundo segun la presentacion en Desenvolupament. Sostenible?",
-                    "section" => 3
+                    "section" => 13
                 ),
                 6 => array(
                     "id" => 3,
@@ -411,7 +466,7 @@ switch ($_GET['op']) {
                     "enddata" => "01/10/2009",
                     "type" => "quiz",
                     "description" => "¿Que es el Factor 4?<br/>¿Que hay que hacer para reducir el consumo de energia?",
-                    "section" => 2
+                    "section" => 22
                 ),
                 7 => array(
                     "id" => 4,
@@ -420,7 +475,7 @@ switch ($_GET['op']) {
                     "enddata" => "02/10/2009",
                     "type" => "asigment",
                     "description" => "Creacion de un filtro en C++",
-                    "section" => 3
+                    "section" => 23
                 ),
                 8 => array(
                     "id" => 40,
@@ -429,7 +484,7 @@ switch ($_GET['op']) {
                     "enddata" => "01/10/2009",
                     "type" => "asigment",
                     "description" => "Trabajo sobre Query-by-example",
-                    "section" => 2
+                    "section" => 22
                 ),
                 9 => array(
                     "id" => 39,
@@ -438,7 +493,7 @@ switch ($_GET['op']) {
                     "enddata" => "02/10/2009",
                     "type" => "asigment",
                     "description" => "Moodbile",
-                    "section" => 3
+                    "section" => 23
                 ),
                 10 => array(
                     "id" => 23,
@@ -447,7 +502,7 @@ switch ($_GET['op']) {
                     "enddata" => "01/10/2009",
                     "type" => "asigment",
                     "description" => "Trabajo sobre Query-by-example",
-                    "section" => 2
+                    "section" => 32
                 ),
                 11 => array(
                     "id" => 12,
@@ -456,7 +511,7 @@ switch ($_GET['op']) {
                     "enddata" => "02/10/2009",
                     "type" => "asigment",
                     "description" => "Moodbile",
-                    "section" => 3
+                    "section" => 33
                 )
         );
         
@@ -465,20 +520,57 @@ switch ($_GET['op']) {
         echo $json;
         break;
     
-    case 7:
-        $user = array(
-            "id" => 20,
-            "name" => "Imanol",
-            "lastname" => "Urra Ruiz",
-            "email" => "index02@gmail.com",
-            "courses" => array(
-                0 => "Comunicacions Audiovisuals",
-                1 => "Llenguatge i Sistemes Informatics",
-                2 => "Moodbile"
-            ),
-            "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f1.jpg",
-            "roles" => "",
-        );
+    case "event":
+        if($_GET['eventid'] == 0) {
+            $event = array(
+                "id" => 0,
+                "courseid" => 0,
+                "title" => "Entrega trabajo",
+                "enddata" => "01/10/2009",
+                "type" => "asigment",
+                "description" => "Trabajo sobre Query-by-example",
+                "section" => 12
+            );
+        }
+        
+        $json = $_GET["jsoncallback"] . "(" . json_encode($event) . ")"; //JSONP
+        
+        echo $json;
+        break;
+    
+    case "profile":
+        if($_GET['userid'] == 50) {
+            $user = array(
+                "id" => 50,
+                "name" => "Imanol",
+                "lastname" => "Urra Ruiz",
+                "city" => "Terrassa",
+                "email" => "index02@gmail.com",
+                "courses" => array(
+                    0 => "Comunicacions Audiovisuals",
+                    1 => "Llenguatge i Sistemes Informatics",
+                    2 => "Moodbile"
+                ),
+                "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f1.jpg",
+                "roles" => "Estudent, Teacher",
+            );
+        }
+        if($_GET['userid'] == 10) {
+            $user = array(
+                "id" => 10,
+                "name" => "Marc",
+                "lastname" => "Alier",
+                "city" => "Badalona",
+                "email" => "index02@gmail.com",
+                "courses" => array(
+                    0 => "Comunicacions Audiovisuals",
+                    1 => "Llenguatge i Sistemes Informatics",
+                    2 => "Moodbile"
+                ),
+                "avatar" => "http://a1.twimg.com/profile_images/311190482/ludo_cartoon_suny_bigger.jpg",
+                "roles" => "Teacher",
+            );
+        }
         
         $json = $_GET["jsoncallback"] . "(" . json_encode($user) . ")"; //JSONP
         

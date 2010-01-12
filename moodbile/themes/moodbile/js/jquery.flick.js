@@ -109,7 +109,7 @@ function loadMask(){
 	clearInterval(_intval);
 	_intval = null;
 	if(!_mask){
-		$('#'+_target).prepend("<div id='touchMoveLayerMask' style='display: block; width: 100%; height: 100%; position: absolute; top: 0px; left: 0px; background-color: #000; opacity:0; z-index: 9999;'>&nbsp;</div>");
+		$('#'+_target).prepend("<div id='touchMoveLayerMask' style='display: block; width: 100%; height: 100%; position: absolute; top: 0; left: 0; background-color: #000; opacity:0.5; z-index: 9999;'>&nbsp;</div>");
 		_mask = true;
 	}
 }

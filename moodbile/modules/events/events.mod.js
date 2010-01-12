@@ -1,9 +1,12 @@
 Moodbile.behaviorsPatterns.events = function(context){
     var context = context || document;
-
-    setTimeout(function(){
-        Moodbile.aux.events(context, Moodbile.enroledCoursesid);
-    }, 700);
+    
+    var loadInterval = setInterval(function(){
+        if(Moodbile.enroledCoursesid.length != 0){
+            Moodbile.aux.events(context, Moodbile.enroledCoursesid); 
+            clearInterval(loadInterval);
+        }
+    }, Moodbile.intervalDelay);
     
     $('nav#toolbar li#events').live('click', function(){
         var id = $(this).attr('class');
@@ -13,7 +16,28 @@ Moodbile.behaviorsPatterns.events = function(context){
         $('section:visible').hide();
         $('.events-'+id).show();
         
-    return false;   
+        return false;   
+    });
+}
+
+Moodbile.behaviorsPatterns.eventViewMoreInfo = function(context){
+    var context = context || document;
+    
+    $('.event a').live('click', function(){
+        var id = $(this).parent().attr('class');
+        id = id.split(' ');
+        id = id[1];
+        
+        var title = $(this).text();
+        
+        var op = [];
+        op["op"] = "event";
+        op["eventid"] = id;
+        
+        Moodbile.json(context, "event", op, function(json){
+            var content = json.description;
+            Moodbile.aux.infoViewer(title, "event", content);
+        });
     });
 }
 
@@ -23,8 +47,9 @@ Moodbile.aux.events = function(context, courseids) {
         $('.events-'+ this).hide();
     });
     
-    var op = 6;
-    Moodbile.jsonRequest(context, op, Moodbile.templates.events);
+    var requestName = 'events';
+    var op = 'events';
+    Moodbile.json(context, requestName, op, Moodbile.templates.events);
 }
 
 Moodbile.templates.events = function(json){

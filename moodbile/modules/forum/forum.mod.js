@@ -1,101 +1,104 @@
-Moodbile.behaviorsPatterns.forum = function(){
+Moodbile.behaviorsPatterns.forum = function(context){
+    var context = context || document;
+    
+    var loadInterval = setInterval(function(){
+        if(Moodbile.enroledCoursesid.length != 0) {
+            Moodbile.aux.forums(context, Moodbile.enroledCoursesid);
+            clearInterval(loadInterval);
+        }
+    }, Moodbile.intervalDelay);
+
     $('nav#toolbar li#forum').live('click', function(){
         var id = $(this).attr('class');
         id = id.split(' ');
         id = id[0];
         
         $('section:visible').hide();
+        $('.forums-'+id).show();
         $('.posts').remove();
         
-        //Toca comprobar si existe o no la seccion de recursos de un id dado
-        if($('#wrapper').find('.forums-'+id).is('.forums-'+id)) { //FUNCIONA OK!
-        
-            $('#wrapper .forums-'+id).show();
-        
-        } else {
-        
-            $('#wrapper').append('<section class="forums-'+id+'"></section>');
-            $('.forums-'+id).hide();
-            Moodbile.aux.loading(true);
-            
-            $.getJSON("dummie/ws.dum.php?jsoncallback=forums", {op: 3}, forums = function(json){
-                $.each(json, function(i, json){
-                    $('#wrapper .forums-'+id).append('<div class="forum ' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
-                });
-                $('.forums-'+id).show();
-                Moodbile.aux.loading(false);        
-            });
-        }
-        
-    return false;
+        return false;
     });
 }
 
-Moodbile.behaviorsPatterns.posts = function(){
+Moodbile.aux.forums = function(context, courseids) {
+    $.each(courseids, function(){
+        $('#wrapper').append('<section class="forums forums-'+ this +'"></section>');
+        $('.forums-'+ this).hide();
+    });
+    
+    var requestName = 'forums';
+    var op = "forums";
+    Moodbile.json(context, requestName, op, Moodbile.templates.forums);
+}
+
+Moodbile.templates.forums = function(json){
+    $.each(json, function(i, json){
+        var courseid = json.courseid;
+
+        $('#wrapper .forums-'+courseid).append('<div class="forum ' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
+    });
+}
+
+Moodbile.behaviorsPatterns.posts = function(context){
+    var context = context || document;
         
-        $('.forum a').live('click', function(){
-            
-            //var forumbox = $(this).parent().parent().attr('class');
-            var forumclass = $(this).parent().attr('class');
-            var forumid = forumclass.split(' ');
-            forumid = forumid[1];
+    $('.forum a').live('click', function(){
+        var forumclass = $(this).parent().attr('class');
+        var forumid = forumclass.split(' ');
+        forumid = forumid[1];
             
             
-            $('section:visible').hide();
-            $('.posts:visible').hide();
+        $('section:visible').hide();
+        $('.posts').remove();
             
-            if($(this).parent().find('.posts').is('.posts-'+forumid) == false) {
+        if($(this).parent().find('.posts').is('.posts-'+forumid) == false) {
                 
-                $('#wrapper').append('<section class="posts posts-'+forumid+'"></section>');
-                $('.posts-'+forumid).hide();
-                Moodbile.aux.loading(true);
+            $('#wrapper').append('<section class="posts posts-'+forumid+'"></section>');
+            $('.posts-'+forumid).hide();
+                
+            var requestName = 'posts';
+            var op = "posts";
+            Moodbile.json(context, requestName, op, Moodbile.templates.post);
             
-                $.getJSON("dummie/ws.dum.php?jsoncallback=posts", {op: 4}, posts = function(json){
-                    $.each(json, function(i, json){
-                        $('.posts-'+forumid).append('<div class="post ' + json.id + '"><a href="#">' + json.title + '<em>'+json.author+'</em></a></div>');
-                        //alert(i);
-                    });
-                    $('.posts-'+forumid).show();
-                    Moodbile.aux.loading(false);        
-                });
-            } else { 
-                $(this).next().show();
-            }
+            $('.posts-'+forumid).show();
+                
+        } else { 
+            $(this).next().show();
+        }
             
-            return false;
+        return false;
     });
 }
 
-Moodbile.behaviorsPatterns.replyes = function(){}
-        //Funcion para los replies
-        $('.posts').find('.post').find('a').live('click', function(){
-            
-            var postid = $(this).parent().attr('class');
-            postid = postid.split(' ');
-            postid = postid[1];
-                        
-            $('.replyes:visible').hide();
-            
-            if($(this).parent().parent().find('.replyes').is('.'+postid) == false){
-            
-                $(this).parent().after('<div class="replyes '+postid+'"></div>');
-                $('.replyes.'+postid).hide();
-                Moodbile.aux.loading(true);
-            
-                $.getJSON("dummie/ws.dum.php?jsoncallback=post", {op: 5, postid: postid}, post = function(json){
-                    $('.replyes.'+postid).append('<div class="msg-' + json.id + '">'+ json.msg +'</div>');
+Moodbile.templates.post = function(json) {
+    $.each(json, function(i, json){
+        var forumid = json.forumid;
+
+        $('.posts-'+forumid).append('<div class="post post-' + json.id + '"><div class="avatar"></div><div class="post-title"><a href="#">' + json.title + '</a></div><div class="replyes '+json.id+'"></div></div>');
+        $('.posts-'+forumid).find('.avatar').css({'background-image' : 'url('+json.avatar+')'});
+        $('.posts-'+forumid).find('.replyes.'+json.id).append('<dialog><dt>'+ json.name +' '+ json.lastname +'</dt><dd class="msg-' + json.id + '">'+ json.msg +'</dd></dialog>');
                     
-                    var reply = json.replyes;
-                    $.each(reply, function(i, reply){
-                        $('.replyes.'+postid).append('<div class="reply-' + reply.id + '">'+ reply.msg +'<em>'+reply.author+'</em></div>');
-                    //alert(i);
-                    });
-                    $('.replyes.'+postid).show();
-                    Moodbile.aux.loading(false);         
-                });
-            } else {
-                $('.replyes.'+postid).show();
-            }
-            
-            return false;
+        var reply = json.replyes;
+        $.each(reply, function(i, reply){
+            $('.replyes.'+json.id).find('dialog').append('<dt>'+reply.author+'</dt><dd class="reply-' + reply.id + '">'+ reply.msg +'</dd>');
         });
+    });
+    $('.replyes:visible').hide();
+}
+
+Moodbile.behaviorsPatterns.replyes = function(){
+    //Funcion para los replies
+    $('.post-title').find('a').live('click', function(){
+            
+        var postid = $(this).parent().parent().attr('class');
+        postid = postid.split('-');
+        postid = postid[1];
+                        
+        $('.replyes:visible').hide();
+        $('.replyes.'+postid).show();
+            
+            
+        return false;
+    });
+}

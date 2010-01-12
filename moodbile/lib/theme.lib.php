@@ -44,6 +44,7 @@ function moodbile_get_theme_scripts($cache = FALSE) {
     return $js;
 }
 
+//ESTO PASARLO A LA LIBRERIA MODULE
 function moodbile_get_client_scripts() {
     //Se encargara de unificar los js tanto de los modulos como del sistema
     global $CFG;
@@ -52,9 +53,10 @@ function moodbile_get_client_scripts() {
     $basepath = $CFG['basepath'];
     $active_modules = $CFG['active_modules'];
     
-    //jquery
-    $js[0] = 'misc/jquery/jquery.js';
-    $js[1] = 'misc/moodbile.js';
+    //client scripts
+    $js[] = 'misc/jquery/jquery.js';
+    $js[] = 'misc/moodbile.js';
+    $js[] = 'misc/breadcrumb.js';
     
     //module scripts
     foreach($active_modules as $module) {
@@ -77,9 +79,12 @@ function moodbile_get_client_scripts() {
 }
 
 function moodbile_render_scripts($js){
+    //Renderizamos los scripts agrupados mediante la funcion moodbile_get_client_scripts()
     foreach($js as $js) {
         $scripts[] = '<script type="text/javascript" src="'.$js.'"></script>';
     }
+    
+    $scripts[] = moodbile_i18n_process_script();
     
     $scripts = implode("\n", $scripts);
     

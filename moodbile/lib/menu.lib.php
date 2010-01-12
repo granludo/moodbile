@@ -31,7 +31,7 @@ function moodbile_render_menu($menu_items = NULL){
     if(is_array($menu_items)) {
         foreach($menu_items as $item) {
             if (array_key_exists('menu_item', $item)) {
-                $output .= '<li id="'.$item['name'].'"><a href="#">'.$item['menu_item'].'</a></li>';       
+                $output .= '<li id="'.$item['name'].'"><a href="#">'.moodbile_get_string($item['menu_item']).'</a></li>';       
             }
         }
     }

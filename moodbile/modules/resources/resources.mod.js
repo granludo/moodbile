@@ -3,9 +3,12 @@
 Moodbile.behaviorsPatterns.resources = function(context){
     var context = context || document;
     
-    setTimeout(function(){
-        Moodbile.aux.resources(context, Moodbile.enroledCoursesid);
-    }, 700);
+    var loadInterval = setInterval(function(){
+        if(Moodbile.enroledCoursesid.length != 0) {
+            Moodbile.aux.resources(context, Moodbile.enroledCoursesid);
+            clearInterval(loadInterval);
+        }
+    }, Moodbile.intervalDelay);
     
     //una vez pulsamos el curso
     $('nav#toolbar li#resources a').live('click', function(){
@@ -26,8 +29,9 @@ Moodbile.aux.resources = function(context, ids){
         $('.resources-'+this).hide();
     });
     
-    var op = 1;
-    Moodbile.jsonRequest(context, op, Moodbile.templates.resources);
+    var requestName = 'resources';
+    var op = "resources";
+    var petition = Moodbile.json(context, requestName, op, Moodbile.templates.resources);
 }
 
 Moodbile.templates.resources = function(json){

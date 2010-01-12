@@ -10,7 +10,6 @@ function moodbile_get_module($module="courses") {
     global $CFG;
     
     $basepath = $CFG['basepath'];
-    //$basepath = "/"
     
     if($module_files = scandir($basepath .'/modules/'. $module)) {
         

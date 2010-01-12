@@ -1,114 +1,78 @@
 var Moodbile = {'behaviorsPatterns': {}, 'aux': {}, 'templates': {}};
 //Moodbile.behaviorsPatterns.helloword = function (){ alert('hello word'); };
 Moodbile.wsurl = "dummie/ws.dum.php";
+Moodbile.lang = "es_ES";
+Moodbile.tStrings = null;
+Moodbile.currentJson = null;
+Moodbile.requestJson = [];
+Moodbile.queueJson = [];
 Moodbile.enroledCoursesid = []; //Array donde dentro se guardan los ids de los cursos del cual el usuario esta enrolado
+Moodbile.intervalDelay = 50;
 
 //Funcion que ejecuta los comportamientos de los js de cada modulo
 Moodbile.attachBehaviors = function(context) {
     var context = context || document;
     jQuery.each(Moodbile.behaviorsPatterns, function() {
       this(context);
-      //alert(Moodbile.behaviorsPatterns);
     });
 }
 
-Moodbile.jsonRequest = function(context, op, callbackFunction) {
-    $.getJSON(Moodbile.wsurl +'?jsoncallback=?', {op: op}, callbackFunction);
+/*
+Como funcionan las peticiones JSON en Moodbile:
+    1. Se inicializa la variable donde se guardara la info. y se meten las opciones en una cola
+    2. Se inicializa un intervalo la cual no parara hasta que las siguientes comprobaciones se cumplan:
+        2.1. La peticion actual haya terminado (currentJson = null) y... <- Imprescindible?????
+        2.2. La peticion anterior haya terminado
+    3. Una vez cumplidas condiciones, se realiza la peticion y una vez recibida la info:
+        3.1. Se guardara la info recibida en la variable correspondiente
+        3.2. Se ejecutara la funcion callbackFunction para procesar la info.
+        3.3. Se indica que la peticion actual ha terminado <- Indispensable??????
+        3.4. Se indica que la peticion de la cola realizada ha terminado.
+*/
+Moodbile.json = function(context, requestName, op, callbackFunction) {
+    Moodbile.requestJson[requestName] = null; //Definimos que es null
+    
+    //Ahora, comprobare si la variable op, tiene consigo mas de una opcion, si es asi, montamos variables a pedir
+    if($.isArray(op) == true){
+        var newOp = "";
+        for(key in op) {
+            newOp += key+"="+op[key]+"&";
+        }
+    } else {
+        var newOp = "op="+op+"&";
+    }
+    console.log(newOp);
+    op = newOp;
+    
+    //console.log(Moodbile.json.arguments);
+    var currentQueueKey = Moodbile.queueJson.length;
+    Moodbile.queueJson[currentQueueKey] = op;
+    
+    Moodbile.aux.loading(true);
+    var initRequest = setInterval(function() {
+        if(currentQueueKey == 0 || Moodbile.queueJson[currentQueueKey-1] == null) {
+            //console.log('toRequestKey -> '+currentKey);
+            Moodbile.currentJson = $.getJSON(Moodbile.wsurl +'?'+Moodbile.queueJson[currentQueueKey]+'jsoncallback=?', function(json){
+                Moodbile.requestJson[requestName] = json;
+                Moodbile.currentJson = null;
+                Moodbile.queueJson[currentQueueKey] = null;
+                Moodbile.aux.loading(false);
+                
+                callbackFunction(json);
+                //console.log('currentKeyRequest -> '+ Moodbile.queueJson[currentKey]);
+            });
+            //Moodbile.currentJson.onerror = function() {alert('ok')}
+            clearInterval(initRequest);//comprobar si la cola es 0, en tal caso, detener el intervalo
+        }
+    }, Moodbile.intervalDelay);
 }
 
-Moodbile.behaviorsPatterns.breadcrumb = function(context){
-    //Acciones cuando se usa el breadcrums
-    $('nav#breadcrumb li#level-1 a').live('click', function() {
-        var id = $(this).parent().parent().attr('class');
-        
-        if($('#wrapper').find('.frontpage-'+id).is('.frontpage-'+id)) {
-            $('section:visible').hide();
-            $('#wrapper .frontpage-'+id).show();
-            $('nav#breadcrumb li:gt(1)').remove();
-            $('nav#toolbar li a').parent().removeClass('active');
-        }
-        
-        return false;
-    });
-    $('nav#breadcrumb li#level-2 a').live('click', function() {
-        var id = $(this).parent().parent().attr('class');
-        
-        if($('#wrapper').find('.forums-'+id).is('.forums-'+id)) {
-            $('section:visible').hide();
-            $('#wrapper .forums-'+id).show();
-            $('nav#breadcrumb li:gt(2)').remove();
-            $('.posts').remove();
-            $('nav#toolbar li a').parent().removeClass('active');
-        }
-        
-        return false;
-    });
+//Internacionalization
+//MEJORAR
+Moodbile.t = function(stringToTranslate) {
+    var string = Moodbile.i18n[stringToTranslate];
     
-    $('nav#breadcrumb li#home a').live('click', function(){
-        var id = $(this).parent().attr('class');
-        
-        if($('#wrapper').find('.courses').is('.courses')) {
-            $('section:visible').hide();
-            $('section.courses').show();
-            $('nav#breadcrumb li:gt(0)').remove();
-            $('nav#toolbar li a').parent().removeClass('active');
-        }
-        
-        $('nav#breadcrumb li a').hide();
-        $('nav#toolbar').hide();
-        
-        return false;
-    });
-    
-    //Acciones cuando pulsamos tanto en el tol
-    $('.course .course-title').live('click', function(){
-       var id = $(this).parent().attr('id');
-       var item = $(this).text();
-       
-       //Añadimos nivel
-       $('nav#breadcrumb ul').append('<li id="level-1"><span><a href="#"></a></span></li>');
-       
-       $('nav#breadcrumb li a').show(); //defecto
-       $('nav#breadcrumb li#level-1').addClass(id);
-       $('nav#breadcrumb li#level-1 span a').text(item);
-       $('nav#breadcrumb li#level-1 span a').show();
-       $('nav#breadcrumb li#level-2 a').hide();
-    });
-    
-    $('.forum a').live('click', function(){
-       var id = $(this).parent().attr('id');
-       var item = $(this).text();
-       
-       //Añadimos nivel
-       $('nav#breadcrumb ul').append('<li id="level-3"><span><a href="#"></a></span></li>');
-       
-       $('nav#breadcrumb li a').show(); //defecto
-       $('nav#breadcrumb li#level-3').addClass(id);
-       $('nav#breadcrumb li#level-3 span a').text(item);
-       $('nav#breadcrumb li#level-3 span a').show();
-       $('nav#breadcrumb li#level-4 a').hide();
-    });
-    
-    $('nav#toolbar li a').live('click', function(){
-       var id = $(this).parent().attr('class');
-       var item = $(this).text();
-       //Borramos nivel 2
-       $('nav#breadcrumb li:gt(1)').remove();
-       
-       //Añadimos nivel
-       $('nav#breadcrumb ul').append('<li id="level-2"><span><a href="#"></a></span></li>');
-
-       
-       $('nav#breadcrumb li#level-2').addClass(id);
-       $('nav#breadcrumb li#level-2 span a').text(item);
-       $('nav#breadcrumb li#level-2 a').show();
-       
-    });
-    
-    $('nav#toolbar li#courses a').live('click', function(){
-       $('nav#breadcrumb li a').hide();
-       $('nav#breadcrumb li:gt(0)').remove();
-    });
+    return string;
 }
 
 Moodbile.behaviorsPatterns.activeSection = function(context){
@@ -118,9 +82,17 @@ Moodbile.behaviorsPatterns.activeSection = function(context){
     });
 }
 
-Moodbile.behaviorsPatterns.createLoadingBox = function(){
-    $('#container').after('<div id="loading">Loading...</div>');
+Moodbile.behaviorsPatterns.createLoadingBox = function(context){
+    $('#container').after('<div id="loading">'+Moodbile.t('Loading')+'...</div>');
     $('#loading').hide();
+    
+    //TODO: Si en el iPhone surge el mismo efecto, seguir utilizando la funcion vieja
+    /*$('#loading').ajaxSend(function() {
+        $(this).show();
+    });
+    $('#loading').ajaxSuccess(function() {
+        $(this).hide();
+    });*/
 }
 
 Moodbile.aux.loading = function(op) {
@@ -131,9 +103,16 @@ Moodbile.aux.loading = function(op) {
     }
 }
 
-Moodbile.aux.infoViewer = function(info) {
-    $('#container').append('<section id="info-viewer"><div class="content">'+info+'</div></section>');
-    $('#info-viewer').height($(window).height()-20);
+Moodbile.aux.infoViewer = function(title, type, info) {
+    $('#container').append('<section id="info-viewer"><header class="title"><button class="back fx"><span class="icon-back">back</span></button><h1>'+title+'</h1></header><div class="content '+ type+ '">'+ info +'</div></section>');
+    $('#info-viewer').height($(window).height()-10);
+    
+    //Habilitamos el boton de regreso
+    //TODO: Probar si los bottones son admitidos como clickables
+    $('.back').live('click', function(){
+        $('#info-viewer').remove();
+        $('#content, #toolbar').show();
+    });
 }
 
 Moodbile.behaviorsPatterns.collapsible = function() {
@@ -144,7 +123,6 @@ Moodbile.behaviorsPatterns.collapsible = function() {
             $(this).parent().parent().removeClass('expanded');
             $(this).parent().parent().addClass('collapsed');
         } else {
-        
             $(this).parent().parent().removeClass('collapsed');
             $(this).parent().parent().addClass('expanded');
         }

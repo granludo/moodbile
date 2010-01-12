@@ -5,6 +5,7 @@
     global $CFG;
     
     moodbile_load_libs();
+    moodbile_i18n();
     $module_list = moodbile_get_module();
     
     
@@ -18,7 +19,7 @@
     moodbile_get_menu_items();
     
     
-    $template = moodbile_get_template("moodbile");
+    $template = moodbile_get_template();
     $variables = moodbile_process_theme_variables();
     moodbile_render_theme($template, $variables);
     

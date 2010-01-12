@@ -10,8 +10,8 @@
     </head>
 
     <body>
-        <div id="container" class="content">
-            <div id="content"> <!-- TODO: Cambiar clases content<->wrapper y todo lo que conlleva -->
+        <div id="container">
+            <div id="content" class="content"> <!-- TODO: Cambiar clases content<->wrapper y todo lo que conlleva -->
                 <!--<div class="box dragy">Hola</div>-->
                 <header>
                     <h1><a id="sitename" href="#"><?php print $title; ?></a></h1>
@@ -23,11 +23,11 @@
                 <div id="wrapper">
                     <!-- El contenido se ira añadiendo aqui mediante JSON -->
                 </div>
-                <nav id="toolbar">
-                    <?php print $menu_items; ?>
-                </nav>
             </div>
         </div>
+        <nav id="toolbar">
+                    <?php print $menu_items; ?>
+        </nav>
         <?php print $scripts; ?>
   </body>
 </html>
