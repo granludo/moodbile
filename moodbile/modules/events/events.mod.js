@@ -56,7 +56,7 @@ Moodbile.templates.events = function(json){
     $.each(json, function(i, json){
         var courseid = json.courseid;
         
-        $('#wrapper .events-'+courseid).append('<div class="event ' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a><div class="info collapsed"></div></div>');
+        $('#wrapper .events-'+courseid).append('<div class="event ' + json.id + ' fx"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a><div class="info collapsed"></div></div>');
         $('#wrapper .events-'+courseid).find('.'+json.id).find('.info').append('<span class="more visible"><a href="#" class="collapsible"><span class="icon-info"></span></a></span>');
         $('#wrapper .events-'+courseid).find('.'+json.id).find('.info').append('<div class="data">Fecha de entrega: <em>'+ json.enddata +'</em></div>');
         $('#wrapper .events-'+courseid).find('.'+json.id).find('.info').append('<div class="description">'+json.description+'</div>');

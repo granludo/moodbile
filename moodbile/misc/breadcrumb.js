@@ -1,94 +1,57 @@
-Moodbile.behaviorsPatterns.breadcrumb = function(context){
-    //Acciones cuando se usa el breadcrums
-    $('nav#breadcrumb li#level-1 a').live('click', function() {
-        var id = $(this).parent().parent().attr('class');
-        
-        if($('#wrapper').find('.frontpage-'+id).is('.frontpage-'+id)) {
-            $('section:visible').hide();
-            $('#wrapper .frontpage-'+id).show();
-            $('nav#breadcrumb li:gt(1)').remove();
-            $('nav#toolbar li a').parent().removeClass('active');
-        }
-        
-        return false;
-    });
-    $('nav#breadcrumb li#level-2 a').live('click', function() {
-        var id = $(this).parent().parent().attr('class');
-        
-        if($('#wrapper').find('.forums-'+id).is('.forums-'+id)) {
-            $('section:visible').hide();
-            $('#wrapper .forums-'+id).show();
-            $('nav#breadcrumb li:gt(2)').remove();
-            $('.posts').remove();
-            $('nav#toolbar li a').parent().removeClass('active');
-        }
-        
-        return false;
-    });
-    
-    $('nav#breadcrumb li#home a').live('click', function(){
-        var id = $(this).parent().attr('class');
-        
-        if($('#wrapper').find('.courses').is('.courses')) {
-            $('section:visible').hide();
-            $('section.courses').show();
-            $('nav#breadcrumb li:gt(0)').remove();
-            $('nav#toolbar li a').parent().removeClass('active');
-        }
-        
-        $('nav#breadcrumb li a').hide();
-        $('nav#toolbar').hide();
-        
-        return false;
-    });
-    
-    //Acciones cuando pulsamos tanto en el tol
-    $('.course .course-title').live('click', function(){
-       var id = $(this).parent().attr('id');
-       var item = $(this).text();
-       
-       //Añadimos nivel
-       $('nav#breadcrumb ul').append('<li id="level-1"><span><a href="#"></a></span></li>');
-       
-       $('nav#breadcrumb li a').show(); //defecto
-       $('nav#breadcrumb li#level-1').addClass(id);
-       $('nav#breadcrumb li#level-1 span a').text(item);
-       $('nav#breadcrumb li#level-1 span a').show();
-       $('nav#breadcrumb li#level-2 a').hide();
-    });
-    
-    $('.forum a').live('click', function(){
-       var id = $(this).parent().attr('id');
-       var item = $(this).text();
-       
-       //Añadimos nivel
-       $('nav#breadcrumb ul').append('<li id="level-3"><span><a href="#"></a></span></li>');
-       
-       $('nav#breadcrumb li a').show(); //defecto
-       $('nav#breadcrumb li#level-3').addClass(id);
-       $('nav#breadcrumb li#level-3 span a').text(item);
-       $('nav#breadcrumb li#level-3 span a').show();
-       $('nav#breadcrumb li#level-4 a').hide();
-    });
-    
-    $('nav#toolbar li a').live('click', function(){
-       var id = $(this).parent().attr('class');
-       var item = $(this).text();
-       //Borramos nivel 2
-       $('nav#breadcrumb li:gt(1)').remove();
-       
-       //Añadimos nivel
-       $('nav#breadcrumb ul').append('<li id="level-2"><span><a href="#"></a></span></li>');
+//TODO: Terminar de pulir
 
-       
-       $('nav#breadcrumb li#level-2').addClass(id);
-       $('nav#breadcrumb li#level-2 span a').text(item);
-       $('nav#breadcrumb li#level-2 a').show();
-       
+Moodbile.behaviorsPatterns.breadcrumb = function(context){
+    
+    //Acciones cuando se pulsa un link permitido
+    //level-1
+    $('.courses-links a').live('click', function(){
+        var courseid = $(this).parent().attr('id');
+        var item = $(this).text();
+        
+        if($('nav#breadcrumb li:eq(1)').is('#level-1') == false) {
+            $('nav#breadcrumb ul').append('<li id="level-1"><span><a href="#" class="'+courseid+'">'+item+'</a></span></li>');
+            $('nav#breadcrumb li a').show();
+        } else {
+            $('#level-1 a').text(item).removeClass().addClass(courseid).show();
+        }
+        
+        $('nav#breadcrumb').show();
     });
     
-    $('nav#toolbar li#courses a').live('click', function(){
-       $('nav#breadcrumb li a').hide();
-       $('nav#breadcrumb li:gt(0)').remove();
+    //level-2
+    $('nav#toolbar a').live('click', function() {
+        var item = $(this).text();
+        
+        if($(this).parent().is('#courses') == false) {
+            if($('nav#breadcrumb li:eq(2)').is('#level-2') == false) {
+                $('nav#breadcrumb ul').append('<li id="level-2"><span><a href="#">'+item+'</a></span></li>');
+                $('nav#breadcrumb li a').show();
+            } else {
+                $('#level-2 a').text(item).show();
+            }
+        } else {
+            $('nav#breadcrumb li:eq(2)').remove();
+            $('nav#breadcrumb').hide();
+        }
+    });
+    //TODO: Excepcion del foro
+    
+    //Acciones cuando se pulsa un link del breadcrumb
+    $('nav#breadcrumb li a').live('click', function(){
+        if($(this).parent().is('#home') == false){
+            if($(this).parent().is('#level-2') == false) { //Si no es de nivel 2, es de nivel 1
+                var courseid = $(this).attr('class');
+                
+                $('nav#breadcrumb li:eq(2)').remove();
+                $('section:visible').hide();
+                $('section.frontpage-'+courseid).show();
+            }
+        } else {
+            $('nav#breadcrumb').hide();
+            $('nav#breadcrumb li:eq(2)').remove();
+            $('nav#toolbar').hide();
+            $('section:visible').hide();
+            $('div.courses-links section').show();
+        }
     });
 }

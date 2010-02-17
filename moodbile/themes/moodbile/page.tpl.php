@@ -15,19 +15,22 @@
                 <!--<div class="box dragy">Hola</div>-->
                 <header>
                     <h1><a id="sitename" href="#"><?php print $title; ?></a></h1>
-                    <div class="avatar"></div>
+                    <button id="user-profile"></button>
                 </header>
                 <nav id="breadcrumb">
-                <?php print $breadcrumb; ?>
+                    <?php print $breadcrumb; ?>
                 </nav>
                 <div id="wrapper">
                     <!-- El contenido se ira añadiendo aqui mediante JSON -->
                 </div>
+                <footer>
+                    <?php print $footer; ?>
+                </footer>
+                <nav id="toolbar">
+                    <?php print $menu_items; ?>
+                </nav>
             </div>
         </div>
-        <nav id="toolbar">
-                    <?php print $menu_items; ?>
-        </nav>
         <?php print $scripts; ?>
   </body>
 </html>

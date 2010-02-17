@@ -1,7 +1,8 @@
 Moodbile.behaviorsPatterns.courses = function(context){
     var context = context || document;
     
-    $('#wrapper').append('<section class="courses"></section>');
+    $('#wrapper').append('<div class="courses-links"></div>');
+    $('#wrapper').find('.courses-links').append('<section class="courses"></section>');
     
     var op = "courses";
     Moodbile.json(context, 'courses', op, Moodbile.templates.courses);
@@ -26,7 +27,7 @@ Moodbile.behaviorsPatterns.courses = function(context){
     //funcion para el caso de pulsar el icono de navegacion
     $('nav#toolbar li#courses a').live('click', function(){
         $('section:visible').hide();
-        $('section.courses').show();
+        $('div.courses-links section').show();
         
         return false;
     });
@@ -34,7 +35,7 @@ Moodbile.behaviorsPatterns.courses = function(context){
 
 Moodbile.templates.courses = function(json) {
     $.each(json, function(i, json){
-        $('#wrapper .courses').append('<div id="' + json.id + '" class="course '+ json.format +' arrow"><a title="'+ json.title +'" href="#" class="course-title">' + json.title + '</a><div class="info collapsed"></div></div>');
+        $('#wrapper .courses-links').find('.courses').append('<div id="' + json.id + '" class="course '+ json.format +' arrow"><a title="'+ json.title +'" href="#" class="course-title">' + json.title + '</a><div class="info collapsed"></div></div>');
         $('#'+json.id).find('.info').append('<div class="more visible"><a href="#" class="collapsible"><span class="icon-info"/></a></div>');
         $('#'+json.id).find('.info').append('<div class="summary">'+json.summary+'</div>');
             
@@ -79,13 +80,13 @@ Moodbile.templates.frontpage = function(json){
 
 Moodbile.templates.frontpageResources = function(json){
     $.each(json, function(i, json){
-        $('#wrapper .frontpage-'+json.courseid).find('.'+json.resource.section).append('<div class="' + json.resource.id + '"><a href="#"><span class="icon-'+json.resource.type+'"></span>' + json.resource.title + '</a></div>');
+        $('#wrapper .frontpage-'+json.courseid).find('.'+json.resource.section).append('<div class="resource ' + json.resource.id + ' fx"><a href="#"><span class="icon-'+json.resource.type+'"></span>' + json.resource.title + '</a></div>');
     }); 
 }
 
 Moodbile.templates.frontpageEvents = function(json){
     $.each(json, function(i, json){
-        $('#wrapper .frontpage-'+json.courseid).find('.'+json.section).append('<div class="' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
+        $('#wrapper .frontpage-'+json.courseid).find('.'+json.section).append('<div class="event ' + json.id + ' fx"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
     });
 }
 

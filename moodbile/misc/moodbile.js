@@ -1,5 +1,6 @@
-var Moodbile = {'behaviorsPatterns': {}, 'aux': {}, 'templates': {}};
+var Moodbile = {'user': {}, 'behaviorsPatterns': {}, 'aux': {}, 'templates': {}};
 //Moodbile.behaviorsPatterns.helloword = function (){ alert('hello word'); };
+//Moodbile.wsurl = "http://basketpc.com/ind3x/ws.dum.php";
 Moodbile.wsurl = "dummie/ws.dum.php";
 Moodbile.lang = "es_ES";
 Moodbile.tStrings = null;
@@ -8,6 +9,16 @@ Moodbile.requestJson = [];
 Moodbile.queueJson = [];
 Moodbile.enroledCoursesid = []; //Array donde dentro se guardan los ids de los cursos del cual el usuario esta enrolado
 Moodbile.intervalDelay = 50;
+
+//PROVISIONAL
+Moodbile.user = {
+    'id' : 50,
+    'lastlogin' : '1265815958806',
+    'name' : 'Imanol',
+    'lastname' : 'Urra Ruiz',
+    'email0' : 'index02@gmail.com',
+    'avatar' : 'http://terrassatsc.upc.edu/user/pix.php/1809/f1.jpg'
+}
 
 //Funcion que ejecuta los comportamientos de los js de cada modulo
 Moodbile.attachBehaviors = function(context) {
@@ -41,7 +52,6 @@ Moodbile.json = function(context, requestName, op, callbackFunction) {
     } else {
         var newOp = "op="+op+"&";
     }
-    console.log(newOp);
     op = newOp;
     
     //console.log(Moodbile.json.arguments);
@@ -70,8 +80,11 @@ Moodbile.json = function(context, requestName, op, callbackFunction) {
 //Internacionalization
 //MEJORAR
 Moodbile.t = function(stringToTranslate) {
-    var string = Moodbile.i18n[stringToTranslate];
-    
+    if(Moodbile.i18n[stringToTranslate] != null) {
+        var string = Moodbile.i18n[stringToTranslate];
+    } else {
+        var string = "STRING!"
+    }
     return string;
 }
 
@@ -83,8 +96,8 @@ Moodbile.behaviorsPatterns.activeSection = function(context){
 }
 
 Moodbile.behaviorsPatterns.createLoadingBox = function(context){
-    $('#container').after('<div id="loading">'+Moodbile.t('Loading')+'...</div>');
-    $('#loading').hide();
+    $('#container').after('<div id="loading"><div>'+Moodbile.t('Loading')+'...</div></div>');
+    //$('#loading').hide();
     
     //TODO: Si en el iPhone surge el mismo efecto, seguir utilizando la funcion vieja
     /*$('#loading').ajaxSend(function() {
@@ -102,17 +115,37 @@ Moodbile.aux.loading = function(op) {
         $('#loading').hide();
     }
 }
-
-Moodbile.aux.infoViewer = function(title, type, info) {
-    $('#container').append('<section id="info-viewer"><header class="title"><button class="back fx"><span class="icon-back">back</span></button><h1>'+title+'</h1></header><div class="content '+ type+ '">'+ info +'</div></section>');
-    $('#info-viewer').height($(window).height()-10);
+Moodbile.behaviorsPatterns.infoViewer = function(){
+    $('#container').append('<section id="info-viewer"><header class="title"><button class="back"><span class="icon-back">'+Moodbile.t('Back')+'</span></button><h1></h1></header><div class="content"></div></section>');
+    $('#info-viewer').css({"min-height": $(window).height()-10+"px"}).hide();
     
     //Habilitamos el boton de regreso
     //TODO: Probar si los bottones son admitidos como clickables
     $('.back').live('click', function(){
-        $('#info-viewer').remove();
-        $('#content, #toolbar').show();
+        $('#info-viewer').hide();
+        $('#content').show();
+        
+        if ($('#wrapper').find('section:visible').is('.courses') === false){
+            $('#toolbar').show();
+        }
     });
+}
+
+Moodbile.aux.infoViewer = function(title, type, info) {
+    //Borramos clases anteriores
+    $('#info-viewer').find('.content').removeClass().addClass('content');
+    //Añadimos info
+    $('#info-viewer').find('.title').find('h1').text(title);
+    $('#info-viewer').find('.content').addClass(type).html(info);
+    
+    //Habilitamos el callback
+    if (Moodbile.aux.infoViewer.arguments[3] != null){
+        var callback = Moodbile.aux.infoViewer.arguments[3];
+        callback();
+    }
+    
+    //mostramos infoViewer
+    $('#info-viewer').show();   
 }
 
 Moodbile.behaviorsPatterns.collapsible = function() {
@@ -131,7 +164,7 @@ Moodbile.behaviorsPatterns.collapsible = function() {
     });
 }
 
-Moodbile.behaviorsPatterns.toolbar = function(context){
+Moodbile.behaviorsPatterns.toolbar = function(context){ //CAMBIAR NOMBRE de ID. DE #toolbar -> #navbar
     //hacemos desaparecer los menus indecesaios
     var menu_items = $('nav li').length-1;
     //alert(menu_items);
@@ -155,8 +188,23 @@ Moodbile.behaviorsPatterns.toolbar = function(context){
     
     $('nav#toolbar li#courses a, #sitename').live('click', function(){
         $('nav#toolbar').hide(); //ocultamos todas las opciones excepto el curso, que es el home
-        $('section:visible').hide();
+        $('div.courses-links section').show();
     });
+}
+
+Moodbile.behaviorsPatterns.toolbarAcomodation = function(context) {
+    var width = $('body').width();
+    var navWidth = $('nav#toolbar').width();
+    var menu_items = $('nav#toolbar li').length-1;
+    
+    /*if ((menu_items > 4) && (width <= navWidth)) { //Si es mayor a 4 el menu mayor a la pantalla del dispositivo, quiere decir que los items no entran en pantalla
+        var itemsReposition = $('nav#toolbar li:gt(3)').text();
+        //$.each(itemsReposition, function(i, itemsReposition){
+            //console.log(itemsReposition);
+        //});
+    }
+    
+    console.log(menu_items);*/
 }
 
 $(document).ready(function() { 

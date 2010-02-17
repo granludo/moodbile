@@ -94,7 +94,7 @@ switch ($_GET['op']) {
         
         break;
     
-    case "resources":
+    case "resources": //TODO: PONER TODO EN UN ARRAY (es decir, al estilo upcoming events)
         $resources = array(
                 0 => array(
                     "courseid" => 0,
@@ -103,6 +103,7 @@ switch ($_GET['op']) {
                             "title" => "Percepcio Audiovisual",
                             "type" => "pdf",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
+                            "lastmodification" => '1265902358806',
                             "section" => 11
                     )
                 ),
@@ -113,6 +114,7 @@ switch ($_GET['op']) {
                             "title" => "Recurso 1",
                             "type" => "doc",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
+                            "lastmodification" => '1265815958806',
                             "section" => 12
                     )
                 ),
@@ -123,6 +125,7 @@ switch ($_GET['op']) {
                             "title" => "Recurso 2",
                             "type" => "pps",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
+                            "lastmodification" => '1265815958806',
                             "section" => 13
                     )
                 ),
@@ -133,6 +136,7 @@ switch ($_GET['op']) {
                             "title" => "Percepcio Audiovisual",
                             "type" => "pdf",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
+                            "lastmodification" => '1265815958806',
                             "section" => 21
                     )
                 ),
@@ -142,6 +146,7 @@ switch ($_GET['op']) {
                             "id" => "1",
                             "title" => "Recurso 1",
                             "type" => "doc",
+                            "lastmodification" => '1265815958806',
                             "section" => 22
                     )
                 ),
@@ -151,6 +156,7 @@ switch ($_GET['op']) {
                             "id" => "2",
                             "title" => "Recurso 2",
                             "type" => "pps",
+                            "lastmodification" => '1265815958806',
                             "section" => 23
                     )
                 ),
@@ -161,6 +167,7 @@ switch ($_GET['op']) {
                             "title" => "Funciones ajax en Moodbile",
                             "type" => "pdf",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
+                            "lastmodification" => '1265815958806',
                             "section" => 31
                     )
                 ),
@@ -170,6 +177,7 @@ switch ($_GET['op']) {
                             "id" => "1",
                             "title" => "Breadcrumb en Moodbile",
                             "type" => "doc",
+                            "lastmodification" => '1265815958806',
                             "section" => 32
                     )
                 ),
@@ -179,6 +187,7 @@ switch ($_GET['op']) {
                             "id" => 2,
                             "title" => "¿Que es Moodbile?",
                             "type" => "pps",
+                            "lastmodification" => '1265902358806',
                             "section" => 33
                     )
                 )
@@ -331,21 +340,24 @@ switch ($_GET['op']) {
                     "id" => 0,
                     "forumid" => 0,
                     "title" => "¿Que es esto?",
+                    "userid" => 50,
                     "name" => "Imanol",
                     "lastname" => "Urra Ruiz",
                     "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
                     "msg" => "Esto es una aplicación web que usa los web services de moodle",
                     "replyes" => array(
                         3 => array( //la key sera la id post
-                            "id" => 3,
-                            "title" => "Re: ¿Que es esto?",
+                            "userid" => 3,
                             "author" => "Joan",
+                            "avatar" => "http://hongki.at/images/twitter_avatar/seeder_lab.jpg",
+                            "title" => "Re: ¿Que es esto?",
                             "msg" => "y en que esta basado?"
                         ),
                          4 => array( //la key sera la id post
-                            "id" => 4,
-                            "title" => "Re: ¿Que es esto?",
+                            "userid" => 4,
                             "author" => "Pepito",
+                            "avatar" => "http://hongki.at/images/twitter_avatar/seeder_lab.jpg",
+                            "title" => "Re: ¿Que es esto?",
                             "msg" => "PHP + JS(jQuery) + HTML5"
                         )
                     )
@@ -354,22 +366,25 @@ switch ($_GET['op']) {
                     "id" => 1,
                     "forumid" => 0,
                     "title" => "eBooks",
+                    "userid" => 50,
                     "name" => "Imanol",
                     "lastname" => "Urra Ruiz",
                     "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
                     "msg" => "eBooks es el nuevo gadget navideño",
                     "replyes" => array(
-                        3 => array( //la key sera la id post
-                            "id" => 3,
-                            "title" => "Re: ¿Que es esto?",
+                        0 => array(
+                            "userid" => 3,
                             "author" => "Joan",
-                            "msg" => "y que son los eBooks?"
+                            "avatar" => "http://a3.twimg.com/profile_images/65892457/avatar11197_2_bigger.gif",
+                            "title" => "Re: ¿Que es esto?",
+                            "msg" => "y en que esta basado?"
                         ),
-                         4 => array( //la key sera la id post
-                            "id" => 4,
-                            "title" => "Re: Re: ¿Que es esto?",
+                        1 => array(
+                            "userid" => 4,
                             "author" => "Pepito",
-                            "msg" => "Libros electronicos con tinta electronica"
+                            "avatar" => "http://a3.twimg.com/profile_images/65892457/avatar11197_2_bigger.gif",
+                            "title" => "Re: ¿Que es esto?",
+                            "msg" => "PHP + JS(jQuery) + HTML5"
                         )
                     )
                  ),
@@ -377,19 +392,20 @@ switch ($_GET['op']) {
                     "id" => 2,
                     "forumid" => 0,
                     "title" => "Post generico 1",
+                    "userid" => 50,
                     "name" => "Imanol",
                     "lastname" => "Urra Ruiz",
                     "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
                     "msg" => "Esto es una aplicacion web que usa los web services de moodle",
                     "replyes" => array(
                         3 => array( //la key sera la id post
-                            "id" => 3,
+                            "userid" => 3,
                             "title" => "Re: ¿Que es esto?",
                             "author" => "Joan",
                             "msg" => "y en que esta basado?"
                         ),
                          4 => array( //la key sera la id post
-                            "id" => 4,
+                            "userid" => 4,
                             "title" => "Re: ¿Que es esto?",
                             "author" => "Pepito",
                             "msg" => "PHP + JS(jQuery) + HTML5"
@@ -410,6 +426,7 @@ switch ($_GET['op']) {
                     "courseid" => 0,
                     "title" => "Entrega trabajo",
                     "enddata" => "01/10/2009",
+                    "lastmodification" => '1265902358806',
                     "type" => "asigment",
                     "description" => "Trabajo sobre Query-by-example",
                     "section" => 12
@@ -551,7 +568,7 @@ switch ($_GET['op']) {
                     1 => "Llenguatge i Sistemes Informatics",
                     2 => "Moodbile"
                 ),
-                "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f1.jpg",
+                "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
                 "roles" => "Estudent, Teacher",
             );
         }

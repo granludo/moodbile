@@ -75,13 +75,14 @@ Moodbile.templates.post = function(json) {
     $.each(json, function(i, json){
         var forumid = json.forumid;
 
-        $('.posts-'+forumid).append('<div class="post post-' + json.id + '"><div class="avatar"></div><div class="post-title"><a href="#">' + json.title + '</a></div><div class="replyes '+json.id+'"></div></div>');
+        $('.posts-'+forumid).append('<div class="post post-' + json.id + '"><div class="avatar"></div><div class="post-title fx"><a href="#">' + json.title + '</a></div><div class="replyes '+json.id+'"></div></div>');
         $('.posts-'+forumid).find('.avatar').css({'background-image' : 'url('+json.avatar+')'});
-        $('.posts-'+forumid).find('.replyes.'+json.id).append('<dialog><dt>'+ json.name +' '+ json.lastname +'</dt><dd class="msg-' + json.id + '">'+ json.msg +'</dd></dialog>');
+        $('.posts-'+forumid).find('.replyes.'+json.id).append('<dialog><dt><span class="avatar"></span>'+json.title+'<br /><a href="#" class="user '+json.userid+' fx">'+ json.name +' '+ json.lastname +'</a></dt><dd class="msg-' + json.id + '">'+ json.msg +'</dd></dialog>');
                     
         var reply = json.replyes;
         $.each(reply, function(i, reply){
-            $('.replyes.'+json.id).find('dialog').append('<dt>'+reply.author+'</dt><dd class="reply-' + reply.id + '">'+ reply.msg +'</dd>');
+            $('.replyes.'+json.id).find('dialog').append('<dt><span class="avatar"></span>'+reply.title+'<br /><a href="#" class="user '+reply.userid+' fx">'+reply.author+'</a></dt><dd>'+ reply.msg +'</dd>');
+            $('.replyes.'+json.id).find('dialog').find('.avatar').css({'background-image' : 'url('+reply.avatar+')'});
         });
     });
     $('.replyes:visible').hide();
@@ -89,16 +90,43 @@ Moodbile.templates.post = function(json) {
 
 Moodbile.behaviorsPatterns.replyes = function(){
     //Funcion para los replies
-    $('.post-title').find('a').live('click', function(){
+    $('.post-title a').live('click', function(){
             
         var postid = $(this).parent().parent().attr('class');
         postid = postid.split('-');
         postid = postid[1];
-                        
-        $('.replyes:visible').hide();
-        $('.replyes.'+postid).show();
+        
+        var postTitle = $(this).text();
+        var replybutton = '<button id="replyButton">'+Moodbile.t('Reply')+'</button><div id="replyPost" style="display:none;"><textarea id="textareaReply"/><button id="sendReply">'+Moodbile.t('Send')+'</button></div>';
+        var replyes = $(this).parent().parent().find('.replyes.'+postid).html();
+        
+        var content = replybutton+replyes;
+        
+        Moodbile.aux.infoViewer(postTitle, "post", content);
+        
+    });
+}
+Moodbile.behaviorsPatterns.sendReply = function(){
+    $('#replyButton').live('click', function(){ //Unicamente se realizara una vez.
+        $('#replyPost').toggle();
+        $('#replyPost').find('textarea').focus();
+        
+        return false;
+    });
             
-            
+    $('#sendReply').live('click', function(){
+
+        if($('#textareaReply').val() != "undefined") {
+            //Deshabilitaremos el botton para evitar envios inecesarios
+            $(this).attr("disabled","disabled").css({"opacity":"0.5"});
+                    
+            //Enviamos peticion, aqui aprovechare la funcion de peticiones, esta devolvera un estado: enviado/error...
+                    
+            //Añadiremos la respuesta junto a los otros, asi dara mejor sensacion de continuidad.
+            $('dialog').append('<dt><span class="avatar"></span>'+Moodbile.user.name+' '+Moodbile.user.lastname+'</dt><dd>'+$('#textareaReply').val()+'</dd>');
+            $('.dialog').find('.avatar').css({'background-image' : 'url('+Moodbile.user.avatar+')'});
+        }
+        
         return false;
     });
 }

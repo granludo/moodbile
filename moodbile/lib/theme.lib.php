@@ -25,7 +25,9 @@ function moodbile_process_theme_variables() {
     
     $menu_items = moodbile_render_menu(moodbile_get_menu_items());
     
-    $variables = array("title", "styles", "scripts", "menu_items", "breadcrumb");
+    $footer = "Developed by -- UPC"; //Provisional
+    
+    $variables = array("title", "styles", "scripts", "menu_items", "breadcrumb", "footer");
     $variables = compact($variables);
     
     return $variables;

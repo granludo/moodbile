@@ -58,11 +58,11 @@ Moodbile.templates.grade = function(json){
         var grades = json.grades;
         
         $('#wrapper .grade-'+ courseid).append('<section class="user-grades-'+json.id+'"></section>');
-        $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).append('<div class="avatar"></div><div class="arrow"><h6><a href="#" class="user '+json.id+'">'+json.name+' '+json.lastname+'</a></h6></div>');
+        $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).append('<div class="avatar"></div><div class="arrow"><h6><a href="#" class="user '+json.id+' fx">'+json.name+' '+json.lastname+'</a></h6></div>');
         $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).find('.avatar').css({'background-image' : 'url('+json.avatar+')'});
         
         $.each(grades, function(i, grades){
-            $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).append('<div class="grade ' + grades.id + '"><a href="#"><span class="icon-'+grades.type+'"></span>' + grades.title + '</a><div class="info collapsed"></div></div>');
+            $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).append('<div class="grade ' + grades.id + '"><a href="#" class="fx"><span class="icon-'+grades.type+'"></span>' + grades.title + '</a><div class="info collapsed"></div></div>');
             $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).find('.' + grades.id).find('.info').append('<span class="more visible"><a href="#" class="collapsible"><span class="icon-info"></span></a></span>');
             $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).find('.' + grades.id).find('.info').append('<div class="data">Calificación: <em>'+ grades.grade +'</em></div>');
             $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).find('.' + grades.id).find('.info').append('<div class="description">'+ grades.description +'</div>');
