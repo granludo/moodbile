@@ -4,8 +4,8 @@ Moodbile.behaviorsPatterns.courses = function(context){
     $('#wrapper').append('<div class="courses-links"></div>');
     $('#wrapper').find('.courses-links').append('<section class="courses"></section>');
     
-    var op = "courses";
-    Moodbile.json(context, 'courses', op, Moodbile.templates.courses);
+    var petitionOpts = {"op":"courses"};
+    Moodbile.json(context,  petitionOpts, Moodbile.templates.courses);
     
     //Es necesario esperar un tiempo hasta que se complete el request inicial para 
     var loadFrontpage = setInterval(function(){

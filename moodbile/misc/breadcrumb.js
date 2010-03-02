@@ -1,6 +1,8 @@
 //TODO: Terminar de pulir
 
 Moodbile.behaviorsPatterns.breadcrumb = function(context){
+    //Preparando breadcrumb
+    $('nav#breadcrumb').hide();
     
     //Acciones cuando se pulsa un link permitido
     //level-1
@@ -23,6 +25,7 @@ Moodbile.behaviorsPatterns.breadcrumb = function(context){
         var item = $(this).text();
         
         if($(this).parent().is('#courses') == false) {
+            alert('false');
             if($('nav#breadcrumb li:eq(2)').is('#level-2') == false) {
                 $('nav#breadcrumb ul').append('<li id="level-2"><span><a href="#">'+item+'</a></span></li>');
                 $('nav#breadcrumb li a').show();
@@ -30,6 +33,7 @@ Moodbile.behaviorsPatterns.breadcrumb = function(context){
                 $('#level-2 a').text(item).show();
             }
         } else {
+            alert('ok');
             $('nav#breadcrumb li:eq(2)').remove();
             $('nav#breadcrumb').hide();
         }

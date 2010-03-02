@@ -20,11 +20,9 @@ Moodbile.behaviorsPatterns.eventViewMoreInfo = function(context){
         
         var title = $(this).text();
         
-        var op = [];
-        op["op"] = "event";
-        op["eventid"] = id;
+        var petitionOpts = {'op':'event', 'eventid': id};
         
-        Moodbile.json(context, "event", op, function(json){
+        Moodbile.json(context, petitionOpts, function(json){
             var content = json.description;
             Moodbile.aux.infoViewer(title, "event", content);
         });
@@ -37,9 +35,8 @@ Moodbile.aux.events = function(context, courseids) {
         $('.events-'+ this).hide();
     });
     
-    var requestName = 'events';
-    var op = 'events';
-    Moodbile.json(context, requestName, op, Moodbile.templates.events);
+    var petitionOpts = {'op':'events'};
+    Moodbile.json(context, petitionOpts, Moodbile.templates.events);
 }
 
 Moodbile.templates.events = function(json){

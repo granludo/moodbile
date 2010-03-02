@@ -6,11 +6,8 @@ Moodbile.behaviorsPatterns.getUserProfile = function(context){
         userid = userid.split(' ');
         userid = userid[1];
         
-        var op = [];
-        op["op"] = "profile"
-        op["userid"] = userid;
-        
-        Moodbile.json(context, op["op"], op, Moodbile.templates.userProfile);
+        var petitionOpts = {'op':'profile', 'userid': userid};
+        Moodbile.json(context, petitionOpts, Moodbile.templates.userProfile);
     });
 }
 
@@ -52,9 +49,8 @@ Moodbile.aux.users = function(context, courseids) {
         $('.users-'+ this).hide();
     });
     
-    var requestName = 'users';
-    var op = 'users';
-    Moodbile.json(context, requestName, op, Moodbile.templates.users);
+    var petitionOpts = {'op':'users'}
+    Moodbile.json(context, petitionOpts, Moodbile.templates.users);
     Moodbile.aux.addUserFilterEvents();
 }
 

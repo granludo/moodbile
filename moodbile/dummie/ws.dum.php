@@ -88,7 +88,7 @@ switch ($_GET['op']) {
                 )
             );
         
-            $json = $_GET["jsoncallback"] . "(" . json_encode($courses) . ")"; //JSONP
+            $json = $_GET["callback"] . "(" . json_encode($courses) . ")"; //JSONP
         
             echo $json;
         
@@ -193,7 +193,7 @@ switch ($_GET['op']) {
                 )
         );
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($resources) . ")"; //JSONP
+        $json = $_GET["callback"] . "(" . json_encode($resources) . ")"; //JSONP
         
         echo $json;
         break;
@@ -273,7 +273,7 @@ switch ($_GET['op']) {
                 )
         );
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($grades) . ")"; //JSONP
+        $json = $_GET["callback"] . "(" . json_encode($grades) . ")"; //JSONP
         
         echo $json;
         break;
@@ -299,7 +299,7 @@ switch ($_GET['op']) {
             );
         }
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($grade) . ")"; //JSONP
+        $json = $_GET["callback"] . "(" . json_encode($grade) . ")"; //JSONP
         
         echo $json;
         break;
@@ -329,7 +329,7 @@ switch ($_GET['op']) {
                  )
         );
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($forums) . ")"; //JSONP
+        $json = $_GET["callback"] . "(" . json_encode($forums) . ")"; //JSONP
         
         echo $json;
         break;
@@ -414,7 +414,7 @@ switch ($_GET['op']) {
                  )
         );
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($posts) . ")"; //JSONP
+        $json = $_GET["callback"] . "(" . json_encode($posts) . ")"; //JSONP
         
         echo $json;
         break;
@@ -451,7 +451,7 @@ switch ($_GET['op']) {
                 )
         );
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($users) . ")"; //JSONP
+        $json = $_GET["callback"] . "(" . json_encode($users) . ")"; //JSONP
         
         echo $json;
         break;
@@ -569,7 +569,7 @@ switch ($_GET['op']) {
                 )
         );
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($upcomingevents) . ")"; //JSONP
+        $json = $_GET["callback"] . "(" . json_encode($upcomingevents) . ")"; //JSONP
         
         echo $json;
         break;
@@ -587,7 +587,7 @@ switch ($_GET['op']) {
             );
         }
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($event) . ")"; //JSONP
+        $json = $_GET["callback"] . "(" . json_encode($event) . ")"; //JSONP
         
         echo $json;
         break;
@@ -626,7 +626,7 @@ switch ($_GET['op']) {
             );
         }
         
-        $json = $_GET["jsoncallback"] . "(" . json_encode($user) . ")"; //JSONP
+        $json = $_GET["callback"] . "(" . json_encode($user) . ")"; //JSONP
         
         echo $json;
         break;

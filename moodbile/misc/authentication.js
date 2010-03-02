@@ -2,7 +2,7 @@
 //funcion que enviara la peticion ajax al servidor
 Moodbile.login = function (user, pass) {
     //Existe cookie? se envia peticion ajax en caso afirmativo...
-        //Enviamos ajax GET
+        //Enviamos ajax GET (o POST?)
             //Comprobar el json que nos devuelve:
                 //Si existe mensage, error, usuario no existe o mal introducido
                 //Si no existe mensaje, significa que se ha logeado
@@ -68,7 +68,6 @@ Moodbile.aux.ajaxLogin = function(user, pass, callbackFunction){
         data: {user: user, pass: pass},
         dataType: 'jsonp',
         success: function(userData) {
-            //alert('Load was performed.');
             if(!userData.msg) {
                 Moodbile.user = {
                     'id' : userData.id,
@@ -122,7 +121,7 @@ Moodbile.behaviorsPatterns.authentication = function(context){
     //Si no esta logeado
         //Mostramos la pantalla de logeo.
         
-    if(Moodbile.isLoged() == true) {
+    if(Moodbile.isLoged()) {
         var cookie = $.readCookie('Moodbile');
         var user = $.evalJSON(cookie).user;
         var pass = $.evalJSON(cookie).pass;

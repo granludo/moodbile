@@ -19,13 +19,11 @@ Moodbile.behaviorsPatterns.gradeViewMoreInfo = function(context){
         
         var title = $(this).text();
         
-        var op = [];
-        op["op"] = "grade";
-        op["gradeid"] = id;
+        var petitionOpts = {'op':'grade', 'gradeid':id};
         
-        Moodbile.json(context, op["op"], op, function(json){
+        Moodbile.json(context, petitionOpts, function(json){
             var content = json.title;
-            Moodbile.aux.infoViewer(title, "grade", content);
+            Moodbile.aux.infoViewer(title, petitionOpts.op, content);
         });
     });
 }
@@ -36,9 +34,8 @@ Moodbile.aux.grade = function(context, courseids) {
         $('.grade-'+ this).hide();
     });
     
-    var requestName = 'grades';
-    var op = "grades";
-    Moodbile.json(context, requestName, op, Moodbile.templates.grade);
+    var petitionOpts = {'op':'grades'};
+    Moodbile.json(context, petitionOpts, Moodbile.templates.grade);
 }
 
 Moodbile.templates.grade = function(json){

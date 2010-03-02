@@ -17,9 +17,8 @@ Moodbile.aux.resources = function(context, ids){
         $('.resources-'+this).hide();
     });
     
-    var requestName = 'resources';
-    var op = "resources";
-    var petition = Moodbile.json(context, requestName, op, Moodbile.templates.resources);
+    var petitionOpts = {'op':'resources'}
+    var petition = Moodbile.json(context, petitionOpts, Moodbile.templates.resources);
 }
 
 Moodbile.templates.resources = function(json){
