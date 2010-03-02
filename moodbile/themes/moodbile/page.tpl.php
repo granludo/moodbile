@@ -15,7 +15,6 @@
                 <!--<div class="box dragy">Hola</div>-->
                 <header>
                     <h1><a id="sitename" href="#"><?php print $title; ?></a></h1>
-                    <button id="user-profile"></button>
                 </header>
                 <nav id="breadcrumb">
                     <?php print $breadcrumb; ?>
@@ -26,10 +25,10 @@
                 <footer>
                     <?php print $footer; ?>
                 </footer>
-                <nav id="toolbar">
-                    <?php print $menu_items; ?>
-                </nav>
             </div>
+            <nav id="toolbar">
+                    <?php print $menu_items; ?>
+            </nav>
         </div>
         <?php print $scripts; ?>
   </body>

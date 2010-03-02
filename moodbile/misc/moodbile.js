@@ -2,6 +2,7 @@ var Moodbile = {'user': {}, 'behaviorsPatterns': {}, 'aux': {}, 'templates': {}}
 //Moodbile.behaviorsPatterns.helloword = function (){ alert('hello word'); };
 //Moodbile.wsurl = "http://basketpc.com/ind3x/ws.dum.php";
 Moodbile.wsurl = "dummie/ws.dum.php";
+Moodbile.location =  location.href;
 Moodbile.lang = "es_ES";
 Moodbile.tStrings = null;
 Moodbile.currentJson = null;
@@ -9,16 +10,7 @@ Moodbile.requestJson = [];
 Moodbile.queueJson = [];
 Moodbile.enroledCoursesid = []; //Array donde dentro se guardan los ids de los cursos del cual el usuario esta enrolado
 Moodbile.intervalDelay = 50;
-
-//PROVISIONAL
-Moodbile.user = {
-    'id' : 50,
-    'lastlogin' : '1265815958806',
-    'name' : 'Imanol',
-    'lastname' : 'Urra Ruiz',
-    'email0' : 'index02@gmail.com',
-    'avatar' : 'http://terrassatsc.upc.edu/user/pix.php/1809/f1.jpg'
-}
+Moodbile.user = null;
 
 //Funcion que ejecuta los comportamientos de los js de cada modulo
 Moodbile.attachBehaviors = function(context) {
@@ -97,15 +89,6 @@ Moodbile.behaviorsPatterns.activeSection = function(context){
 
 Moodbile.behaviorsPatterns.createLoadingBox = function(context){
     $('#container').after('<div id="loading"><div>'+Moodbile.t('Loading')+'...</div></div>');
-    //$('#loading').hide();
-    
-    //TODO: Si en el iPhone surge el mismo efecto, seguir utilizando la funcion vieja
-    /*$('#loading').ajaxSend(function() {
-        $(this).show();
-    });
-    $('#loading').ajaxSuccess(function() {
-        $(this).hide();
-    });*/
 }
 
 Moodbile.aux.loading = function(op) {
@@ -124,10 +107,6 @@ Moodbile.behaviorsPatterns.infoViewer = function(){
     $('.back').live('click', function(){
         $('#info-viewer').hide();
         $('#content').show();
-        
-        if ($('#wrapper').find('section:visible').is('.courses') === false){
-            $('#toolbar').show();
-        }
     });
 }
 
@@ -167,44 +146,93 @@ Moodbile.behaviorsPatterns.collapsible = function() {
 Moodbile.behaviorsPatterns.toolbar = function(context){ //CAMBIAR NOMBRE de ID. DE #toolbar -> #navbar
     //hacemos desaparecer los menus indecesaios
     var menu_items = $('nav li').length-1;
-    //alert(menu_items);
     
     $('nav#toolbar').css('display', 'none'); //ocultamos todas barra de navegacion
-    //$('nav li:eq(0)').show();
 
     //una vez pulsamos el curso
     $('.course a').live('click', function(){
         var id = $(this).parent().attr('id');
         var nav = $('nav#toolbar li');
         
-        $.each(nav, function(i, nav){
-               var item = $('nav#toolbar li:eq('+i+')').attr('id');
+        $.each(nav, function(){
+               //var item = $('nav#toolbar li:eq('+i+')').attr('id');
                
-               $('nav#toolbar li:eq('+i+')').removeClass(); //borramos las clases que hagan referencia al contenido que queremos ver
-               $('nav#toolbar li:eq('+i+')').addClass(id);
+               $(this).removeClass(); //borramos las clases que hagan referencia al contenido que queremos ver
+               $(this).addClass(id);
                $('nav#toolbar').show();
         });
+        
+        if($('nav#toolbar li:last-child').is('#more')){
+            $('section.toolbar-more div').removeClass(); //borramos las clases que hagan referencia al contenido que queremos ver
+            $('section.toolbar-more div').addClass(id);
+        }
     });
     
-    $('nav#toolbar li#courses a, #sitename').live('click', function(){
+    $('nav#toolbar li#courses a').live('click', function(){
         $('nav#toolbar').hide(); //ocultamos todas las opciones excepto el curso, que es el home
         $('div.courses-links section').show();
     });
 }
 
+Moodbile.behaviorsPatterns.toolbarEvents = function(context){
+    var context = context || document;
+    
+    $('nav#toolbar li:not(:first-child) a, .toolbar-more div a').live('click', function(){
+        var menuitem = $(this).parent().attr('id');
+        var courseid = $(this).parent().attr('class');
+        courseid = courseid.split(' ');
+        courseid = courseid[0];
+        
+        $('#wrapper').children().hide();
+        if(menuitem != "more"){
+            $('.'+ menuitem +'-'+courseid).show().children().show();
+        } else {
+            $('.toolbar-more').show();
+        }
+        
+        return false; 
+    });
+    
+    $('nav#toolbar li#courses a').live('click', function(){
+        $('#wrapper').children().hide();
+        $('div.courses-links').show();
+        
+        return false;
+    });
+}
+
 Moodbile.behaviorsPatterns.toolbarAcomodation = function(context) {
     var width = $('body').width();
-    var navWidth = $('nav#toolbar').width();
-    var menu_items = $('nav#toolbar li').length-1;
+    var menuItems = $('nav#toolbar li').length-1;
     
-    /*if ((menu_items > 4) && (width <= navWidth)) { //Si es mayor a 4 el menu mayor a la pantalla del dispositivo, quiere decir que los items no entran en pantalla
-        var itemsReposition = $('nav#toolbar li:gt(3)').text();
-        //$.each(itemsReposition, function(i, itemsReposition){
-            //console.log(itemsReposition);
-        //});
+    //Mejorar estos calculos
+    var itemsWidth = $('nav#toolbar li').css('width').indexOf('px');
+    var itemsMargin = $('nav#toolbar li').css('marginLeft').indexOf('px');
+    var itemsPadding = $('nav#toolbar li').css('paddingLeft').indexOf('px');
+    itemsWidth = $('nav#toolbar li').css('width').slice(0, itemsWidth);
+    itemsMargin = $('nav#toolbar li').css('marginLeft').slice(0, itemsMargin);
+    itemsPadding = $('nav#toolbar li').css('paddingLeft').slice(0, itemsPadding);
+    var itemsWidth = eval(itemsWidth) + (eval(itemsMargin) + eval(itemsPadding))*2;
+    var maxItems = (Math.round(width/itemsWidth))-1;
+    
+    if(menuItems > maxItems){
+        $('#wrapper').append('<section class="toolbar-more"></section>').find('.toolbar-more').hide();
+        
+        maxItems -= 1;
+        var itemsToChange = $('nav#toolbar li:gt('+ maxItems +')');
+        
+        $.each(itemsToChange, function(){
+            var linkTitle = $(this).text();
+            var itemid = $(this).attr('id');
+            
+            $('.toolbar-more').append('<div id="'+ itemid +'"><a href="#" class="arrow"><span></span>'+ linkTitle +'</a></div>');
+        });
+        
+        maxItems += 1;
+        $('nav#toolbar li:gt('+ maxItems +')').remove();
+        $('nav#toolbar li:eq('+ maxItems +')').removeAttr('id').attr('id','more').find('a').text(Moodbile.t('More'));
     }
     
-    console.log(menu_items);*/
 }
 
 $(document).ready(function() { 

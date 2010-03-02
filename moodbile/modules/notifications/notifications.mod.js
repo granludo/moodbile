@@ -11,7 +11,7 @@ Moodbile.behaviorsPatterns.notifications = function(context){
     }, Moodbile.intervalDelay);
     
     $('#wrapper').find('.courses').before('<section class="notifications-links"><div class="arrow"><a href="#">'+ Moodbile.t('Notifications') +'</a><span class="notification-num"></span></div></section>');
-    $('.notification-num').hide();
+    $('.notification-num').addClass('loading');
     
     $('.notifications-links a').live('click', function(){
                 
@@ -19,6 +19,19 @@ Moodbile.behaviorsPatterns.notifications = function(context){
         $('.notifications, .notifications section').show();
         
         return false;
+    });
+    
+    $('.notifications section a').live('click', function(){
+        if($(this).is('.clicked') == false) {
+            Moodbile.notificationsNum -= 1;
+            
+            if (Moodbile.notificationsNum < 1) {
+                $('.notification-num').hide();
+            }
+            
+            $('.notification-num').text(Moodbile.notificationsNum);
+            $(this).addClass('clicked');
+        }
     });
 }
 
@@ -39,7 +52,7 @@ Moodbile.aux.notifications = function(context){
             Moodbile.templates.NotificationsEvents(Moodbile.requestJson.events, userLastlogin);
             //Moodbile.templates.NotificationsForums(Moodbile.requestJson.forums, userLastlogin);
             
-            $('.notification-num').text(Moodbile.notificationsNum).show();
+            $('.notification-num').text(Moodbile.notificationsNum).removeClass('loading').addClass('loaded').show();
             //$('.notifications-links').show();
         }
     }, Moodbile.intervalDelay);
@@ -52,7 +65,9 @@ Moodbile.templates.NotificationsResources = function(json, userLastlogin){
         var lastmodification = json.resource.lastmodification; 
         
         if(lastmodification > userLastlogin){
-            $('#wrapper .notifications').find('.notification-resources').append('<div class="resource ' + json.resource.id + '"><a href="#"><span class="icon-'+json.resource.type+'"></span>' + json.resource.title + '</a></div>');
+            var coursename = $('.courses div#'+json.courseid+' a').text();
+            
+            $('#wrapper .notifications').find('.notification-resources').append('<div class="resource ' + json.resource.id + '"><a href="#"><span class="icon-'+json.resource.type+'"></span>' + json.resource.title + '</a><div class="description">' + coursename + '</div></div>');
             
             Moodbile.notificationsNum += 1;
         }
@@ -66,7 +81,9 @@ Moodbile.templates.NotificationsEvents = function(json, userLastlogin){
         var lastmodification = json.lastmodification; 
         
         if(lastmodification > userLastlogin){
-            $('#wrapper .notifications').find('.notification-events').append('<div class="event ' + json.id + ' fx"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
+            var coursename = $('.courses div#'+json.courseid+' a').text();
+        
+            $('#wrapper .notifications').find('.notification-events').append('<div class="event ' + json.id + ' fx"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a><div class="description">' + coursename + '</div></div>');
             
             Moodbile.notificationsNum += 1;
         }
@@ -80,7 +97,9 @@ Moodbile.templates.NotificationsForums = function(json, userLastlogin){
         var lastmodification = json.resource.lastmodification; 
         
         if(lastmodification > userLastlogin){
-            $('#wrapper .notifications').find('.notification-forum').append('<div class="forum ' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a></div>');
+            var coursename = $('.courses div#'+json.courseid+' a').text();
+        
+            $('#wrapper .notifications').find('.notification-forum').append('<div class="forum ' + json.id + '"><a href="#"><span class="icon-'+json.type+'"></span>' + json.title + '</a><div class="description">' + coursename + '</div></div>');
         }
     });
 }

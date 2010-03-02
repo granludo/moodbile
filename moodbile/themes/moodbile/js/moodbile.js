@@ -3,11 +3,10 @@ Moodbile.behaviorsPatterns.theme = function(context) {
     var windowHeight = $(window).height();
     $('#container').height(windowHeight);
     
-    $('#user-profile').addClass('fx');
-    
     $('.fx').live('click', function(){
         $('#info-viewer').flick();
         Moodbile.aux.animation(true);
+        $('#user-options').hide();
         return false;
     });
     $('.back').live('click', function(){
@@ -23,11 +22,11 @@ Moodbile.behaviorsPatterns.theme = function(context) {
 Moodbile.aux.animation = function(op){
         if(op == true) {
             if(Moodbile.currentJson === null) {
-                if ($('#wrapper section:visible').is('.courses') == false){
+                if (($('#wrapper section:visible').is('.courses') == false) && ($('#wrapper section:visible').parent().is('.notifications') == false)){
                     $('#toolbar').show().animate({ marginBottom:"-50px"}, 250);
                 }
                 $('#content').show().animate({ marginLeft:"-320px"}, 250, function(){
-                    //$(this).hide();
+                    $(this).hide();
                     $('#info-viewer').show().animate({ marginLeft:"5px"}, 250);
                 });
             } else {
@@ -42,8 +41,12 @@ Moodbile.aux.animation = function(op){
             $('#info-viewer').show().animate( { marginLeft:"320px"}, 250, function(){
                 $(this).hide();
                 $('#content').show().animate( { marginLeft:"0"}, 250);
-                if ($('#wrapper').find('section:visible').is('.courses') === false){
+                
+                if (($('#wrapper section:visible').is('.courses') == false) && ($('#wrapper section:visible').parent().is('.notifications') == false)){
+                    
                     $('#toolbar').show().animate({ marginBottom:"0"}, 250);
+                } else {
+                    $('#toolbar').hide().css({"margin-bottom":"0"});
                 }
             });
         }

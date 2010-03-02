@@ -23,14 +23,6 @@ Moodbile.behaviorsPatterns.courses = function(context){
         
         return false;
     });
-    
-    //funcion para el caso de pulsar el icono de navegacion
-    $('nav#toolbar li#courses a').live('click', function(){
-        $('section:visible').hide();
-        $('div.courses-links section').show();
-        
-        return false;
-    });
 }
 
 Moodbile.templates.courses = function(json) {
@@ -60,7 +52,7 @@ Moodbile.aux.frontpage = function(context, ids){
             Moodbile.templates.frontpageEvents(Moodbile.requestJson.events);
             Moodbile.templates.frontpageForums(Moodbile.requestJson.forums);
         }
-    }, 500);
+    }, Moodbile.intervalDelay);
 }
 
 Moodbile.templates.frontpage = function(json){

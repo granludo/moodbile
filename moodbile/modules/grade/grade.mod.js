@@ -6,20 +6,9 @@ Moodbile.behaviorsPatterns.grade = function(context){
             Moodbile.aux.grade(context, Moodbile.enroledCoursesid); 
             clearInterval(loadInterval);
         }
-    }, Moodbile.intervalDelay);
-    
-    $('nav#toolbar li#grade').live('click', function(){
-        var id = $(this).attr('class');
-        id = id.split(' ');
-        id = id[0];
-        
-        $('section:visible').hide();
-        $('.grade-'+id).show();
-        $('.grade-'+id).find('section').show();
-        
-        return false;
-    });
+    }, Moodbile.intervalDelay);    
 }
+
 Moodbile.behaviorsPatterns.gradeViewMoreInfo = function(context){
     var context = context || document;
     
@@ -34,9 +23,9 @@ Moodbile.behaviorsPatterns.gradeViewMoreInfo = function(context){
         op["op"] = "grade";
         op["gradeid"] = id;
         
-        Moodbile.json(context, "grade", op, function(json){
+        Moodbile.json(context, op["op"], op, function(json){
             var content = json.title;
-            Moodbile.aux.infoViewer(title, "event", content);
+            Moodbile.aux.infoViewer(title, "grade", content);
         });
     });
 }
@@ -58,7 +47,7 @@ Moodbile.templates.grade = function(json){
         var grades = json.grades;
         
         $('#wrapper .grade-'+ courseid).append('<section class="user-grades-'+json.id+'"></section>');
-        $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).append('<div class="avatar"></div><div class="arrow"><h6><a href="#" class="user '+json.id+' fx">'+json.name+' '+json.lastname+'</a></h6></div>');
+        $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).append('<span class="avatar"></span><div class="arrow"><h6><a href="#" class="user '+json.id+' fx">'+json.name+' '+json.lastname+'</a></h6></div>');
         $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).find('.avatar').css({'background-image' : 'url('+json.avatar+')'});
         
         $.each(grades, function(i, grades){

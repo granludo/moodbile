@@ -57,15 +57,21 @@ function moodbile_get_client_scripts() {
     
     //client scripts
     $js[] = 'misc/jquery/jquery.js';
+    $js[] = 'misc/jquery/jquery.cooquery.min.js';
+    $js[] = 'misc/jquery/jquery.json.min.js';
+    $js[] = 'misc/jquery/jquery.md5.js';
     $js[] = 'misc/moodbile.js';
     $js[] = 'misc/breadcrumb.js';
+    $js[] = 'misc/authentication.js';
     
     //module scripts
-    foreach($active_modules as $module) {
-        $module_files = moodbile_get_module($module);
-        $file = array_intersect($module_files, array($module .'.mod.js'));
-        $key = array_keys($file);
-        $js[] = 'modules/'. $module .'/'.$file[$key[0]];
+    if(moodbile_is_loged()) {
+        foreach($active_modules as $module) {
+            $module_files = moodbile_get_module($module);
+            $file = array_intersect($module_files, array($module .'.mod.js'));
+            $key = array_keys($file);
+            $js[] = 'modules/'. $module .'/'.$file[$key[0]];
+        }
     }
     
     //theme scripts

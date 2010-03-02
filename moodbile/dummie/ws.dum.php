@@ -253,7 +253,7 @@ switch ($_GET['op']) {
                     "id" => 10, //id del usuario
                     "name" => "Marc",
                     "lastname" => "Alier",
-                    "avatar" => "http://a1.twimg.com/profile_images/311190482/ludo_cartoon_suny_bigger.jpg",
+                    "avatar" => "http://a3.twimg.com/profile_images/669231243/ludo-potachovizado_bigger.jpg",
                     "grades" => array(
                         0 => array(
                             'id' => '23',
@@ -419,6 +419,43 @@ switch ($_GET['op']) {
         echo $json;
         break;
 
+    case "users":
+        $users = array(
+                0 => array(
+                    "courseid" => 0,
+                    "id" => 50,
+                    "name" => "Imanol",
+                    "lastname" => "Urra Ruiz",
+                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg"
+                ),
+                1 => array(
+                    "courseid" => 0,
+                    "id" => 10,
+                    "name" => "Marc",
+                    "lastname" => "Alier",
+                    "avatar" => "http://a3.twimg.com/profile_images/669231243/ludo-potachovizado_bigger.jpg"
+                ),
+                2 => array(
+                    "courseid" => 0,
+                    "id" => 30,
+                    "name" => "Aritz",
+                    "lastname" => "Tusell Garcia",
+                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg"
+                ),
+                3 => array(
+                    "courseid" => 0,
+                    "id" => 20,
+                    "name" => "Josep",
+                    "lastname" => "Guillen",
+                    "avatar" => "http://a3.twimg.com/profile_images/669231243/ludo-potachovizado_bigger.jpg"
+                )
+        );
+        
+        $json = $_GET["jsoncallback"] . "(" . json_encode($users) . ")"; //JSONP
+        
+        echo $json;
+        break;
+    
     case "events":
         $upcomingevents = array(
                 0 => array(
@@ -584,7 +621,7 @@ switch ($_GET['op']) {
                     1 => "Llenguatge i Sistemes Informatics",
                     2 => "Moodbile"
                 ),
-                "avatar" => "http://a1.twimg.com/profile_images/311190482/ludo_cartoon_suny_bigger.jpg",
+                "avatar" => "http://a3.twimg.com/profile_images/669231243/ludo-potachovizado_bigger.jpg",
                 "roles" => "Teacher",
             );
         }

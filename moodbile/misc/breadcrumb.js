@@ -19,7 +19,7 @@ Moodbile.behaviorsPatterns.breadcrumb = function(context){
     });
     
     //level-2
-    $('nav#toolbar a').live('click', function() {
+    $('nav#toolbar li a, .toolbar-more div a').live('click', function() {
         var item = $(this).text();
         
         if($(this).parent().is('#courses') == false) {
@@ -42,6 +42,7 @@ Moodbile.behaviorsPatterns.breadcrumb = function(context){
             if($(this).parent().is('#level-2') == false) { //Si no es de nivel 2, es de nivel 1
                 var courseid = $(this).attr('class');
                 
+                $('nav#toolbar').find('.active').removeClass('active');
                 $('nav#breadcrumb li:eq(2)').remove();
                 $('section:visible').hide();
                 $('section.frontpage-'+courseid).show();
@@ -50,8 +51,10 @@ Moodbile.behaviorsPatterns.breadcrumb = function(context){
             $('nav#breadcrumb').hide();
             $('nav#breadcrumb li:eq(2)').remove();
             $('nav#toolbar').hide();
-            $('section:visible').hide();
-            $('div.courses-links section').show();
+            $('#wrapper').children().hide();
+            $('div.courses-links, div.courses-links section').show();
         }
+        
+        return false;
     });
 }

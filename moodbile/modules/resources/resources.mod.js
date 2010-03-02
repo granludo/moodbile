@@ -9,18 +9,6 @@ Moodbile.behaviorsPatterns.resources = function(context){
             clearInterval(loadInterval);
         }
     }, Moodbile.intervalDelay);
-    
-    //una vez pulsamos el curso
-    $('nav#toolbar li#resources a').live('click', function(){
-        var id = $(this).parent().attr('class');
-        id = id.split(' ');
-        id = id[0];
-        
-        $('section:visible').hide();
-        $('.resources-'+id).show();
-        
-        return false;
-    });
 }
 
 Moodbile.aux.resources = function(context, ids){

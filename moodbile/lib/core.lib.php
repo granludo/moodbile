@@ -31,23 +31,26 @@ function moodbile_load_libs($exception = 'core'){
 function moodbile_include_modules(){
     global $CFG;
     
-    $basepath = $CFG['basepath'];
-    $active_modules = $CFG['active_modules'];
+    //TODO: Mejorarlo
+    if(moodbile_is_loged()) {
+        $basepath = $CFG['basepath'];
+        $active_modules = $CFG['active_modules'];
     
-    foreach($active_modules as $module) {
-        //Comprueba si existe el modulo activado (PHP), si es asi, incluye los archivos con necesarios
-        //TODO: Mejorarlo.
-        $module_files = moodbile_get_module($module);
-        $file = array_intersect($module_files, array($module .'.mod.php'));
+        foreach($active_modules as $module) {
+            //Comprueba si existe el modulo activado (PHP), si es asi, incluye los archivos con necesarios
+            //TODO: Mejorarlo.
+                $module_files = moodbile_get_module($module);
+                $file = array_intersect($module_files, array($module .'.mod.php'));
         
-        //_debug($file);
+            //_debug($file);
         
-        if(!empty($file)) {
-            $key = array_keys($file); //Mira el indice del array
+            if(!empty($file)) {
+                $key = array_keys($file); //Mira el indice del array
             
-            if(file_exists('modules/'. $module .'/'. $file[$key[0]])) {
-                include('modules/'. $module .'/'. $file[$key[0]]);
-            }  
+                if(file_exists('modules/'. $module .'/'. $file[$key[0]])) {
+                    include('modules/'. $module .'/'. $file[$key[0]]);
+                }  
+            }
         }
     }
 }

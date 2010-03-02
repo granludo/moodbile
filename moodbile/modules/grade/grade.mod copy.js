@@ -1,68 +1,71 @@
 Moodbile.behaviorsPatterns.grade = function(context){
-    setTimeout(function(){
-        Moodbile.aux.grade(context, Moodbile.enroledCoursesid);
-    }, 700);
+    var context = context || document;
     
-    $('nav#toolbar li#grade').live('click', function(){
+    var loadInterval = setInterval(function(){
+        if(Moodbile.enroledCoursesid.length > 0) {
+            Moodbile.aux.grade(context, Moodbile.enroledCoursesid); 
+            clearInterval(loadInterval);
+        }
+    }, Moodbile.intervalDelay);
+    
+    /*$('nav#toolbar li#grade a').live('click', function(){
         var id = $(this).attr('class');
         id = id.split(' ');
         id = id[0];
         
-        //alert(id);
-        
         $('section:visible').hide();
+        $('.grade-'+id).show();
+        $('.grade-'+id).find('section').show();
         
-        //Toca comprobar si existe o no la seccion de recursos de un id dado
-        /*if($('#wrapper').find('.grade-'+id).is('.grade-'+id)) {
+        return false;
+    });*/
+}
+Moodbile.behaviorsPatterns.gradeViewMoreInfo = function(context){
+    var context = context || document;
+    
+    $('.grade a').live('click', function(){
+        var id = $(this).parent().attr('class');
+        id = id.split(' ');
+        id = id[1];
         
-            $('#wrapper .grade-'+id).show();
+        var title = $(this).text();
         
-        } else {
+        var op = [];
+        op["op"] = "grade";
+        op["gradeid"] = id;
         
-            //$(this).addClass('loaded');
-            $('#wrapper').append('<section class="grade-'+id+'"></section>');
-            $('.grade-'+id).hide();
-            Moodbile.aux.loading(true);
-            
-            $.getJSON("dummie/ws.dum.php?jsoncallback=grade", {op: 2}, grade = function(json){
-                $.each(json, function(i, json){
-                    //$('#wrapper .resources-'+id).append('<div class="' + json.id + '">' + json.title + '</div>');
-
-                    var grades = json.grades;
-                    $.each(grades, function(i, grades){
-                        $('#wrapper .grade-'+id).append('<div class="' + grades.id + '"><a href="#"><span class="icon-'+grades.type+'"></span>' + grades.title + '</a><div class="info collapsed"></div></div>');
-                        $('#wrapper .grade-'+id).find('.' + grades.id).find('.info').append('<span class="more visible"><a href="#" class="collapsible"><span class="icon-info"></span></a></span>');
-                        $('#wrapper .grade-'+id).find('.' + grades.id).find('.info').append('<div class="data">Calificación: <em>'+ grades.grade +'</em></div>');
-                        $('#wrapper .grade-'+id).find('.' + grades.id).find('.info').append('<div class="description">'+ grades.description +'</div>');
-                    });
-                });
-                $('.grade-'+id).show();
-                Moodbile.aux.loading(false);        
-            });   
-        }*/
-    return false;
+        Moodbile.json(context, "grade", op, function(json){
+            var content = json.title;
+            Moodbile.aux.infoViewer(title, "event", content);
+        });
     });
 }
 
 Moodbile.aux.grade = function(context, courseids) {
     $.each(courseids, function(){
-        $('#wrapper').append('<section class="grade-'+ this +'"></section>');
+        $('#wrapper').append('<div class="grade-'+ this +'"></div>');
         $('.grade-'+ this).hide();
     });
     
-    var op = 6;
-    Moodbile.jsonRequest(context, op, Moodbile.templates.grade);
+    var requestName = 'grades';
+    var op = "grades";
+    Moodbile.json(context, requestName, op, Moodbile.templates.grade);
 }
 
 Moodbile.templates.grade = function(json){
     $.each(json, function(i, json){
-    //$('#wrapper .resources-'+id).append('<div class="' + json.id + '">' + json.title + '</div>');
+        var courseid = json.courseid;
         var grades = json.grades;
+        
+        $('#wrapper .grade-'+ courseid).append('<section class="user-grades-'+json.id+'"></section>');
+        $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).append('<div class="avatar"></div><div class="arrow"><h6><a href="#" class="user '+json.id+' fx">'+json.name+' '+json.lastname+'</a></h6></div>');
+        $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).find('.avatar').css({'background-image' : 'url('+json.avatar+')'});
+        
         $.each(grades, function(i, grades){
-            $('#wrapper .grade-'+id).append('<div class="' + grades.id + '"><a href="#"><span class="icon-'+grades.type+'"></span>' + grades.title + '</a><div class="info collapsed"></div></div>');
-            $('#wrapper .grade-'+id).find('.' + grades.id).find('.info').append('<span class="more visible"><a href="#" class="collapsible"><span class="icon-info"></span></a></span>');
-            $('#wrapper .grade-'+id).find('.' + grades.id).find('.info').append('<div class="data">Calificación: <em>'+ grades.grade +'</em></div>');
-            $('#wrapper .grade-'+id).find('.' + grades.id).find('.info').append('<div class="description">'+ grades.description +'</div>');
+            $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).append('<div class="grade ' + grades.id + '"><a href="#" class="fx"><span class="icon-'+grades.type+'"></span>' + grades.title + '</a><div class="info collapsed"></div></div>');
+            $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).find('.' + grades.id).find('.info').append('<span class="more visible"><a href="#" class="collapsible"><span class="icon-info"></span></a></span>');
+            $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).find('.' + grades.id).find('.info').append('<div class="data">Calificación: <em>'+ grades.grade +'</em></div>');
+            $('#wrapper .grade-'+ courseid).find('.user-grades-'+json.id).find('.' + grades.id).find('.info').append('<div class="description">'+ grades.description +'</div>');
         });
     });
 }

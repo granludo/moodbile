@@ -7,17 +7,7 @@ Moodbile.behaviorsPatterns.events = function(context){
             clearInterval(loadInterval);
         }
     }, Moodbile.intervalDelay);
-    
-    $('nav#toolbar li#events').live('click', function(){
-        var id = $(this).attr('class');
-        id = id.split(' ');
-        id = id[0];
-        
-        $('section:visible').hide();
-        $('.events-'+id).show();
-        
-        return false;   
-    });
+
 }
 
 Moodbile.behaviorsPatterns.eventViewMoreInfo = function(context){

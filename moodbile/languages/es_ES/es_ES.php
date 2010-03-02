@@ -10,6 +10,12 @@ $string['Forums'] = 'Foros';
 $string['Grades'] = 'Calificaciones';
 $string['Profile'] = 'Perfil';
 $string['Notifications'] = 'Notificaciones';
+$string['Participants'] = 'Participantes';
+$string['More'] = 'Mas...';
+$string['Login'] = 'Acceder';
+$string['Logout'] = 'Salir';
+$string['Username'] = 'Usuario';
+$string['Password'] = 'Contraseña';
 
 //$string['thischarset'] = 'iso-8859-1';
 //$string['locale'] = 'en';
