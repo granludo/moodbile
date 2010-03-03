@@ -42,7 +42,7 @@ Moodbile.login = function (user, pass) {
         }
         
         //AJAX
-        Moodbile.aux.ajaxLogin(user, pass, userTemplate);
+        Moodbile.ajaxLogin(user, pass, userTemplate);
         
     } else {
         //Misma peticion ajax que en if, esta vez para chequear si la contraseña es valida
@@ -56,16 +56,16 @@ Moodbile.login = function (user, pass) {
             window.location = Moodbile.location;
         }
         
-        Moodbile.aux.ajaxLogin(user, pass, callback);
+        Moodbile.ajaxLogin(user, pass, callback);
     }
 }
 
-Moodbile.aux.ajaxLogin = function(user, pass, callbackFunction){
-    var callback = Moodbile.aux.ajaxLogin.arguments[2];
+Moodbile.ajaxLogin = function(user, pass, callbackFunction){
+    var callback = Moodbile.ajaxLogin.arguments[2];
 
     $.ajax({
         url: 'dummie/auth.dum.php',
-        data: {user: user, pass: pass},
+        data: {wsusername: user, wspassword: pass},
         dataType: 'jsonp',
         success: function(userData) {
             if(!userData.msg) {

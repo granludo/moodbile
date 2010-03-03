@@ -1,4 +1,4 @@
-<?
+<?php
 $string['Loading'] = 'Cargando';
 $string['Reply'] = 'Responder';
 $string['Send'] = 'Enviar';

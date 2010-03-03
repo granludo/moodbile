@@ -6,7 +6,7 @@ Moodbile.behaviorsPatterns.getUserProfile = function(context){
         userid = userid.split(' ');
         userid = userid[1];
         
-        var petitionOpts = {'op':'profile', 'userid': userid};
+        var petitionOpts = {'wsfunction':'profile', 'userid': userid};
         Moodbile.json(context, petitionOpts, Moodbile.templates.userProfile);
     });
 }
@@ -49,7 +49,7 @@ Moodbile.aux.users = function(context, courseids) {
         $('.users-'+ this).hide();
     });
     
-    var petitionOpts = {'op':'users'}
+    var petitionOpts = {'wsfunction':'users'}
     Moodbile.json(context, petitionOpts, Moodbile.templates.users);
     Moodbile.aux.addUserFilterEvents();
 }

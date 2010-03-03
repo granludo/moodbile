@@ -1,4 +1,5 @@
-<? 
+<?php
+
 global $CFG;
 $CFG['sitename'] = "Moodbile";
 $CFG['basepath'] = dirname(__DIR__);

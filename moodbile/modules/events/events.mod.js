@@ -20,7 +20,7 @@ Moodbile.behaviorsPatterns.eventViewMoreInfo = function(context){
         
         var title = $(this).text();
         
-        var petitionOpts = {'op':'event', 'eventid': id};
+        var petitionOpts = {'wsfunction':'event', 'eventid': id};
         
         Moodbile.json(context, petitionOpts, function(json){
             var content = json.description;
@@ -35,7 +35,7 @@ Moodbile.aux.events = function(context, courseids) {
         $('.events-'+ this).hide();
     });
     
-    var petitionOpts = {'op':'events'};
+    var petitionOpts = {'wsfunction':'events'};
     Moodbile.json(context, petitionOpts, Moodbile.templates.events);
 }
 

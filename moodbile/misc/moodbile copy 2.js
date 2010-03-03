@@ -1,5 +1,5 @@
 var Moodbile = {'user': {}, 'behaviorsPatterns': {}, 'aux': {}, 'templates': {}};
-
+//Moodbile.behaviorsPatterns.helloword = function (){ alert('hello word'); };
 //Moodbile.wsurl = "http://basketpc.com/ind3x/ws.dum.php";
 Moodbile.wsurl = "dummie/ws.dum.php";
 Moodbile.location =  location.href;
@@ -32,49 +32,41 @@ Como funcionan las peticiones JSON en Moodbile:
         3.3. Se indica que la peticion actual ha terminado <- Indispensable??????
         3.4. Se indica que la peticion de la cola realizada ha terminado.
 */
-Moodbile.json = function(context, op, callbackFunction) {
-    var context = context || document;
+Moodbile.json = function(context, requestName, op, callbackFunction) {
+    Moodbile.requestJson[requestName] = null; //Definimos que es null
     
-    //Definimos null, la variable donde se almacenara la peticion.
-    Moodbile.requestJson[op.wsfunction] = null; //Definimos que es null
-    
-    //Añadimos user y password a la opcion de peticion
-        //TODO: Que pigui lo confirme.
-    var cookie = $.readCookie('Moodbile');
-    if (cookie) {
-        op.wsusername = $.evalJSON(cookie).user;
-        op.wspassword = $.evalJSON(cookie).pass;
+    //Ahora, comprobare si la variable op, tiene consigo mas de una opcion, si es asi, montamos variables a pedir
+    if($.isArray(op) == true){
+        var newOp = "";
+        for(key in op) {
+            newOp += key+"="+op[key]+"&";
+        }
+    } else {
+        var newOp = "op="+op+"&";
     }
+    op = newOp;
     
-    //Añadimos peticion en cola.
+    //console.log(Moodbile.json.arguments);
     var currentQueueKey = Moodbile.queueJson.length;
     Moodbile.queueJson[currentQueueKey] = op;
     
-    //Iniciamos intervalo que permitira evitar, el colapso de las peticiones.
+    Moodbile.aux.loading(true);
     var initRequest = setInterval(function() {
         if(currentQueueKey == 0 || Moodbile.queueJson[currentQueueKey-1] == null) {
             //console.log('toRequestKey -> '+currentKey);
-            Moodbile.currentJson = $.ajax({
-                url: Moodbile.wsurl,
-                data: Moodbile.queueJson[currentQueueKey],
-                dataType: 'jsonp',
-                success: function(json) {
-                    
-                    Moodbile.requestJson[op.wsfunction] = json;
-                    Moodbile.currentJson = null;
-                    Moodbile.queueJson[currentQueueKey] = null;
+            Moodbile.currentJson = $.getJSON(Moodbile.wsurl +'?'+Moodbile.queueJson[currentQueueKey]+'jsoncallback=?', function(json){
+                Moodbile.requestJson[requestName] = json;
+                Moodbile.currentJson = null;
+                Moodbile.queueJson[currentQueueKey] = null;
+                Moodbile.aux.loading(false);
                 
-                    callbackFunction(json);
-                    
-                },
-                error: function() {
-                    alert('oops!');
-                } 
+                callbackFunction(json);
+                //console.log('currentKeyRequest -> '+ Moodbile.queueJson[currentKey]);
             });
-            
+            //Moodbile.currentJson.onerror = function() {alert('ok')}
             clearInterval(initRequest);//comprobar si la cola es 0, en tal caso, detener el intervalo
         }
-    }, Moodbile.intervalDelay);    
+    }, Moodbile.intervalDelay);
 }
 
 //Internacionalization
@@ -97,21 +89,21 @@ Moodbile.behaviorsPatterns.activeSection = function(context){
 
 Moodbile.behaviorsPatterns.createLoadingBox = function(context){
     $('#container').after('<div id="loading"><div>'+Moodbile.t('Loading')+'...</div></div>');
-    
-    //habilitar acciones para su uso.
-    $('#loading').ajaxSend(function() {
-        $(this).show();
-    });
-    $('#loading').ajaxSuccess(function() {
-        $(this).hide();
-    });
 }
 
+Moodbile.aux.loading = function(op) {
+    if(op == true) {
+        $('#loading').show();
+    } else {
+        $('#loading').hide();
+    }
+}
 Moodbile.behaviorsPatterns.infoViewer = function(){
     $('#container').append('<section id="info-viewer"><header class="title"><button class="back"><span class="icon-back">'+Moodbile.t('Back')+'</span></button><h1></h1></header><div class="content"></div></section>');
     $('#info-viewer').css({"min-height": $(window).height()-10+"px"}).hide();
     
     //Habilitamos el boton de regreso
+    //TODO: Probar si los bottones son admitidos como clickables
     $('.back').live('click', function(){
         $('#info-viewer').hide();
         $('#content').show();
@@ -121,7 +113,6 @@ Moodbile.behaviorsPatterns.infoViewer = function(){
 Moodbile.aux.infoViewer = function(title, type, info) {
     //Borramos clases anteriores
     $('#info-viewer').find('.content').removeClass().addClass('content');
-    
     //Añadimos info
     $('#info-viewer').find('.title').find('h1').text(title);
     $('#info-viewer').find('.content').addClass(type).html(info);
@@ -199,13 +190,12 @@ Moodbile.behaviorsPatterns.toolbarEvents = function(context){
             $('.toolbar-more').show();
         }
         
-        return false;
+        return false; 
     });
     
     $('nav#toolbar li#courses a').live('click', function(){
         $('#wrapper').children().hide();
         $('div.courses-links').show();
-        $('nav#breadcrumb').hide();
         
         return false;
     });

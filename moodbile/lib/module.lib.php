@@ -1,4 +1,4 @@
-<?
+<?php
 /*  Get Module, include selectec module
  *
  *  @param $module,string: Module name

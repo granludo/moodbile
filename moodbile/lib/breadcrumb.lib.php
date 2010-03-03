@@ -1,4 +1,4 @@
-<?
+<?php
 function moodbile_render_breadcrumb(){
     
     $output = '<ul>';

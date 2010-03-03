@@ -1,6 +1,6 @@
-<?
-    if($_GET['user'] && $_GET['pass']) {
-        if(strtolower($_GET['user']) == 'demo' && $_GET['pass'] == md5('123456')){
+<?php
+    if($_GET['wsusername'] && $_GET['wspassword']) {
+        if(strtolower($_GET['wsusername']) == 'demo' && $_GET['wspassword'] == md5('123456')){
             $user = array(
                 'id' => 50,
                 'lastlogin' => '1265815958806',

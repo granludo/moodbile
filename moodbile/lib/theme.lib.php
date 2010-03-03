@@ -1,4 +1,4 @@
-<?
+<?php
 
 //funcion que incluye las plantillas al index.php
 function moodbile_get_template($theme = "moodbile") {
@@ -63,6 +63,7 @@ function moodbile_get_client_scripts() {
     $js[] = 'misc/moodbile.js';
     $js[] = 'misc/breadcrumb.js';
     $js[] = 'misc/authentication.js';
+    $js[] = 'misc/webdb.js';
     
     //module scripts
     if(moodbile_is_loged()) {

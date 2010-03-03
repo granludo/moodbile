@@ -16,7 +16,7 @@ Moodbile.aux.forums = function(context, courseids) {
         $('.forums-'+ this).hide();
     });
     
-    var petitionOpts = {'op':'forums'};
+    var petitionOpts = {'wsfunction':'forums'};
     Moodbile.json(context, petitionOpts, Moodbile.templates.forums);
 }
 
@@ -45,7 +45,7 @@ Moodbile.behaviorsPatterns.posts = function(context){
             $('#wrapper').append('<section class="posts posts-'+forumid+'"></section>');
             $('.posts-'+forumid).hide();
                 
-            var petitionOpts = {'op':'posts'};
+            var petitionOpts = {'wsfunction':'posts'};
             Moodbile.json(context, petitionOpts, Moodbile.templates.post);
             
             $('.posts-'+forumid).show();

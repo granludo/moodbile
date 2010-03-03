@@ -1,4 +1,4 @@
-<?
+<?php
 //funcion encargada de incluir el idioma preestablecido para el cliente
 //TODO: Que la funcion incluia tambien el idioma por defecto
 function moodbile_i18n(){

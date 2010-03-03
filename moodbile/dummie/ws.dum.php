@@ -1,5 +1,5 @@
-<?
-switch ($_GET['op']) {
+<?php
+switch ($_GET['wsfunction']) {
     case "courses":
             $courses = array(
                 0 => array(

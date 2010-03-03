@@ -19,7 +19,7 @@ Moodbile.behaviorsPatterns.gradeViewMoreInfo = function(context){
         
         var title = $(this).text();
         
-        var petitionOpts = {'op':'grade', 'gradeid':id};
+        var petitionOpts = {'wsfunction':'grade', 'gradeid':id};
         
         Moodbile.json(context, petitionOpts, function(json){
             var content = json.title;
@@ -34,7 +34,7 @@ Moodbile.aux.grade = function(context, courseids) {
         $('.grade-'+ this).hide();
     });
     
-    var petitionOpts = {'op':'grades'};
+    var petitionOpts = {'wsfunction':'grades'};
     Moodbile.json(context, petitionOpts, Moodbile.templates.grade);
 }
 

@@ -1,4 +1,4 @@
-<?
+<?php
 
 function moodbile_get_menu_items() {
     global $CFG;
