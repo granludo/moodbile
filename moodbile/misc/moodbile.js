@@ -10,6 +10,9 @@ Moodbile.requestJson = [];
 Moodbile.queueJson = [];
 Moodbile.enroledCoursesid = []; //Array donde dentro se guardan los ids de los cursos del cual el usuario esta enrolado
 Moodbile.intervalDelay = 50;
+Moodbile.actualDate = new Date();
+Moodbile.requestJsonExpireTime = 5;//in minutes
+Moodbile.needReload = true;
 Moodbile.user = null;
 
 //Funcion que ejecuta los comportamientos de los js de cada modulo
@@ -35,46 +38,76 @@ Como funcionan las peticiones JSON en Moodbile:
 Moodbile.json = function(context, op, callbackFunction) {
     var context = context || document;
     
+    //init variables
     //Definimos null, la variable donde se almacenara la peticion.
-    Moodbile.requestJson[op.wsfunction] = null; //Definimos que es null
+    Moodbile.requestJson[op.wsfunction] = null;
+    //Creamos una tabla para las peticiones
+    Moodbile.webdb.createTable('requestJSON', {'requestName':'TEXT','JSON':'TEXT', 'date':'DATETIME', 'userid':'INTEGER' });
     
-    //Añadimos user y password a la opcion de peticion
-        //TODO: Que pigui lo confirme.
+    
+    
+        //Añadimos user y password a la opcion de peticion
     var cookie = $.readCookie('Moodbile');
     if (cookie) {
         op.wsusername = $.evalJSON(cookie).user;
         op.wspassword = $.evalJSON(cookie).pass;
     }
     
-    //Añadimos peticion en cola.
+        //Añadimos peticion en cola.
     var currentQueueKey = Moodbile.queueJson.length;
     Moodbile.queueJson[currentQueueKey] = op;
     
-    //Iniciamos intervalo que permitira evitar, el colapso de las peticiones.
-    var initRequest = setInterval(function() {
-        if(currentQueueKey == 0 || Moodbile.queueJson[currentQueueKey-1] == null) {
-            //console.log('toRequestKey -> '+currentKey);
-            Moodbile.currentJson = $.ajax({
-                url: Moodbile.wsurl,
-                data: Moodbile.queueJson[currentQueueKey],
-                dataType: 'jsonp',
-                success: function(json) {
+    //Llamamos a la funcion que chequea si hace falta hacer un reload
+    //console.log(Moodbile.needReload.toString());
+    if(Moodbile.needReload) { //Moodbile.webdb.needReload('requestJSON')
+        //Iniciamos intervalo que permitira evitar, el colapso de las peticiones.
+        var initRequest = setInterval(function() {
+            if(currentQueueKey == 0 || Moodbile.queueJson[currentQueueKey-1] == null) {
+                //console.log('toRequestKey -> '+currentKey);
+                Moodbile.currentJson = $.ajax({
+                    type: "POST",
+                    url: Moodbile.wsurl,
+                    data: {'request':$.toJSON(Moodbile.queueJson[currentQueueKey])},
+                    dataType: 'jsonp',
+                    success: function(json) {
+                        //TODO: Añadir un if para comprobar si hay o no respuesta
                     
-                    Moodbile.requestJson[op.wsfunction] = json;
-                    Moodbile.currentJson = null;
-                    Moodbile.queueJson[currentQueueKey] = null;
+                        Moodbile.requestJson[Moodbile.queueJson[currentQueueKey].wsfunction] = json;
+                    
+                        Moodbile.webdb.deleteValues('requestJSON', {'userid': Moodbile.user.id, 'requestName': Moodbile.queueJson[currentQueueKey].wsfunction});
+                        Moodbile.webdb.addValues('requestJSON', {'requestName': Moodbile.queueJson[currentQueueKey].wsfunction, 'JSON': $.toJSON(json), 'date': Date.parse(Moodbile.actualDate), 'userid': Moodbile.user.id });
+                   
+                        Moodbile.currentJson = null;
+                        Moodbile.queueJson[currentQueueKey] = null;
                 
-                    callbackFunction(json);
+                        callbackFunction(json);
                     
-                },
-                error: function() {
-                    alert('oops!');
-                } 
-            });
+                    },
+                    error: function() {
+                        alert('oops!');
+                    } 
+                });
             
-            clearInterval(initRequest);//comprobar si la cola es 0, en tal caso, detener el intervalo
+                clearInterval(initRequest);//comprobar si la cola es 0, en tal caso, detener el intervalo
+            }
+        }, Moodbile.intervalDelay);
+    } else {
+        var loadData = function(tx, rs) {
+            var requestName = Moodbile.queueJson[currentQueueKey].wsfunction;
+            //alert(requestName);
+            
+            //TODO: Mejorar esto. Crear function para recoger informacion en concreto (para asi evitar el each).
+            for (var i=0; i < rs.rows.length; i++) {
+                if (rs.rows.item(i).requestName == requestName) {
+                    Moodbile.requestJson[requestName] = $.evalJSON(rs.rows.item(i).JSON);
+                    //alert(rs.rows.item(i).JSON.toString());
+                    
+                    callbackFunction($.evalJSON(rs.rows.item(i).JSON));
+                }
+            }
         }
-    }, Moodbile.intervalDelay);    
+        Moodbile.webdb.getAllValues('requestJSON', loadData);
+    }
 }
 
 //Internacionalization
@@ -83,7 +116,7 @@ Moodbile.t = function(stringToTranslate) {
     if(Moodbile.i18n[stringToTranslate] != null) {
         var string = Moodbile.i18n[stringToTranslate];
     } else {
-        var string = "STRING!"
+        var string = "STRING!";
     }
     return string;
 }

@@ -1,6 +1,7 @@
 <?php
-    if($_GET['wsusername'] && $_GET['wspassword']) {
-        if(strtolower($_GET['wsusername']) == 'demo' && $_GET['wspassword'] == md5('123456')){
+    $request = json_decode($_POST['request'], TRUE);
+    if($request['wsusername'] && $request['wspassword']) {
+        if(strtolower($request['wsusername']) == 'demo' && $request['wspassword'] == 123456){
             $user = array(
                 'id' => 50,
                 'lastlogin' => '1265815958806',
@@ -15,6 +16,6 @@
             );
         }
         
-        $json = $_GET["callback"] . "(" . json_encode($user) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($user) . ")"; //JSONP
         echo $json;
     }

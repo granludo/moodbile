@@ -26,6 +26,8 @@ Moodbile.webdb.onSuccess = function(tx, r) {
 Moodbile.webdb.isCompatible = function(){
     if (typeof openDatabase != "undefined"){
         return true;
+    } else {
+        return false;
     }
 }
 
@@ -72,7 +74,7 @@ Moodbile.webdb.addValues = function(tableName, values) {
 }
 
 //Deleting data from a table
-Moodbile.webdb.deleteValue = function(tableName, id) {
+Moodbile.webdb.deleteValueByID = function(tableName, id) {
     if(Moodbile.webdb.isCompatible()) {
         Moodbile.webdb.db.transaction(function(tx) {
             tx.executeSql("DELETE FROM "+tableName+" WHERE ID=?", [id], Moodbile.webdb.onSuccess, Moodbile.webdb.onError);
@@ -80,19 +82,70 @@ Moodbile.webdb.deleteValue = function(tableName, id) {
     }
 }
 
+Moodbile.webdb.deleteValues = function(tableName, opts) {
+    if(Moodbile.webdb.isCompatible()) {
+        var valuesToDelete = [];
+        var optsSQL = "";
+        
+        for(field in opts) {
+            if(optsSQL == "") {
+                optsSQL += ''+field+'=?';
+            } else {
+                optsSQL += 'AND '+field+'=?';
+            }
+        
+            valuesToDelete.push(opts[field]);
+        }
+    
+        Moodbile.webdb.db.transaction(function(tx) {
+            tx.executeSql("DELETE FROM "+tableName+" WHERE "+optsSQL+"", valuesToDelete, Moodbile.webdb.onSuccess, Moodbile.webdb.onError);
+        });
+    }
+}
+
 //Selecting data from a table
-Moodbile.webdb.getAllValues = function(tableName, renderFunc) {
+Moodbile.webdb.getAllValues = function(tableName, callback) {
     Moodbile.webdb.db.transaction(function(tx) {
-        tx.executeSql("SELECT "+tableName+" FROM todo", [], renderFunc, Moodbile.webdb.onError);
+        tx.executeSql("SELECT * FROM "+tableName+"", [], callback, Moodbile.webdb.onError);
   });
+}
+
+Moodbile.webdb.isEmpty = function(tableName) {
+    Moodbile.DBisEmpty = false;
+    var callback = function(tx, rs) {
+        if(rs.rows.length === 0) {
+            //alert(rs.rows.item(1));
+            Moodbile.DBisEmpty = true;
+        }
+    }
+    Moodbile.webdb.getAllValues(tableName, callback);
+    
+    return Moodbile.DBisEmpty;
+}
+
+Moodbile.webdb.needReload = function(tableName) {
+    var cookie = $.readCookie('Moodbile');
+    if(Moodbile.webdb.isCompatible() && cookie) {
+        var timeToCheck = Moodbile.requestJsonExpireTime * 60 * 1000; //minutos a milisegundos
+        var actualDate = new Date();
+        if(Date.parse(Moodbile.actualDate) <= $.evalJSON(cookie).lastDataLoaded+timeToCheck) { //Si es menor, no hace falta reload
+            alert($.evalJSON(cookie).lastDataLoaded+timeToCheck-Date.parse(Moodbile.actualDate));
+            Moodbile.needReload = false;
+        } else {
+            var userInfo = $.toJSON({'user': $.evalJSON(cookie).user,'pass': $.evalJSON(cookie).pass, 'lastDataLoaded': Date.parse(Moodbile.actualDate)});
+            reWriteCookie = $.setCookie('Moodbile', userInfo, {
+                duration: 1 // in days
+            });
+        }
+    } else {
+        Moodbile.needReload = true;
+    }
+    
+    return Moodbile.needReload;
 }
 
 //Loading Implementation
 Moodbile.behaviorsPatterns.webdb = function (context) {
     Moodbile.webdb.open();
-    Moodbile.webdb.createTable('test', {'celda1':'TEXT', 'celda2':'DATETIME'});
-    
-    var date = new Date();
-    Moodbile.webdb.addValues('test', {'celda1':'testing', 'celda2': Date.parse(date)});
-    Moodbile.webdb.deleteValue('test', 3);
+    Moodbile.webdb.needReload('requestJSON');
 }

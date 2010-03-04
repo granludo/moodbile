@@ -47,7 +47,7 @@ Moodbile.login = function (user, pass) {
     } else {
         //Misma peticion ajax que en if, esta vez para chequear si la contraseña es valida
         var callback = function () {
-            var userInfo = $.toJSON({'user': user,'pass': pass});
+            var userInfo = $.toJSON({'user': user,'pass': pass, 'lastDataLoaded': Date.parse(Moodbile.actualDate)});
         
             cookie = $.setCookie('Moodbile', userInfo, {
                 duration: 1 // in days
@@ -60,12 +60,13 @@ Moodbile.login = function (user, pass) {
     }
 }
 
-Moodbile.ajaxLogin = function(user, pass, callbackFunction){
+Moodbile.ajaxLogin = function(user, pass){
     var callback = Moodbile.ajaxLogin.arguments[2];
 
     $.ajax({
+        type: "POST",
         url: 'dummie/auth.dum.php',
-        data: {wsusername: user, wspassword: pass},
+        data: {'request':$.toJSON({wsusername: user, wspassword: pass})},
         dataType: 'jsonp',
         success: function(userData) {
             if(!userData.msg) {
@@ -179,7 +180,7 @@ Moodbile.aux.authentication = function () {
             
             //if check is true, login
             if(formCheck) {
-                Moodbile.login(user, $.md5(pass));
+                Moodbile.login(user, pass);
             }
         }
         return false; 

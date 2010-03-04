@@ -1,5 +1,6 @@
 <?php
-switch ($_GET['wsfunction']) {
+$request = json_decode($_POST['request'], TRUE);
+switch ($request['wsfunction']) {
     case "courses":
             $courses = array(
                 0 => array(
@@ -88,7 +89,7 @@ switch ($_GET['wsfunction']) {
                 )
             );
         
-            $json = $_GET["callback"] . "(" . json_encode($courses) . ")"; //JSONP
+            $json = $_POST["callback"] . "(" . json_encode($courses) . ")"; //JSONP
         
             echo $json;
         
@@ -193,7 +194,7 @@ switch ($_GET['wsfunction']) {
                 )
         );
         
-        $json = $_GET["callback"] . "(" . json_encode($resources) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($resources) . ")"; //JSONP
         
         echo $json;
         break;
@@ -273,14 +274,14 @@ switch ($_GET['wsfunction']) {
                 )
         );
         
-        $json = $_GET["callback"] . "(" . json_encode($grades) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($grades) . ")"; //JSONP
         
         echo $json;
         break;
     
     case "grade":
         
-        if($_GET['gradeid'] == 0) {
+        if($_POST['gradeid'] == 0) {
             $grade = array(
                 'id' => '0',
                 'title' => 'Test',
@@ -289,7 +290,7 @@ switch ($_GET['wsfunction']) {
                 'type' => 'asigment'
             );
         }
-        if($_GET['gradeid'] == 1) {
+        if($_POST['gradeid'] == 1) {
             $grade = array(
                 'id' => '1',
                 'title' => 'Ejercicio Sostenibilidad',
@@ -299,7 +300,7 @@ switch ($_GET['wsfunction']) {
             );
         }
         
-        $json = $_GET["callback"] . "(" . json_encode($grade) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($grade) . ")"; //JSONP
         
         echo $json;
         break;
@@ -329,7 +330,7 @@ switch ($_GET['wsfunction']) {
                  )
         );
         
-        $json = $_GET["callback"] . "(" . json_encode($forums) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($forums) . ")"; //JSONP
         
         echo $json;
         break;
@@ -414,7 +415,7 @@ switch ($_GET['wsfunction']) {
                  )
         );
         
-        $json = $_GET["callback"] . "(" . json_encode($posts) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($posts) . ")"; //JSONP
         
         echo $json;
         break;
@@ -451,7 +452,7 @@ switch ($_GET['wsfunction']) {
                 )
         );
         
-        $json = $_GET["callback"] . "(" . json_encode($users) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($users) . ")"; //JSONP
         
         echo $json;
         break;
@@ -569,13 +570,13 @@ switch ($_GET['wsfunction']) {
                 )
         );
         
-        $json = $_GET["callback"] . "(" . json_encode($upcomingevents) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($upcomingevents) . ")"; //JSONP
         
         echo $json;
         break;
     
     case "event":
-        if($_GET['eventid'] == 0) {
+        if($_POST['eventid'] == 0) {
             $event = array(
                 "id" => 0,
                 "courseid" => 0,
@@ -587,13 +588,13 @@ switch ($_GET['wsfunction']) {
             );
         }
         
-        $json = $_GET["callback"] . "(" . json_encode($event) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($event) . ")"; //JSONP
         
         echo $json;
         break;
     
     case "profile":
-        if($_GET['userid'] == 50) {
+        if($_POST['userid'] == 50) {
             $user = array(
                 "id" => 50,
                 "name" => "Imanol",
@@ -609,7 +610,7 @@ switch ($_GET['wsfunction']) {
                 "roles" => "Estudent, Teacher",
             );
         }
-        if($_GET['userid'] == 10) {
+        if($_POST['userid'] == 10) {
             $user = array(
                 "id" => 10,
                 "name" => "Marc",
@@ -626,7 +627,7 @@ switch ($_GET['wsfunction']) {
             );
         }
         
-        $json = $_GET["callback"] . "(" . json_encode($user) . ")"; //JSONP
+        $json = $_POST["callback"] . "(" . json_encode($user) . ")"; //JSONP
         
         echo $json;
         break;
