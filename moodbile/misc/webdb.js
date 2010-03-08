@@ -110,6 +110,12 @@ Moodbile.webdb.getAllValues = function(tableName, callback) {
   });
 }
 
+Moodbile.webdb.getRequestJSONbyUserID = function(tableName, requestName, userid, callback) {
+    Moodbile.webdb.db.transaction(function(tx) {
+        tx.executeSql("SELECT * FROM "+tableName+" WHERE requestName=? AND userid=?", [requestName, userid], callback, Moodbile.webdb.onError);
+    });
+}
+
 Moodbile.webdb.isEmpty = function(tableName) {
     Moodbile.DBisEmpty = false;
     var callback = function(tx, rs) {
@@ -127,9 +133,9 @@ Moodbile.webdb.needReload = function(tableName) {
     var cookie = $.readCookie('Moodbile');
     if(Moodbile.webdb.isCompatible() && cookie) {
         var timeToCheck = Moodbile.requestJsonExpireTime * 60 * 1000; //minutos a milisegundos
-        var actualDate = new Date();
+        
         if(Date.parse(Moodbile.actualDate) <= $.evalJSON(cookie).lastDataLoaded+timeToCheck) { //Si es menor, no hace falta reload
-            alert($.evalJSON(cookie).lastDataLoaded+timeToCheck-Date.parse(Moodbile.actualDate));
+            //alert($.evalJSON(cookie).lastDataLoaded+timeToCheck-Date.parse(Moodbile.actualDate));
             Moodbile.needReload = false;
         } else {
             var userInfo = $.toJSON({'user': $.evalJSON(cookie).user,'pass': $.evalJSON(cookie).pass, 'lastDataLoaded': Date.parse(Moodbile.actualDate)});

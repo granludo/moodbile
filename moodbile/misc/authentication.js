@@ -60,13 +60,14 @@ Moodbile.login = function (user, pass) {
     }
 }
 
-Moodbile.ajaxLogin = function(user, pass){
-    var callback = Moodbile.ajaxLogin.arguments[2];
+Moodbile.ajaxLogin = function(user, pass, callback){
+    var callback = callback || Moodbile.ajaxLogin.arguments[2];
+    var userdata = {'wsusername': user, 'wspassword': pass, 'wsfunction': 'get_users_by_username', 'username': user}
 
     $.ajax({
         type: "POST",
-        url: 'dummie/auth.dum.php',
-        data: {'request':$.toJSON({wsusername: user, wspassword: pass})},
+        url: Moodbile.wsurl,
+        data: ({request: encodeURIComponent($.toJSON(userdata))}),
         dataType: 'jsonp',
         success: function(userData) {
             if(!userData.msg) {

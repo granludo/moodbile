@@ -1,7 +1,7 @@
 <?php
-    $request = json_decode($_POST['request'], TRUE);
-    if($request['wsusername'] && $request['wspassword']) {
-        if(strtolower($request['wsusername']) == 'demo' && $request['wspassword'] == 123456){
+    $request = json_decode(urldecode($_POST['request']), TRUE);
+    if(is_array($request)) {
+        if(strtolower($request['wsusername']) == 'demo' && $request['wspassword'] == '123456'){
             $user = array(
                 'id' => 50,
                 'lastlogin' => '1265815958806',
@@ -18,4 +18,12 @@
         
         $json = $_POST["callback"] . "(" . json_encode($user) . ")"; //JSONP
         echo $json;
+    } else {
+        $user = array(
+                'msg' => 'Algo pasa en Moodbile :('
+        );
+        
+        $json = $_POST["callback"] . "(" . json_encode($user) . ")"; //JSONP
+        echo $json;
     }
+?>
