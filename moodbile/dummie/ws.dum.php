@@ -1,7 +1,7 @@
 <?php
 $request = json_decode(urldecode($_POST['request']), TRUE);
 switch ($request['wsfunction']) {
-    case "courses":
+    case "moodle_course_get_courses_by_userid":
             $courses = array(
                 0 => array(
                     "id" => 0,
@@ -100,7 +100,7 @@ switch ($request['wsfunction']) {
                 0 => array(
                     "courseid" => 0,
                     "resource" => array(
-                            "id" => "0",
+                            "id" => 0,
                             "title" => "Percepcio Audiovisual",
                             "type" => "pdf",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
@@ -111,7 +111,7 @@ switch ($request['wsfunction']) {
                 1 => array(
                     "courseid" => 0,
                     "resource" => array(
-                            "id" => "1",
+                            "id" => 1,
                             "title" => "Recurso 1",
                             "type" => "doc",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
@@ -122,7 +122,7 @@ switch ($request['wsfunction']) {
                 2 => array(
                     "courseid" => 0,
                     "resource" => array(
-                            "id" => "2",
+                            "id" => 2,
                             "title" => "Recurso 2",
                             "type" => "pps",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
@@ -133,7 +133,7 @@ switch ($request['wsfunction']) {
                 3 => array(
                     "courseid" => 1,
                     "resource" => array(
-                            "id" => "0",
+                            "id" => 4,
                             "title" => "Percepcio Audiovisual",
                             "type" => "pdf",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
@@ -144,7 +144,7 @@ switch ($request['wsfunction']) {
                 4 => array(
                     "courseid" => 1,
                     "resource" => array(
-                            "id" => "1",
+                            "id" => 5,
                             "title" => "Recurso 1",
                             "type" => "doc",
                             "lastmodification" => '1265815958806',
@@ -154,7 +154,7 @@ switch ($request['wsfunction']) {
                 5 => array(
                     "courseid" => 1,
                     "resource" => array(
-                            "id" => "2",
+                            "id" => 6,
                             "title" => "Recurso 2",
                             "type" => "pps",
                             "lastmodification" => '1265815958806',
@@ -164,7 +164,7 @@ switch ($request['wsfunction']) {
                 6 => array(
                     "courseid" => 2,
                     "resource" => array(
-                            "id" => "0",
+                            "id" => 7,
                             "title" => "Funciones ajax en Moodbile",
                             "type" => "pdf",
                             "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
@@ -175,7 +175,7 @@ switch ($request['wsfunction']) {
                 7 => array(
                     "courseid" => 2,
                     "resource" => array(
-                            "id" => "1",
+                            "id" => 8,
                             "title" => "Breadcrumb en Moodbile",
                             "type" => "doc",
                             "lastmodification" => '1265815958806',
@@ -185,7 +185,7 @@ switch ($request['wsfunction']) {
                 8 => array(
                     "courseid" => 2,
                     "resource" => array(
-                            "id" => 2,
+                            "id" => 9,
                             "title" => "¿Que es Moodbile?",
                             "type" => "pps",
                             "lastmodification" => '1265902358806',
@@ -281,7 +281,7 @@ switch ($request['wsfunction']) {
     
     case "grade":
         
-        if($_POST['gradeid'] == 0) {
+        if($request['gradeid'] == 0) {
             $grade = array(
                 'id' => '0',
                 'title' => 'Test',
@@ -290,7 +290,7 @@ switch ($request['wsfunction']) {
                 'type' => 'asigment'
             );
         }
-        if($_POST['gradeid'] == 1) {
+        if($request['gradeid'] == 1) {
             $grade = array(
                 'id' => '1',
                 'title' => 'Ejercicio Sostenibilidad',
@@ -576,7 +576,7 @@ switch ($request['wsfunction']) {
         break;
     
     case "event":
-        if($_POST['eventid'] == 0) {
+        if($request['eventid'] == 0) {
             $event = array(
                 "id" => 0,
                 "courseid" => 0,
@@ -594,7 +594,7 @@ switch ($request['wsfunction']) {
         break;
     
     case "profile":
-        if($_POST['userid'] == 50) {
+        if($request['userid'] == 50) {
             $user = array(
                 "id" => 50,
                 "name" => "Imanol",
@@ -610,7 +610,7 @@ switch ($request['wsfunction']) {
                 "roles" => "Estudent, Teacher",
             );
         }
-        if($_POST['userid'] == 10) {
+        if($request['userid'] == 10) {
             $user = array(
                 "id" => 10,
                 "name" => "Marc",
@@ -632,7 +632,7 @@ switch ($request['wsfunction']) {
         echo $json;
         break;
         
-    case "get_users_by_username":
+    case "moodle_user_get_users_by_username":
         if(is_array($request)) {
             if(strtolower($request['wsusername']) == 'demo' && $request['wspassword'] == '123456'){
                 $user = array(

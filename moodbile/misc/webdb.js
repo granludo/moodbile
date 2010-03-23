@@ -1,10 +1,11 @@
 /**
    Author: Imanol Urra Ruiz
-   Based on: HTML5Rock TODO list sample (http://www.Moodbile.com/samples/webdatabase/todo/)
+   Based on: HTML5Rock TODO list sample (http://www.html5rocks.com/samples/webdatabase/todo/)
    Description of this implementation: Implement HTML5 Web DB in Moodbile for data storage
 */
 
 Moodbile.webdb = {};
+Moodbile.webdb.db = null;
 
 //The database needs to be opened before it can be accessed. You need to define the name, version, description and the size of the database.
 Moodbile.webdb.open = function() {
@@ -37,11 +38,11 @@ Moodbile.webdb.createTable = function(tableName, fields) {
     if(Moodbile.webdb.isCompatible()) {
         var sql = "";
         for(field in fields) {
-            sql += ','+field+' '+fields[field];
+            sql += ', '+field+' '+fields[field];
         }
-    
+        //alert(sql);
         Moodbile.webdb.db.transaction(function(tx) {
-            tx.executeSql("CREATE TABLE IF NOT EXISTS "+tableName+"(ID INTEGER PRIMARY KEY ASC"+sql+")", [],Moodbile.webdb.onSuccess,Moodbile.webdb.onError);
+            tx.executeSql('CREATE TABLE IF NOT EXISTS '+ tableName +'(ID INTEGER PRIMARY KEY ASC'+sql+')', [],Moodbile.webdb.onSuccess,Moodbile.webdb.onError);
         });
     }
 }
@@ -91,7 +92,7 @@ Moodbile.webdb.deleteValues = function(tableName, opts) {
             if(optsSQL == "") {
                 optsSQL += ''+field+'=?';
             } else {
-                optsSQL += 'AND '+field+'=?';
+                optsSQL += ' AND '+field+'=?';
             }
         
             valuesToDelete.push(opts[field]);
@@ -105,17 +106,51 @@ Moodbile.webdb.deleteValues = function(tableName, opts) {
 
 //Selecting data from a table
 Moodbile.webdb.getAllValues = function(tableName, callback) {
-    Moodbile.webdb.db.transaction(function(tx) {
-        tx.executeSql("SELECT * FROM "+tableName+"", [], callback, Moodbile.webdb.onError);
-  });
+    if(Moodbile.webdb.isCompatible()) {
+        Moodbile.webdb.db.transaction(function(tx) {
+            tx.executeSql("SELECT * FROM "+tableName+"", [], callback, Moodbile.webdb.onError);
+        });
+    }
+}
+
+Moodbile.webdb.getDateByOpts = function(tableName, opts, callback) {
+    if(Moodbile.webdb.isCompatible()) {
+        var valuesToGet = [];
+        var optsSQL = "";
+        
+        for(field in opts) {
+            if(optsSQL == "") {
+                optsSQL += ''+field+'=?';
+            } else {
+                optsSQL += ' AND '+field+'=?';
+            }
+        
+            valuesToGet.push(opts[field]);
+        }
+    
+        Moodbile.webdb.db.transaction(function(tx) {
+            tx.executeSql("SELECT date FROM "+tableName+" WHERE "+optsSQL+"", valuesToGet, callback, Moodbile.webdb.onError);
+        });
+    }
+}
+
+Moodbile.webdb.getTemplate = function(tableName, templateName, callback) {
+    if(Moodbile.webdb.isCompatible()) {
+        Moodbile.webdb.db.transaction(function(tx) {
+            tx.executeSql("SELECT HTML FROM "+tableName+" WHERE templateName=?", [templateName], callback, Moodbile.webdb.onError);
+        });
+    }
 }
 
 Moodbile.webdb.getRequestJSONbyUserID = function(tableName, requestName, userid, callback) {
-    Moodbile.webdb.db.transaction(function(tx) {
-        tx.executeSql("SELECT * FROM "+tableName+" WHERE requestName=? AND userid=?", [requestName, userid], callback, Moodbile.webdb.onError);
-    });
+    if(Moodbile.webdb.isCompatible()) {
+        Moodbile.webdb.db.transaction(function(tx) {
+            tx.executeSql("SELECT * FROM "+tableName+" WHERE requestName=? AND userid=?", [requestName, userid], callback, Moodbile.webdb.onError);
+        });
+    }
 }
 
+//Other functions
 Moodbile.webdb.isEmpty = function(tableName) {
     Moodbile.DBisEmpty = false;
     var callback = function(tx, rs) {
@@ -129,29 +164,42 @@ Moodbile.webdb.isEmpty = function(tableName) {
     return Moodbile.DBisEmpty;
 }
 
-Moodbile.webdb.needReload = function(tableName) {
-    var cookie = $.readCookie('Moodbile');
-    if(Moodbile.webdb.isCompatible() && cookie) {
-        var timeToCheck = Moodbile.requestJsonExpireTime * 60 * 1000; //minutos a milisegundos
-        
-        if(Date.parse(Moodbile.actualDate) <= $.evalJSON(cookie).lastDataLoaded+timeToCheck) { //Si es menor, no hace falta reload
-            //alert($.evalJSON(cookie).lastDataLoaded+timeToCheck-Date.parse(Moodbile.actualDate));
-            Moodbile.needReload = false;
-        } else {
-            var userInfo = $.toJSON({'user': $.evalJSON(cookie).user,'pass': $.evalJSON(cookie).pass, 'lastDataLoaded': Date.parse(Moodbile.actualDate)});
-            reWriteCookie = $.setCookie('Moodbile', userInfo, {
-                duration: 1 // in days
-            });
-        }
+Moodbile.webdb.needReload = function(tableName, opts, callback) {
+    if(Moodbile.webdb.isCompatible()) {
+        var checkdb = setInterval(function() {
+            if(Moodbile.webdb.db != null) {
+                clearInterval(checkdb);        
+                var getValueCallback = function(tx, rs) {
+                    if(rs.rows.length != 0) {
+                        var timeToCompare = Moodbile.ExpireTimes[tableName] * 60 * 1000; //minutos a milisegundos
+                        var dateToCheck = rs.rows.item(0).date;
+                        var actualDate = Date.parse(Moodbile.actualDate);
+                        
+                        if(actualDate-dateToCheck <= timeToCompare) {
+                            Moodbile.needReload = false;
+                        } else {
+                            Moodbile.needReload = true;
+                        }
+                    } else {
+                        Moodbile.needReload = true;
+                    }
+            
+                    callback();
+                }
+                
+                Moodbile.webdb.getDateByOpts(tableName, opts, getValueCallback);
+            }
+        }, Moodbile.intervalDelay);
     } else {
         Moodbile.needReload = true;
+        callback();
     }
-    
-    return Moodbile.needReload;
 }
 
 //Loading Implementation
 Moodbile.behaviorsPatterns.webdb = function (context) {
     Moodbile.webdb.open();
-    Moodbile.webdb.needReload('requestJSON');
+    //Creamos una tablas
+    Moodbile.webdb.createTable('requestJSON', {'requestName':'TEXT','JSON':'TEXT', 'date':'DATETIME', 'userid':'INTEGER' });
+    Moodbile.webdb.createTable('templatesHTML', {'templateName':'TEXT','HTML':'TEXT', 'date':'DATETIME'});
 }

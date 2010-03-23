@@ -17,10 +17,10 @@ Moodbile.aux.forums = function(context, courseids) {
     });
     
     var petitionOpts = {'wsfunction':'forums'};
-    Moodbile.json(context, petitionOpts, Moodbile.templates.forums);
+    Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.forums, true);
 }
 
-Moodbile.templates.forums = function(json){
+Moodbile.jsonCallbacks.forums = function(json){
     $.each(json, function(i, json){
         var courseid = json.courseid;
 
@@ -46,7 +46,7 @@ Moodbile.behaviorsPatterns.posts = function(context){
             $('.posts-'+forumid).hide();
                 
             var petitionOpts = {'wsfunction':'posts'};
-            Moodbile.json(context, petitionOpts, Moodbile.templates.post);
+            Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.post, false);
             
             $('.posts-'+forumid).show();
                 
@@ -58,7 +58,7 @@ Moodbile.behaviorsPatterns.posts = function(context){
     });
 }
 
-Moodbile.templates.post = function(json) {
+Moodbile.jsonCallbacks.post = function(json) {
     $.each(json, function(i, json){
         var forumid = json.forumid;
 

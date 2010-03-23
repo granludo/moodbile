@@ -7,11 +7,11 @@ Moodbile.behaviorsPatterns.getUserProfile = function(context){
         userid = userid[1];
         
         var petitionOpts = {'wsfunction':'profile', 'userid': userid};
-        Moodbile.json(context, petitionOpts, Moodbile.templates.userProfile);
+        Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.userProfile, false);
     });
 }
 
-Moodbile.templates.userProfile = function (json) {
+Moodbile.jsonCallbacks.userProfile = function (json) {
     var title = Moodbile.t('Profile');
     var content = '<div class="user"><span class="avatar"></span><span>'+json.name +' '+ json.lastname+'</span></div>';
     content += '<div class="email"><span class="icon-email">Correo electrónico</span><span><a href="mailto:'+ json.email +'">'+ json.email +'</a></span></div>';
@@ -50,11 +50,11 @@ Moodbile.aux.users = function(context, courseids) {
     });
     
     var petitionOpts = {'wsfunction':'users'}
-    Moodbile.json(context, petitionOpts, Moodbile.templates.users);
+    Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.users, true);
     Moodbile.aux.addUserFilterEvents();
 }
 
-Moodbile.templates.users = function(json) {
+Moodbile.jsonCallbacks.users = function(json) {
     $.each(json, function(i, json){
         var courseid = json.courseid;
         

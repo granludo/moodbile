@@ -25,8 +25,8 @@ function moodbile_get_menu_items() {
     return $menu_items;
 }
 
-function moodbile_render_menu($menu_items = NULL){
-    //Cambiar los vinculos por bottones
+function moodbile_render_menu(){
+    $menu_items = moodbile_get_menu_items();
     $output = '<ul>';
     if(is_array($menu_items)) {
         foreach($menu_items as $item) {

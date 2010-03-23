@@ -16,6 +16,7 @@ $string['Login'] = 'Acceder';
 $string['Logout'] = 'Salir';
 $string['Username'] = 'Usuario';
 $string['Password'] = 'Contraseña';
+$string['enddate'] = 'Fecha de entrega';
 
 //$string['thischarset'] = 'iso-8859-1';
 //$string['locale'] = 'en';

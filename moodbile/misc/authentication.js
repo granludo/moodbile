@@ -61,11 +61,12 @@ Moodbile.login = function (user, pass) {
 }
 
 Moodbile.ajaxLogin = function(user, pass, callback){
-    var callback = callback || Moodbile.ajaxLogin.arguments[2];
-    var userdata = {'wsusername': user, 'wspassword': pass, 'wsfunction': 'get_users_by_username', 'username': user}
+    var usernames = [user];
+    var userdata = {'wsusername': user, 'wspassword': pass, 'wsfunction': 'moodle_user_get_users_by_username', 'usernames': usernames}
 
     $.ajax({
         type: "POST",
+        cache: false,
         url: Moodbile.wsurl,
         data: ({request: encodeURIComponent($.toJSON(userdata))}),
         dataType: 'jsonp',
@@ -147,7 +148,7 @@ Moodbile.aux.authentication = function () {
     $('.authentication').find('.login-form').hide();
     $('.authentication').append('<div class="login-info"><button id="login-button">'+Moodbile.t('Login')+'</button></div>');
     $('.authentication').append('<div class="site-summary"></div>');
-    $('.site-summary').load('misc/sitesummary.tpl.html');
+    $('.site-summary').load('misc/templates/sitesummary.tpl.html');
     
     //PROVISIONAL
     $('.authentication').find('.login-info').append('<em class="msg msg-alert">Demo user:<br />User: demo, Password: 123456</em>');

@@ -1,4 +1,8 @@
 <?php
+
+//Ponerlo mejor
+global $CFG, $Moodbile;
+
 /*  Include all libs
  *
  *  @param $exception,string: lib name you don't need to include
@@ -8,14 +12,14 @@ function moodbile_load_libs($exception = 'core'){
     global $CFG;
     
     $basepath = $CFG['basepath'];
-    //$basepath = "/"
+    //$basepath = "./";
     
-    $files = scandir($basepath .'/lib');
+    $files = scandir($basepath.'lib');
     $files = array_diff($files, array('.', '..', $exception.'.lib.php'));
     
     if(is_array($files)){
         foreach ($files as $file) {
-            require_once('lib/'. $file);
+            include('lib/'. $file);
         }
     }
     
