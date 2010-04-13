@@ -67,11 +67,9 @@ Moodbile.jsonCallbacks.grade = function(json){
                 var currentItemGrades = currentUser.find('.grade:last-child');
             
                 currentItemGrades.addClass(grades.id);
-                currentItemGrades.find('a:first-child').append(grades.title);
-                /*currentItemGrades.find('.moodbile-icon:first-child').addClass(grade.type);
-                currentItemGrades.find('.info').find('.moodbile-icon').addClass('icon-info');
-                currentItemGrades.find('.info').find('.data').append('Calificación: <em>'+ grades.grade +'</em>');
-                currentItem.find('.info').find('.description').append(grades.description); */
+                currentItemGrades.find('.grade-title').append(grades.title);
+                currentItemGrades.find('.grade-title').find('.moodbile-icon').addClass('icon-'+grades.type);
+                currentItemGrades.find('.grade-num').text(grades.grade);
             });
         });
         

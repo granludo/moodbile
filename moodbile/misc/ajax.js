@@ -69,6 +69,8 @@ Moodbile.ajaxJson = function(currentQueueKey, callbackFunction) {
                 data: ({request: encodeURIComponent($.toJSON(Moodbile.queueJson[currentQueueKey]))}),
                 dataType: 'jsonp',
                 success: function(json) {
+                    json = json[json.length-1];
+                    
                     //TODO: Añadir un if para comprobar si hay o no respuesta
                     Moodbile.requestJson[Moodbile.queueJson[currentQueueKey].wsfunction] = json;
                     callbackFunction(json);

@@ -1,0 +1,6 @@
+name = default
+
+js = js/script.js
+css = css/style.css
+
+#TODO: Habilitar la opcion de varios js,css

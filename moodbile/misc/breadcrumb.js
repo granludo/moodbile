@@ -19,24 +19,6 @@ Moodbile.behaviorsPatterns.breadcrumb = function(context){
         $('nav#breadcrumb').show();
     });
     
-    //level-2
-    $('#toolbar li a, .toolbar-more div a').live('click', function() {
-        var item = $(this).text();
-        
-        if($(this).parent().is('#courses') == false) {
-            if($('nav#breadcrumb li:eq(2)').is('#level-2') == false) {
-                $('nav#breadcrumb ul').append('<li id="level-2"><span><a href="#">'+item+'</a></span></li>');
-                $('nav#breadcrumb li a').show();
-            } else {
-                $('#level-2 a').text(item).show();
-            }
-        } else {
-            $('nav#breadcrumb li:eq(2)').remove();
-            $('nav#breadcrumb').hide();
-        }
-    });
-    //TODO: Excepcion del foro
-    
     //Acciones cuando se pulsa un link del breadcrumb
     $('nav#breadcrumb li a').live('click', function(){
         if($(this).parent().is('#home') == false){
@@ -55,5 +37,7 @@ Moodbile.behaviorsPatterns.breadcrumb = function(context){
             $('#wrapper').children().hide();
             $('div.moodbile-courses-links, div.moodbile-courses-links section').show();
         }
+        
+        return false;
     });
 }

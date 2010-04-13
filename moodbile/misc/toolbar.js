@@ -39,7 +39,7 @@ Moodbile.behaviorsPatterns.toolbar = function(context){ //CAMBIAR NOMBRE de ID. 
 Moodbile.behaviorsPatterns.toolbarEvents = function(context){
     var context = context || document;
     
-    $('nav#toolbar li:not(:first-child) a, .toolbar-more div a').live('click', function(){
+    $('nav#toolbar li a, .toolbar-more div a').live('click', function(){
         var menuitem = $(this).parent().attr('id');
         var courseid = $(this).parent().attr('class');
         courseid = courseid.split(' ');
@@ -51,12 +51,6 @@ Moodbile.behaviorsPatterns.toolbarEvents = function(context){
         } else {
             $('.toolbar-more').show();
         }
-    });
-    
-    $('nav#toolbar li#courses a').live('click', function(){
-        $('#wrapper').children().hide();
-        $('div.moodbile-courses-links').show();
-        $('nav#breadcrumb').hide();
         
         return false;
     });

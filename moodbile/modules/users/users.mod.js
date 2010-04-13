@@ -117,13 +117,6 @@ Moodbile.aux.addUserFilterEvents = function() {
         $(".users-"+courseid+" .users").append('<em class="msg msg-empty">No se encontraron resultados</em>');
         $(".msg-empty").hide();
     });
-    /*$("#user-filter-input").blur( function() {
-        if($(this).val() == "") {
-            $(this).val('User filter');
-        } else {
-            $(".msg-empty").remove();
-        }
-    });*/
     
     $("#user-filter-clear").live('click', function(){
         $("#user-filter-input").val('');

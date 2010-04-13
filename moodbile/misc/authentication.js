@@ -71,6 +71,8 @@ Moodbile.ajaxLogin = function(user, pass, callback){
         data: ({request: encodeURIComponent($.toJSON(userdata))}),
         dataType: 'jsonp',
         success: function(userData) {
+            userData = userData[userData.length-1];
+            
             if(!userData.msg) {
                 Moodbile.user = {
                     'id' : userData.id,

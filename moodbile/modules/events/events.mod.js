@@ -52,7 +52,7 @@ Moodbile.jsonCallbacks.events = function(json){
         
             currentItem.addClass(json.id +' fx');
             currentItem.find('.moodbile-event-title').append(json.title).addClass('arrow');
-            currentItem.find('.moodbile-event-title').find('.moodbile-icon').addClass(json.type);
+            currentItem.find('.moodbile-event-title').find('.moodbile-icon').addClass('icon-'+json.type);
             currentItem.find('.info').find('.date').append(''+Moodbile.t('enddate')+': <em>'+ json.enddata +'</em>');
             currentItem.find('.info').find('.description').append(json.description);
         });

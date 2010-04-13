@@ -4,7 +4,8 @@ Moodbile.behaviorsPatterns.courses = function(context){
     var checkUserVariable = setInterval(function() {
         if(Moodbile.user != null) {
             clearInterval(checkUserVariable);
-            var petitionOpts = {"wsfunction":"moodle_course_get_courses_by_userid", "userid": Moodbile.user.id};
+            var userids = [Moodbile.user.id]
+            var petitionOpts = {"wsfunction":"moodle_course_get_courses_by_userid", "userids": userids};
             Moodbile.json(context,  petitionOpts, Moodbile.jsonCallbacks.courses, true);
         }
     }, Moodbile.intervalDelay);
@@ -97,15 +98,15 @@ Moodbile.jsonCallbacks.frontpage = function(json, itemHTML){
             currentItem.append(itemHTML);
             
             if (expanded == 1){
-                currentItem.find('.moodbile-course-section:last-child').addClass(data.sectionid+' expanded');
+                currentItem.find('.moodbile-course-section:last-child').addClass(data.sectionid.toString());
                 
                 expanded += 1;
             } else {
-                currentItem.find('.moodbile-course-section:last-child').addClass(data.sectionid+' collapsed');
+                currentItem.find('.moodbile-course-section:last-child').addClass(data.sectionid.toString());
             }
             
-            currentItem.find('.moodbile-course-section:last-child').find('div').addClass('summary visible');
-            currentItem.find('.moodbile-course-section:last-child').find('.summary').find('a').addClass('collapsible').append(data.summary);
+            currentItem.find('.moodbile-course-section:last-child').find('div').addClass('summary');
+            currentItem.find('.moodbile-course-section:last-child').find('.summary').find('a').addClass('collapse').append(data.summary);
             currentItem.find('.moodbile-course-section:last-child').find('.summary').find('.moodbile-icon').addClass('collapse-icon');
         });
     });
@@ -113,10 +114,10 @@ Moodbile.jsonCallbacks.frontpage = function(json, itemHTML){
 
 Moodbile.jsonCallbacks.frontpageResources = function(json, itemHTML){
     $.each(json, function(i, json){
-        var currentItem = $('#wrapper .frontpage-'+json.courseid).find('.'+json.resource.section);
+        var currentItem = $('#wrapper .frontpage-'+json.courseid).find('.'+json.resource.section).find('.summary');
         currentItem.append(itemHTML);
         
-        currentItem.find('div:last-child').addClass('resource ' + json.resource.id + ' fx');
+        currentItem.find('div:last-child').addClass('resource ' + json.resource.id + ' fx collapsible collapsed');
         currentItem.find('div:last-child').find('a').append(json.resource.title);
         currentItem.find('div:last-child').find('.moodbile-icon').addClass('icon-'+json.resource.type);
     }); 
@@ -124,10 +125,10 @@ Moodbile.jsonCallbacks.frontpageResources = function(json, itemHTML){
 
 Moodbile.jsonCallbacks.frontpageEvents = function(json, itemHTML){
     $.each(json, function(i, json){
-        var currentItem = $('#wrapper .frontpage-'+json.courseid).find('.'+json.section);
+        var currentItem = $('#wrapper .frontpage-'+json.courseid).find('.'+json.section).find('.summary');
         currentItem.append(itemHTML);
         
-        currentItem.find('div:last-child').addClass('event ' + json.id + ' fx');
+        currentItem.find('div:last-child').addClass('event ' + json.id + ' fx collapsible collapsed');
         currentItem.find('div:last-child').find('a').append(json.title);
         currentItem.find('div:last-child').find('.moodbile-icon').addClass('icon-'+json.type);
     });
@@ -135,10 +136,10 @@ Moodbile.jsonCallbacks.frontpageEvents = function(json, itemHTML){
 
 Moodbile.jsonCallbacks.frontpageForums = function(json, itemHTML){
     $.each(json, function(i, json){
-        var currentItem = $('#wrapper .frontpage-'+json.courseid).find('.'+json.section);
+        var currentItem = $('#wrapper .frontpage-'+json.courseid).find('.'+json.section).find('.summary');
         currentItem.append(itemHTML);
         
-        currentItem.find('div:last-child').addClass('forum ' + json.id);
+        currentItem.find('div:last-child').addClass('forum ' + json.id + ' collapsible collapsed');
         currentItem.find('div:last-child').find('a').append(json.title);
         currentItem.find('div:last-child').find('.moodbile-icon').addClass('icon-'+json.type);
     });

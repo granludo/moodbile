@@ -89,7 +89,7 @@ switch ($request['wsfunction']) {
                 )
             );
         
-            $json = $_POST["callback"] . "(" . json_encode($courses) . ")"; //JSONP
+            $json = $_POST["callback"] . "([" . json_encode($courses) . "])"; //JSONP
         
             echo $json;
         
@@ -194,7 +194,7 @@ switch ($request['wsfunction']) {
                 )
         );
         
-        $json = $_POST["callback"] . "(" . json_encode($resources) . ")"; //JSONP
+        $json = $_POST["callback"] . "([" . json_encode($resources) . "])"; //JSONP
         
         echo $json;
         break;
@@ -274,7 +274,7 @@ switch ($request['wsfunction']) {
                 )
         );
         
-        $json = $_POST["callback"] . "(" . json_encode($grades) . ")"; //JSONP
+        $json = $_POST["callback"] . "([" . json_encode($grades) . "])"; //JSONP
         
         echo $json;
         break;
@@ -300,7 +300,7 @@ switch ($request['wsfunction']) {
             );
         }
         
-        $json = $_POST["callback"] . "(" . json_encode($grade) . ")"; //JSONP
+        $json = $_POST["callback"] . "([" . json_encode($grade) . "])"; //JSONP
         
         echo $json;
         break;
@@ -330,7 +330,7 @@ switch ($request['wsfunction']) {
                  )
         );
         
-        $json = $_POST["callback"] . "(" . json_encode($forums) . ")"; //JSONP
+        $json = $_POST["callback"] . "([" . json_encode($forums) . "])"; //JSONP
         
         echo $json;
         break;
@@ -349,14 +349,16 @@ switch ($request['wsfunction']) {
                     "replyes" => array(
                         3 => array( //la key sera la id post
                             "userid" => 3,
-                            "author" => "Joan",
+                            "name" => "Marc",
+                            "lastname" => "Alier",
                             "avatar" => "http://hongki.at/images/twitter_avatar/seeder_lab.jpg",
                             "title" => "Re: ¿Que es esto?",
                             "msg" => "y en que esta basado?"
                         ),
                          4 => array( //la key sera la id post
                             "userid" => 4,
-                            "author" => "Pepito",
+                            "name" => "Jordi",
+                            "lastname" => "Piquillem",
                             "avatar" => "http://hongki.at/images/twitter_avatar/seeder_lab.jpg",
                             "title" => "Re: ¿Que es esto?",
                             "msg" => "PHP + JS(jQuery) + HTML5"
@@ -375,14 +377,16 @@ switch ($request['wsfunction']) {
                     "replyes" => array(
                         0 => array(
                             "userid" => 3,
-                            "author" => "Joan",
+                            "name" => "Imanol",
+                            "lastname" => "Urra Ruiz",
                             "avatar" => "http://a3.twimg.com/profile_images/65892457/avatar11197_2_bigger.gif",
                             "title" => "Re: ¿Que es esto?",
                             "msg" => "y en que esta basado?"
                         ),
                         1 => array(
                             "userid" => 4,
-                            "author" => "Pepito",
+                            "name" => "Imanol",
+                            "lastname" => "Urra Ruiz",
                             "avatar" => "http://a3.twimg.com/profile_images/65892457/avatar11197_2_bigger.gif",
                             "title" => "Re: ¿Que es esto?",
                             "msg" => "PHP + JS(jQuery) + HTML5"
@@ -401,21 +405,25 @@ switch ($request['wsfunction']) {
                     "replyes" => array(
                         3 => array( //la key sera la id post
                             "userid" => 3,
+                            "name" => "Imanol",
+                            "lastname" => "Urra Ruiz",
+                            "avatar" => "http://a3.twimg.com/profile_images/65892457/avatar11197_2_bigger.gif",
                             "title" => "Re: ¿Que es esto?",
-                            "author" => "Joan",
                             "msg" => "y en que esta basado?"
                         ),
                          4 => array( //la key sera la id post
                             "userid" => 4,
+                            "name" => "Imanol",
+                            "lastname" => "Urra Ruiz",
+                            "avatar" => "http://a3.twimg.com/profile_images/65892457/avatar11197_2_bigger.gif",
                             "title" => "Re: ¿Que es esto?",
-                            "author" => "Pepito",
                             "msg" => "PHP + JS(jQuery) + HTML5"
                         )
                     )
                  )
         );
         
-        $json = $_POST["callback"] . "(" . json_encode($posts) . ")"; //JSONP
+        $json = $_POST["callback"] . "([" . json_encode($posts) . "])"; //JSONP
         
         echo $json;
         break;
@@ -441,7 +449,7 @@ switch ($request['wsfunction']) {
                     "id" => 30,
                     "name" => "Aritz",
                     "lastname" => "Tusell Garcia",
-                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg"
+                    "avatar" => "http://a3.twimg.com/profile_images/65892457/avatar11197_2_bigger.gif"
                 ),
                 3 => array(
                     "courseid" => 0,
@@ -452,7 +460,7 @@ switch ($request['wsfunction']) {
                 )
         );
         
-        $json = $_POST["callback"] . "(" . json_encode($users) . ")"; //JSONP
+        $json = $_POST["callback"] . "([" . json_encode($users) . "])"; //JSONP
         
         echo $json;
         break;
@@ -570,7 +578,7 @@ switch ($request['wsfunction']) {
                 )
         );
         
-        $json = $_POST["callback"] . "(" . json_encode($upcomingevents) . ")"; //JSONP
+        $json = $_POST["callback"] . "([" . json_encode($upcomingevents) . "])"; //JSONP
         
         echo $json;
         break;
@@ -627,7 +635,7 @@ switch ($request['wsfunction']) {
             );
         }
         
-        $json = $_POST["callback"] . "(" . json_encode($user) . ")"; //JSONP
+        $json = $_POST["callback"] . "([" . json_encode($user) . "])"; //JSONP
         
         echo $json;
         break;
@@ -641,7 +649,7 @@ switch ($request['wsfunction']) {
                     'name' => 'Imanol',
                     'lastname' => 'Urra Ruiz',
                     'email0' => 'index02@gmail.com',
-                    'avatar' => 'http://terrassatsc.upc.edu/user/pix.php/1809/f1.jpg'
+                    'avatar' => 'http://a3.twimg.com/profile_images/701725831/avatar_bigger.png'
                 );
             } else {
                 $user = array(
@@ -655,7 +663,7 @@ switch ($request['wsfunction']) {
             );
         }
         
-        $json = $_POST["callback"] . "(" . json_encode($user) . ")"; //JSONP
+        $json = $_POST["callback"] . "([" . json_encode($user) . "])"; //JSONP
         echo $json;
         
         break;

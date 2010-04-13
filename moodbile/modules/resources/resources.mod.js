@@ -35,7 +35,7 @@ Moodbile.jsonCallbacks.resources = function(json){
             var currentItem = $('#wrapper .resources-'+courseid).find('.moodbile-resource:last-child');
         
             currentItem.addClass(resource.id.toString());
-            currentItem.find('.moodbile-resource-title').append(resource.title);
+            currentItem.find('.moodbile-resource-title').append(resource.title).addClass('arrow');
             currentItem.find('.moodbile-resource-title').find('.moodbile-icon').addClass('icon-'+resource.type);
             currentItem.find('.info').find('.description').append(resource.description);
         });

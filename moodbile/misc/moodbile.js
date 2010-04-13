@@ -1,4 +1,4 @@
-var Moodbile = {'user': null, 'behaviorsPatterns': {}, 'aux': {}, 'jsonCallbacks': {}};
+var Moodbile = {'user': null, 'behaviorsPatterns': {}, 'aux': {}, 'jsonCallbacks': {}, 'templatesUrl': [], 'i18n': []};
 
 //Moodbile.wsurl = "http://basketpc.com/ind3x/ws.dum.php";
 Moodbile.wsurl = "dummie/ws.dum.php";
@@ -93,15 +93,13 @@ Moodbile.aux.infoViewer = function(title, type, info) {
 }
 
 Moodbile.behaviorsPatterns.collapsible = function() {
-    //Prevent CSS
-    //TODO: Mejorarlo, aprender a crear eventos.
-    $(".collapsible").live('click', function(){
-        if($(this).parent().parent().is('.expanded')) {
-            $(this).parent().parent().removeClass('expanded');
-            $(this).parent().parent().addClass('collapsed');
+    $(".collapse").live('click', function(){
+        if($(this).parent().find('.collapsible').is('.expanded')) {
+            $(this).parent().find('.collapsible').removeClass('expanded');
+            $(this).parent().find('.collapsible').addClass('collapsed');
         } else {
-            $(this).parent().parent().removeClass('collapsed');
-            $(this).parent().parent().addClass('expanded');
+            $(this).parent().find('.collapsible').removeClass('collapsed');
+            $(this).parent().find('.collapsible').addClass('expanded');
         }
         
         return false;

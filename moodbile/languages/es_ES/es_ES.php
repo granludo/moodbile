@@ -17,6 +17,7 @@ $string['Logout'] = 'Salir';
 $string['Username'] = 'Usuario';
 $string['Password'] = 'Contraseña';
 $string['enddate'] = 'Fecha de entrega';
+$string['about'] = 'Sobre Moodbile';
 
 //$string['thischarset'] = 'iso-8859-1';
 //$string['locale'] = 'en';
