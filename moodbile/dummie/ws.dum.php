@@ -2,281 +2,401 @@
 $request = json_decode(urldecode($_POST['request']), TRUE);
 switch ($request['wsfunction']) {
     case "moodle_course_get_courses_by_userid":
-            $courses = array(
-                0 => array(
-                    "id" => 0,
-                    "title" => "Comunicacions Audiovisuals",
-                    "format" => "topic",
-                    "summary" => "Trata temas sobre <u>Televison/TDT(DVB-T)</u>",
-                    "sections" => array(
-                        0 => array(
-                            "sectionid" => 10,
-                            "summary" => "<h1><u>Presentacion</u></h1>",
-                            "labels" => array()
-                        ),
-                        1 => array(
-                            "sectionid" => 11,
-                            "summary" => "Tema 1",
-                            "labels" => array()
-                        ),
-                        2 => array(
-                            "sectionid" => 12,
-                            "summary" => "Tema 2",
-                            "labels" => array()
-                        ),
-                        3 => array(
-                            "sectionid" => 13,
-                            "summary" => "Tema 3",
-                            "labels" => array()
-                        )
-                    )
+        $courses = array(
+            0 => array(
+                "id" => "4",
+                "sortorder" => "10001",
+                "shortname" => "TTC",
+                "idnumber" => "",
+                "category" => "1",
+                "fullname" => "Third Test Course",
+                "guest" => 0,
+                "startdate" => 1277935200,
+                "visible" => 1,
+                "newsitems" => "5",
+                "cost" => "", 
+                "enrol" => "",
+                "groupmode" => 0,
+                "groupmodeforce" => 0,
+                "summary" => "<p>Welcome to the Third Test Course</p>",
+                "format" => "topics",
+                "timecreated" => 1271241268,
+                "timemodified" => 1271241268,
+                "categorypath" => "/1",
+                "context" => (object) array(
+                    "id" => "26",
+                    "path" => "/1/3/26",
+                    "depth" => "3",
+                    "contextlevel" => "50",
+                    "instanceid" => "4"
                 ),
-                1 => array(
-                    "id" => 1,
-                    "title" => "Llenguatge i Sistemes Informatics",
-                    "format" => "topic",
-                    "summary" => "Sumario sobre LSI",
-                    "sections" => array(
-                        0 => array(
-                            "sectionid" => 20,
-                            "summary" => "<h1><u>Presentacion</u></h1>",
-                            "labels" => array()
-                        ),
-                        1 => array(
-                            "sectionid" => 21,
-                            "summary" => "Tema 1",
-                            "labels" => array()
-                        ),
-                        2 => array(
-                            "sectionid" => 22,
-                            "summary" => "Tema 2",
-                            "labels" => array()
-                        ),
-                        3 => array(
-                            "sectionid" => 23,
-                            "summary" => "Tema 3",
-                            "labels" => array()
-                        )
-                    )
-                ),
-                2 => array(
-                    "id" => 2,
-                    "title" => "Moodbile",
-                    "format" => "topic",
-                    "summary" => "Curso sobre Moodbile",
-                    "sections" => array(
-                        0 => array(
-                            "sectionid" => 30,
-                            "summary" => "<h1><u>Presentacion</u></h1>",
-                            "labels" => array()
-                        ),
-                        1 => array(
-                            "sectionid" => 31,
-                            "summary" => "Recursos",
-                            "labels" => array()
-                        ),
-                        2 => array(
-                            "sectionid" => 32,
-                            "summary" => "Documentacion",
-                            "labels" => array()
-                        ),
-                        3 => array(
-                            "sectionid" => 33,
-                            "summary" => "Otros",
-                            "labels" => array()
-                        )
+                "lastcoursesync" => 1271768598,
+                "modules" => array(
+                    0 => (object) array(
+                        "id" => "4",
+                        "course" => "4",
+                        "module" => "7",
+                        "instance" => "2",
+                        "section" => "14",
+                        "idnumber" => "",
+                        "added" => 1271241306,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "News forum",
+                        "modname" => "forum",
+                        "intro" => "General news and announcements",
+                        "introformat" => 0
+                    ),
+                    1 => (object) array(
+                        "id" => "6",
+                        "course" => "4",
+                        "module" => "7",
+                        "instance" => "3",
+                        "section" => "16",
+                        "idnumber" => "",
+                        "added" => 1271241438,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "TTC Forum",
+                        "modname" => "forum",
+                        "intro" => "<p>Welcome to the TTC Forum</p>",
+                        "introformat" => 1
+                    ),
+                    2 => (object) array(
+                        "id" => "5",
+                        "course" => "4",
+                        "module" => "15",
+                        "instance" => "2",
+                        "section" => "15",
+                        "idnumber" => "",
+                        "added" => 1271241368,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "Layers OWL",
+                        "modname" => "resource",
+                        "intro" => "<p>Layers Owl file</p>",
+                        "introformat" => 1
+                    ),
+                    3 => (object) array(
+                        "id" => "12",
+                        "course" => "4",
+                        "module" => "23",
+                        "instance" => "1",
+                        "section" => "14",
+                        "idnumber" => "",
+                        "added" => 1271757345,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "asasd",
+                        "modname" => "wiki",
+                        "intro" => "<p>asdadasd</p>",
+                        "introformat" => 1
                     )
                 )
-            );
-        
-            $json = $_POST["callback"] . "([" . json_encode($courses) . "])"; //JSONP
-        
-            echo $json;
-        
-        break;
-    
-    case "resources": //TODO: PONER TODO EN UN ARRAY (es decir, al estilo upcoming events)
-        $resources = array(
-                0 => array(
-                    "courseid" => 0,
-                    "resource" => array(
-                            "id" => 0,
-                            "title" => "Percepcio Audiovisual",
-                            "type" => "pdf",
-                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
-                            "lastmodification" => '1265902358806',
-                            "section" => 11
-                    )
+            ),
+            1 => Array(
+                "id" => "3",
+                "sortorder" => "10002",
+                "shortname" => "STC",
+                "idnumber" => "",
+                "category" => "1",
+                "fullname" => "Second Test Course",
+                "guest" => 0,
+                "startdate" => 1267743600,
+                "visible" => 1,
+                "newsitems" => "5",
+                "cost" => "",
+                "enrol" => "",
+                "groupmode" => 0,
+                "groupmodeforce" => 0,
+                "summary" => "",
+                "format" => "weeks",
+                "timecreated" => 1267710548,
+                "timemodified" => 1267710548,
+                "categorypath" => "/1",
+                "context" => (object) array(
+                    "id" => "16",
+                    "path" => "/1/3/16",
+                    "depth" => "3",
+                    "contextlevel" => "50",
+                    "instanceid" => "3"
                 ),
-                1 => array(
-                    "courseid" => 0,
-                    "resource" => array(
-                            "id" => 1,
-                            "title" => "Recurso 1",
-                            "type" => "doc",
-                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
-                            "lastmodification" => '1265815958806',
-                            "section" => 12
-                    )
-                ),
-                2 => array(
-                    "courseid" => 0,
-                    "resource" => array(
-                            "id" => 2,
-                            "title" => "Recurso 2",
-                            "type" => "pps",
-                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
-                            "lastmodification" => '1265815958806',
-                            "section" => 13
-                    )
-                ),
-                3 => array(
-                    "courseid" => 1,
-                    "resource" => array(
-                            "id" => 4,
-                            "title" => "Percepcio Audiovisual",
-                            "type" => "pdf",
-                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
-                            "lastmodification" => '1265815958806',
-                            "section" => 21
-                    )
-                ),
-                4 => array(
-                    "courseid" => 1,
-                    "resource" => array(
-                            "id" => 5,
-                            "title" => "Recurso 1",
-                            "type" => "doc",
-                            "lastmodification" => '1265815958806',
-                            "section" => 22
-                    )
-                ),
-                5 => array(
-                    "courseid" => 1,
-                    "resource" => array(
-                            "id" => 6,
-                            "title" => "Recurso 2",
-                            "type" => "pps",
-                            "lastmodification" => '1265815958806',
-                            "section" => 23
-                    )
-                ),
-                6 => array(
-                    "courseid" => 2,
-                    "resource" => array(
-                            "id" => 7,
-                            "title" => "Funciones ajax en Moodbile",
-                            "type" => "pdf",
-                            "description" => "Presentació sobre les limitacions dels sistemes de percepció audiovisual humans.",
-                            "lastmodification" => '1265815958806',
-                            "section" => 31
-                    )
-                ),
-                7 => array(
-                    "courseid" => 2,
-                    "resource" => array(
-                            "id" => 8,
-                            "title" => "Breadcrumb en Moodbile",
-                            "type" => "doc",
-                            "lastmodification" => '1265815958806',
-                            "section" => 32
-                    )
-                ),
-                8 => array(
-                    "courseid" => 2,
-                    "resource" => array(
-                            "id" => 9,
-                            "title" => "¿Que es Moodbile?",
-                            "type" => "pps",
-                            "lastmodification" => '1265902358806',
-                            "section" => 33
+                "lastcoursesync" => 1271768598,
+                "modules" => Array(
+                    0 => (object) array(
+                        "id" => "7",
+                        "course" => "3",
+                        "module" => "7",
+                        "instance" => "4",
+                        "section" => "2",
+                        "idnumber" => "",
+                        "added" => 1271242710,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "News forum",
+                        "modname" => "forum",
+                        "intro" => "General news and announcements",
+                        "introformat" => 0
                     )
                 )
-        );
-        
-        $json = $_POST["callback"] . "([" . json_encode($resources) . "])"; //JSONP
-        
+            ),
+            2 => Array(
+                "id" => "2",
+                "sortorder" => "10003",
+                "shortname" => "FTC",
+                "idnumber" => "",
+                "category" => "1",
+                "fullname" => "First Test Course",
+                "guest" => 0,
+                "startdate" => 1267743600,
+                "visible" => 1,
+                "newsitems" => "5",
+                "cost" => "",
+                "enrol" => "",
+                "groupmode" => 0,
+                "groupmodeforce" => 0,
+                "summary" => "<p>This is the first course in this test installation.</p>",
+                "format" => "weeks",
+                "timecreated" => 1267710488,
+                "timemodified" => 1269600931,
+                "categorypath" => "/1",
+                "context" => (object) array(
+                    "id" => "11",
+                    "path" => "/1/3/11",
+                    "depth" => "3",
+                    "contextlevel" => "50",
+                    "instanceid" => "2"
+                ),
+                "lastcoursesync" => 1271768598,
+                "modules" => Array(
+                    0 => (object) array(
+                        "id" => "1",
+                        "course" => "2",
+                        "module" => "7",
+                        "instance" => "1",
+                        "section" => "1",
+                        "idnumber" => "",
+                        "added" => 1269007573,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "News forum",
+                        "modname" => "forum",
+                        "intro" => "General news and announcements",
+                        "introformat" => 0
+                    ),
+                    1 => (object) array(
+                        "id" => "8",
+                        "course" => "2",
+                        "module" => "7",
+                        "instance" => "5",
+                        "section" => "6",
+                        "idnumber" => "",
+                        "added" => 1271242762,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "Forum for FTC",
+                        "modname" => "forum",
+                        "intro" => "<p>This is the FTC Forum</p>",
+                        "introformat" => 1
+                    ),
+                    2 => (object) array(
+                        "id" => "2",
+                        "course" => "2",
+                        "module" => "15",
+                        "instance" => "1",
+                        "section" => "4",
+                        "idnumber" => "",
+                        "added" => 1271239736,
+                        "score" => 0,
+                        "indent" => 0,
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "OFU_Rules",
+                        "modname" => "resource",
+                        "intro" => "<p>A pdf file</p>",
+                        "introformat" => 1
+                    ),
+                    3 => (object) array(
+                        "id" => "11",
+                        "course" => "2",
+                        "module" => "15",
+                        "instance" => "3",
+                        "section" => "1",
+                        "idnumber" => "",
+                        "added" => 1271256104,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "Catalog.xml",
+                        "modname" => "resource",
+                        "intro" => "<p>catalog.xml file</p>",
+                        "introformat" => 1
+                    ),
+                    4 => (object) array(
+                        "id" => "3",
+                        "course" => "2",
+                        "module" => "3",
+                        "instance" => "1",
+                        "section" => "5",
+                        "idnumber" => "",
+                        "added" => 1271239873,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "A Choice example",
+                        "modname" => "choice",
+                        "intro" => "<p>This is a choice example</p>",
+                        "introformat" => 1
+                    ),
+                    6 => (object) array(
+                        "id" => "10",
+                        "course" => "2",
+                        "module" => "5",
+                        "instance" => "1",
+                        "section" => "6",
+                        "idnumber" => "",
+                        "added" => 1271252138,
+                        "score" => "0",
+                        "indent" => "0",
+                        "visible" => 1,
+                        "visibleold" => 1,
+                        "groupmode" => 0,
+                        "groupingid" => 0,
+                        "groupmembersonly" => 0,
+                        "completion" => 0,
+                        "completiongradeitemnumber" => "",
+                        "completionview" => 0,
+                        "completionexpected" => 0,
+                        "availablefrom" => 0,
+                        "availableuntil" => 0,
+                        "showavailability" => 0,
+                        "name" => "Feedback",
+                        "modname" => "feedback",
+                        "intro" => "<p>Leave a feedback</p>",
+                        "introformat" => 1
+                    )
+                )
+            )
+        );         
+        $json = $_POST["callback"] . "([" . json_encode($courses) . "])"; //JSONP
         echo $json;
-        break;
-    
-    case "grades":
-        //Esta estructura de datos es teniendo en cuenta que un profesor vera las notas de todos
-        //En el caso de que sea un estudiante, se le devolvera unicamente la parte del array correspondiente a su usuario.
-        $grades = array(
-                 0 => array(
-                    "courseid" => 0,
-                    "id" => 50, //id del usuario
-                    "name" => "Imanol",
-                    "lastname" => "Urra Ruiz",
-                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
-                    "grades" => array(
-                        0 => array(
-                            'id' => '0',
-                            'title' => 'Test',
-                            'grade' => '7.5',
-                            'description' => 'Trabajo sobre Query-by-example',
-                            'type' => 'asigment'
-                        ),
-                        1 => array(
-                            'id' => '1',
-                            'title' => 'Ejercicio Sostenibilidad',
-                            'grade' => '7.5',
-                            'description' => 'Indice de Pobreza Humana <b>(IPH)</b>',
-                            'type' => 'quiz'
-                        )
-                    )
-                ),
-                1 => array(
-                    "courseid" => 1,
-                    "id" => 50, //id del usuario
-                    "name" => "Imanol",
-                    "lastname" => "Urra Ruiz",
-                    "avatar" => "http://terrassatsc.upc.edu/user/pix.php/1809/f2.jpg",
-                    "grades" => array(
-                        0 => array(
-                            'id' => '11',
-                            'title' => 'Test',
-                            'grade' => '7.5',
-                            'description' => 'Trabajo sobre Query-by-example',
-                            'type' => 'asigment'
-                        ),
-                        1 => array(
-                            'id' => '12',
-                            'title' => 'Ejercicio Sostenibilidad',
-                            'grade' => '7.5',
-                            'description' => 'Indice de Pobreza Humana <b>(IPH)</b>',
-                            'type' => 'quiz'
-                        )
-                    )
-                ),
-                2 => array(
-                    "courseid" => 1,
-                    "id" => 10, //id del usuario
-                    "name" => "Marc",
-                    "lastname" => "Alier",
-                    "avatar" => "http://a3.twimg.com/profile_images/669231243/ludo-potachovizado_bigger.jpg",
-                    "grades" => array(
-                        0 => array(
-                            'id' => '23',
-                            'title' => 'Test',
-                            'grade' => '7.5',
-                            'description' => 'Trabajo sobre Query-by-example',
-                            'type' => 'asigment'
-                        ),
-                        1 => array(
-                            'id' => '24',
-                            'title' => 'Ejercicio Sostenibilidad',
-                            'grade' => '7.5',
-                            'description' => 'Indice de Pobreza Humana <b>(IPH)</b>',
-                            'type' => 'quiz'
-                        )
-                    )
-                )
-        );
         
-        $json = $_POST["callback"] . "([" . json_encode($grades) . "])"; //JSONP
-        
-        echo $json;
         break;
     
     case "grade":
@@ -304,37 +424,7 @@ switch ($request['wsfunction']) {
         
         echo $json;
         break;
-    
-    case "forums":
-        $forums = array(
-                 0 => array(
-                    "id" => 0,
-                    "courseid" => 0,
-                    "title" => "Foro generico",
-                    "type" => "forum",
-                    "section" => 10
-                 ),
-                 1 => array(
-                    "id" => 1,
-                    "courseid" => 0,
-                    "title" => "Foro generico 2",
-                    "type" => "forum",
-                    "section" => 10
-                 ),
-                 2 => array(
-                    "id" => 2,
-                    "courseid" => 0,
-                    "title" => "Foro generico 3",
-                    "type" => "forum",
-                    "section" => 12
-                 )
-        );
         
-        $json = $_POST["callback"] . "([" . json_encode($forums) . "])"; //JSONP
-        
-        echo $json;
-        break;
-    
     case "posts":
         $posts = array(
                  0 => array(
@@ -348,6 +438,7 @@ switch ($request['wsfunction']) {
                     "msg" => "Esto es una aplicación web que usa los web services de moodle",
                     "replyes" => array(
                         3 => array( //la key sera la id post
+                            "id" => 30,
                             "userid" => 3,
                             "name" => "Marc",
                             "lastname" => "Alier",
@@ -356,6 +447,7 @@ switch ($request['wsfunction']) {
                             "msg" => "y en que esta basado?"
                         ),
                          4 => array( //la key sera la id post
+                            "id" => 40,
                             "userid" => 4,
                             "name" => "Jordi",
                             "lastname" => "Piquillem",
@@ -376,6 +468,7 @@ switch ($request['wsfunction']) {
                     "msg" => "eBooks es el nuevo gadget navideño",
                     "replyes" => array(
                         0 => array(
+                            "id" => 50,
                             "userid" => 3,
                             "name" => "Imanol",
                             "lastname" => "Urra Ruiz",
@@ -384,6 +477,7 @@ switch ($request['wsfunction']) {
                             "msg" => "y en que esta basado?"
                         ),
                         1 => array(
+                            "id" => 60,
                             "userid" => 4,
                             "name" => "Imanol",
                             "lastname" => "Urra Ruiz",
@@ -404,6 +498,7 @@ switch ($request['wsfunction']) {
                     "msg" => "Esto es una aplicacion web que usa los web services de moodle",
                     "replyes" => array(
                         3 => array( //la key sera la id post
+                            "id" => 70,
                             "userid" => 3,
                             "name" => "Imanol",
                             "lastname" => "Urra Ruiz",
@@ -412,6 +507,7 @@ switch ($request['wsfunction']) {
                             "msg" => "y en que esta basado?"
                         ),
                          4 => array( //la key sera la id post
+                            "id" => 80,
                             "userid" => 4,
                             "name" => "Imanol",
                             "lastname" => "Urra Ruiz",
@@ -594,11 +690,14 @@ switch ($request['wsfunction']) {
                 "description" => "Trabajo sobre Query-by-example",
                 "section" => 12
             );
+            
+            $json = $_POST["callback"] . "([" . json_encode($event) . "])"; //JSONP
+            echo $json;
+        } else {
+            $json = $_POST["callback"] . "([null])"; //JSONP
+            echo $json;
         }
         
-        $json = $_POST["callback"] . "(" . json_encode($event) . ")"; //JSONP
-        
-        echo $json;
         break;
     
     case "profile":

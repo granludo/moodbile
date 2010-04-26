@@ -4,7 +4,7 @@ Moodbile.behaviorsPatterns.events = function(context){
     var petitionOpts = {'wsfunction':'events'};
     var loadInterval = setInterval(function(){
         if(Moodbile.enroledCoursesid.length != 0){
-            Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.events, true);
+            //Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.events, true);
             clearInterval(loadInterval);
         }
     }, Moodbile.intervalDelay);
@@ -20,12 +20,13 @@ Moodbile.behaviorsPatterns.eventViewMoreInfo = function(context){
         id = id[1];
         
         var title = $(this).text();
-        
         var petitionOpts = {'wsfunction':'event', 'eventid': id};
         Moodbile.json(context, petitionOpts, function(json){
             var content = json.description;
-            Moodbile.aux.infoViewer(title, "event", content);
+            Moodbile.infoViewer(title, "event", content);
         }, false);
+        
+        return false;
     });
 }
 
@@ -50,7 +51,7 @@ Moodbile.jsonCallbacks.events = function(json){
             
             var currentItem = $('#wrapper .events-'+courseid).find('.moodbile-event:last-child');
         
-            currentItem.addClass(json.id +' fx');
+            currentItem.addClass(json.id.toString());
             currentItem.find('.moodbile-event-title').append(json.title).addClass('arrow');
             currentItem.find('.moodbile-event-title').find('.moodbile-icon').addClass('icon-'+json.type);
             currentItem.find('.info').find('.date').append(''+Moodbile.t('enddate')+': <em>'+ json.enddata +'</em>');

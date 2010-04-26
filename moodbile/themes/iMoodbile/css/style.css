@@ -296,8 +296,7 @@ nav#breadcrumb li#home span{background:transparent url(../images/breadcrumb.png)
     background: -webkit-gradient(linear, left top, left bottom, from(#999), to(#414141));
     border: 1px solid #000;color: #fff; -webkit-border-radius: 5px; -moz-border-radius: 5px;font-weight: bold;
 }
-#info-viewer #replyPost{ background-color:#CFCFCF;
-border-bottom:1px solid #e6e6e6;}
+#info-viewer #replyPost{ background-color:#CFCFCF;border-bottom:1px solid #e6e6e6;}
 #info-viewer #replyPost textarea{width: 210px; -moz-border-radius: 8px; -webkit-border-radius: 8px;border: 1px solid #999; height: 50px;}
 #info-viewer #replyPost button{background: -webkit-gradient(linear, left top, left bottom, from(#7DB3DF), to(#336699));
 border: 1px solid #006699;color: #fff; -webkit-border-radius: 5px; -moz-border-radius: 5px;font-weight: bold; height: 25px;float:right;margin-top:32px;}

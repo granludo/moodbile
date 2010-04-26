@@ -4,7 +4,7 @@ Moodbile.behaviorsPatterns.grade = function(context){
     var petitionOpts = {'wsfunction':'grades'};
     var loadInterval = setInterval(function(){
         if(Moodbile.enroledCoursesid.length != 0) {
-            Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.grade, true); 
+            //Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.grade, true); 
             clearInterval(loadInterval);
         }
     }, Moodbile.intervalDelay);    

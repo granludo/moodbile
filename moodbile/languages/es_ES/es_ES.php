@@ -3,6 +3,7 @@ $string['Loading'] = 'Cargando';
 $string['Reply'] = 'Responder';
 $string['Send'] = 'Enviar';
 $string['Back'] = 'Atras';
+$string['Close'] = 'Cerrar';
 $string['Courses'] = 'Cursos';
 $string['Resources'] = 'Recursos';
 $string['Events'] = 'Eventos';
@@ -18,6 +19,8 @@ $string['Username'] = 'Usuario';
 $string['Password'] = 'Contraseña';
 $string['enddate'] = 'Fecha de entrega';
 $string['about'] = 'Sobre Moodbile';
+$string['RequestError'] = 'Error en la peticion';
+$string['test'] = 'TEST';
 
 //$string['thischarset'] = 'iso-8859-1';
 //$string['locale'] = 'en';

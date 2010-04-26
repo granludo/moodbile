@@ -1,48 +1,34 @@
-//TODO: Cambiar estructura de datos
 Moodbile.behaviorsPatterns.resources = function(context){
     var context = context || document;
     
-    var petitionOpts = {'wsfunction':'resources'};
     var loadInterval = setInterval(function(){
-        if(Moodbile.enroledCoursesid.length != 0) {
-            Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.resources, true);
+        var data = Moodbile.processedData['resource'];
+        
+        if(data && Moodbile.frontpageLoaded) {
             clearInterval(loadInterval);
+            Moodbile.aux.resources(data);
         }
     }, Moodbile.intervalDelay);
 }
 
-Moodbile.jsonCallbacks.resources = function(json){
-    var callback = function(){
-        var itemHTML = $('.moodbile-resources:eq(0)').html();
+Moodbile.aux.resources = function(data){
+    var callback = function() {
+        $.each(data, function(){
+            var courseid = this.course;
+            
+            if($('.frontpage-'+courseid).find('.moodbile-resources').length == 0) {
+                $('#templates .moodbile-resources').clone().appendTo('.frontpage-'+courseid);
+            } else {
+                $('#templates .moodbile-resources').find('.moodbile-resource').clone().appendTo('.frontpage-'+courseid+' .moodbile-resources');
+            }
+            
+            var currentItem = $('.frontpage-'+courseid).find('.moodbile-resource:last-child');
         
-        $.each(Moodbile.enroledCoursesid, function(){
-            var id = this.toString();
-            
-            //itemHTML = $('.moodbile-resources:eq(0)').html();
-            $('.moodbile-resources:eq(0)').clone().appendTo('#wrapper');
-            
-            var sectionsLength = $('.moodbile-resources').length-1;
-            $('.moodbile-resources:eq('+sectionsLength+')').addClass('resources-'+ id);
-            $('.resources-'+ id).hide();
+            currentItem.addClass(this.id);
+            currentItem.find('.moodbile-resource-title').append(this.name).addClass('arrow');
+            //currentItem.find('.moodbile-resource-title').find('.moodbile-icon').addClass('icon-'+resource.type);
+            currentItem.find('.info').find('.description').append(this.intro);
         });
-
-        $.each(json, function(i, json) {
-            var courseid = json.courseid;
-            var resource = json.resource;
-            
-            $('#wrapper .resources-'+courseid).append(itemHTML);
-            
-            var currentItem = $('#wrapper .resources-'+courseid).find('.moodbile-resource:last-child');
-        
-            currentItem.addClass(resource.id.toString());
-            currentItem.find('.moodbile-resource-title').append(resource.title).addClass('arrow');
-            currentItem.find('.moodbile-resource-title').find('.moodbile-icon').addClass('icon-'+resource.type);
-            currentItem.find('.info').find('.description').append(resource.description);
-        });
-        
-        $('.moodbile-resource:first-child').remove();
-        $('.moodbile-resources:visible').remove();
     }
-    
-    Moodbile.loadTemplate('resources', '#wrapper', callback);
+    Moodbile.loadTemplate('resources', '#templates', callback);
 }

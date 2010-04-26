@@ -8,25 +8,38 @@ Moodbile.behaviorsPatterns.getUserProfile = function(context){
         
         var petitionOpts = {'wsfunction':'profile', 'userid': userid};
         Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.userProfile, false);
+        
+        return false;
     });
 }
 
 Moodbile.jsonCallbacks.userProfile = function (json) {
-    var title = Moodbile.t('Profile');
-    var content = '<div class="user"><span class="avatar"></span><span>'+json.name +' '+ json.lastname+'</span></div>';
-    content += '<div class="email"><span class="icon-email">Correo electrónico</span><span><a href="mailto:'+ json.email +'">'+ json.email +'</a></span></div>';
-    content += '<div class="city"><span class="icon-city">Ciudad</span><span>'+json.city+'</span></div>';
+    var callback = function() {
+        var title = Moodbile.t('Profile');
+        
+        var profile = $('#templates .moodbile-profile:last-child');
+        
+        profile.find('.avatar').css({'background-image' : 'url('+json.avatar+')'});
+        profile.find('.user').append(json.name +' '+ json.lastname);
+        profile.find('.email').find('a').attr('href', 'mailto:'+json.email).append(json.email);
+        profile.find('.city').append(json.city);
 
-    var courses = json.courses;
-    content += '<div class="courses-list"><span class="icon-courses">Cursos</span><span><dl>';
-    $.each(courses, function() {
-        content += '<dd>' + this + '</dd>';
-    });
-    content += '</dl></span></div>';
-    content += '<div class="roles"><span class="icon-roles">Roles</span><span>'+ json.roles +'</span></div>';
+        var courses = json.courses;
+        var content = '<dl>';
+        $.each(courses, function() {
+            content += '<dd>' + this + '</dd>';
+        });
+        content += '</dl>';
+        
+        profile.find('.courses-list').append(content);
+        profile.find('.roles').append(json.roles);
+        
+        content = profile.html();
     
-    Moodbile.aux.infoViewer(title, "user", content);
-    $('#info-viewer').find('.avatar').css({'background-image' : 'url('+json.avatar+')'});
+        Moodbile.infoViewer(title, "user", content);
+    }
+    
+    Moodbile.loadTemplate('profile', '#templates', callback);
 }
 
 Moodbile.behaviorsPatterns.users = function(context){
@@ -50,7 +63,7 @@ Moodbile.aux.users = function(context, courseids) {
     });
     
     var petitionOpts = {'wsfunction':'users'}
-    Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.users, true);
+    //Moodbile.json(context, petitionOpts, Moodbile.jsonCallbacks.users, true);
     Moodbile.aux.addUserFilterEvents();
 }
 
