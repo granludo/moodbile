@@ -1,1 +1,0 @@
-Moodbile.behaviorsPatterns.theme = function(context) {}
