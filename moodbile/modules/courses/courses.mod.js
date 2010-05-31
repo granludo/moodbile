@@ -24,8 +24,9 @@ Moodbile.modules.courses = {
                 var id = $(this).parent().attr('id');
         
                 $('section:visible').hide();
-                $('.moodbile-course-shortname').hide();
                 $('.frontpage-'+id).show().children().show();
+                
+                $('.moodbile-course-name').hide();
         
                 return false;
             });
@@ -41,7 +42,7 @@ Moodbile.modules.courses = {
                     var currentItem = $('#wrapper').find('.moodbile-courses:eq(0)');
             
                     currentItem.append(itemHTML);
-                    currentItem.find('.moodbile-course:last-child').attr('id', this.id);//.addClass(data.format);
+                    currentItem.find('.moodbile-course:last-child').attr('id', this.id);
                     currentItem.find('.moodbile-course:last-child').find('.course-title').attr('title', this.shortname).append(this.fullname);
                     currentItem.find('.moodbile-course:last-child').find('.info').find('.fullname').append(this.shortname);
                     currentItem.find('.moodbile-course:last-child').find('.info').find('.summary').append(this.summary);
@@ -53,7 +54,7 @@ Moodbile.modules.courses = {
         
                 Moodbile.modules.courses.auxFunc.loadFrontpage();
             }
-            Moodbile.getTemplate('courses', '#wrapper', callback);
+            Moodbile.cloneTemplate('courses', '#wrapper', callback);
     
             //Process data
             $.each(data, function(){
@@ -71,15 +72,12 @@ Moodbile.modules.courses = {
             });
         },
         'loadFrontpage' : function(){
-            var frontpageCallback = function() {
                 for (courseid in Moodbile.enroledCourses) {
-                    $('#templates .moodbile-frontpage').clone().appendTo('#wrapper');
-                    $('#wrapper .moodbile-frontpage:last-child').addClass('frontpage-'+courseid);
+                    Moodbile.cloneTemplate('frontpage', '#wrapper');
+                    $('.moodbile-frontpage:last-child').addClass('frontpage-'+courseid);
                 }
         
                 Moodbile.modules.courses.status.dataLoaded = true;
-            }
-            Moodbile.getTemplate('frontpage', '#templates', frontpageCallback);
         }
     }        
 }

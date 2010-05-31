@@ -1,6 +1,7 @@
 var Moodbile = {'user': null, 'modules': {}, 'behaviors': {}, 'aux': {}, 'templatesUrl': [], 'templatesLastMod': [], 'i18n': [], 'alert': { 'error':[], 'warning':[], 'success':[] }, 'fx' : {}};
 Moodbile.wsurl = "dummie/ws.dum.php";
 //Moodbile.wsurl = "http://localhost/~index02/moodbile/moodle/webservice/json/server.php";
+Moodbile.serverLocation = "http://localhost/~index02/moodbile/moodle";
 Moodbile.location =  location.href;
 Moodbile.lang = "es_ES";
 Moodbile.tStrings = null;
@@ -54,16 +55,6 @@ Moodbile.attachBehaviors = function(context) {
     Moodbile.showMask(false);
 }
 
-//Internacionalization
-Moodbile.t = function(stringToTranslate) {
-    if(Moodbile.i18n[stringToTranslate] != null) {
-        var string = Moodbile.i18n[stringToTranslate];
-    } else {
-        var string = "STRING!";
-    }
-    return string;
-}
-
 //Site header (logo) behavior
 Moodbile.behaviors.sitename = function(context) {
     $('a.sitename').live('click', function() {
@@ -76,16 +67,7 @@ Moodbile.behaviors.createMask = function(context) {
     $('#container').after('<div id="mask"><div>'+Moodbile.t('Loading')+'...</div></div>');
 }
 
-Moodbile.showMask = function(op) {
-    if(op == true){
-        if($('#mask').is(':hidden')) {
-            $('#mask').show();
-        }
-    } else {
-        $('#mask').hide();
-    }
-}
-
+//Info-viewer behaviors
 Moodbile.behaviors.infoViewer = function() {
     var callback = function() {
         $('.moodbile-info-view').attr('id', 'info-viewer');
@@ -95,22 +77,19 @@ Moodbile.behaviors.infoViewer = function() {
         $('.back').hide(); 
     }
     
-    Moodbile.getTemplate('info-viewer', '#container', callback);
+    Moodbile.cloneTemplate('info-viewer', '#container', callback);
     
     $('.back').live('click', function(){
-        Moodbile.fx.SlideRigthLeft('#info-viewer .content:last-child');
+        Moodbile.fx.SlideRigthLeft('#info-viewer .content:visible');
 
-        var intervalToRemove = setInterval(function() {
-            if($('#info-viewer .content:last-child').is(':hidden')) {
-                clearInterval(intervalToRemove);
-                $('#info-viewer .content:last-child').remove();
-                $('#info-viewer .content:last-child').show();
-                
-                if ($('#info-viewer').find('.content').length == 1) {
-                   $('.back').hide(); 
-                }
+        var intervalToRemove = setTimeout(function() {
+            $('#info-viewer .content:last-child').remove();
+            $('#info-viewer .content:last-child').show();
+            
+            if ($('#info-viewer').find('.content').length == 1) {
+               $('.back').hide(); 
             }
-        }, Moodbile.intervalDelay);
+        }, Moodbile.intervalDelay*15);
     });
     
     //Habilitamos el boton de cerrar
@@ -124,6 +103,46 @@ Moodbile.behaviors.infoViewer = function() {
         }
     });
 }
+
+Moodbile.behaviors.collapsible = function() {
+    $(".collapse").live('click', function(){
+        var toCollapse = $(this).next().attr('class');
+        toCollapse = toCollapse.split(' ');
+        toCollapse = toCollapse[0];
+        
+        if($(this).parent().find('.'+toCollapse).is('.expanded')) {
+            $(this).parent().find('.'+toCollapse).removeClass('expanded');
+            $(this).parent().find('.'+toCollapse).addClass('collapsed');
+        } else {
+            $(this).parent().find('.'+toCollapse).removeClass('collapsed');
+            $(this).parent().find('.'+toCollapse).addClass('expanded');
+        }
+        
+        return false;
+    });
+}
+
+//Show mask
+Moodbile.showMask = function(op) {
+    if(op == true){
+        if($('#mask').is(':hidden')) {
+            $('#mask').show();
+        }
+    } else {
+        $('#mask').hide();
+    }
+}
+
+//Internacionalization
+Moodbile.t = function(stringToTranslate) {
+    if(Moodbile.i18n[stringToTranslate] != null) {
+        var string = Moodbile.i18n[stringToTranslate];
+    } else {
+        var string = "STRING!";
+    }
+    return string;
+}
+
 
 Moodbile.infoViewer = function(title, type, info) {
     $('#info-viewer').find('.moodbile-info-view-title').find('h1').text(title);
@@ -158,18 +177,8 @@ Moodbile.infoViewer = function(title, type, info) {
     }
 }
 
-Moodbile.behaviors.collapsible = function() {
-    $(".collapse").live('click', function(){
-        if($(this).parent().find('.collapsible').is('.expanded')) {
-            $(this).parent().find('.collapsible').removeClass('expanded');
-            $(this).parent().find('.collapsible').addClass('collapsed');
-        } else {
-            $(this).parent().find('.collapsible').removeClass('collapsed');
-            $(this).parent().find('.collapsible').addClass('expanded');
-        }
-        
-        return false;
-    });
+Moodbile.userAvatarUrl = function(userid) {
+    return Moodbile.serverLocation+'/user/pix.php/'+userid+'/f2.jpg';
 }
 
 $(document).ready(function() { 

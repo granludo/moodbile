@@ -16,8 +16,7 @@ Moodbile.modules.user = {
             userid = userid.split(' ');
             userid = userid[1];
         
-            var petitionOpts = {'wsfunction':'profile', 'userid': userid};
-            Moodbile.json(context, petitionOpts, Moodbile.modules.user.auxFunc.userProfile, false);
+            Moodbile.modules.user.auxFunc.userProfile(Moodbile.user);
         
             return false;
         });
@@ -26,33 +25,32 @@ Moodbile.modules.user = {
 
     },
     'auxFunc' : {
-        'userProfile' : function(json){
-            var callback = function() {
-                var title = Moodbile.t('Profile');
-        
-                var profile = $('#templates .moodbile-profile:last-child');
-        
-                profile.find('.avatar').css({'background-image' : 'url('+json.avatar+')'});
-                profile.find('.user').append(json.name +' '+ json.lastname);
-                profile.find('.email').find('a').attr('href', 'mailto:'+json.email).append(json.email);
-                profile.find('.city').append(json.city);
-
-                var courses = json.courses;
-                var content = '<dl>';
-                $.each(courses, function() {
-                    content += '<dd>' + this + '</dd>';
-                });
-                content += '</dl>';
-        
-                profile.find('.courses-list').append(content);
-                profile.find('.roles').append(json.roles);
-        
-                content = profile.html();
-    
-                Moodbile.infoViewer(title, "user", content);
-            }
+        'userProfile' : function(data){
             
-            Moodbile.getTemplate('profile', '#templates', callback);   
+            var title = Moodbile.t('Profile');
+            var profileTemplate = $('#templates .moodbile-profile').html();
+            
+            Moodbile.infoViewer(title, "user", profileTemplate);  
+            
+            var profile = $('#info-viewer .content.user');
+            if(profile) {
+                profile.find('.avatar').css({'background-image' : 'url('+data.avatar+')'});
+                profile.find('.user').append(data.firstname +' '+ data.lastname);
+                profile.find('.email').find('a').attr('href', 'mailto:'+data.email).append(data.email);
+                profile.find('.country').append(data.country);
+                profile.find('.city').append(data.city);
+            }
+            /*
+
+            var courses = json.courses;
+            var content = '<dl>';
+            $.each(courses, function() {
+                content += '<dd>' + this + '</dd>';
+            });
+            content += '</dl>';
+        
+            profile.find('.courses-list').append(content);
+            profile.find('.roles').append(json.roles);*/  
         }
     }        
 }

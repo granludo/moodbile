@@ -1,7 +1,7 @@
 Moodbile.behaviors.alert = function(context){
     var context = context || document;
             
-    Moodbile.getTemplate('alert-dialog', '#container', Moodbile.aux.loadAlert);
+    Moodbile.cloneTemplate('alert-dialog', '#container', Moodbile.aux.loadAlert);
 }
 
 Moodbile.addAlert = function(alertType, strKey) {
@@ -26,8 +26,6 @@ Moodbile.aux.loadAlert = function (){
                 $('.moodbile-alert-'+alertType).append('<li/>');
                 $('.moodbile-alert-'+alertType).find('li:last-child').text(Moodbile.t(this));
             });
-                
-            //Moodbile.alert[alertType] = [];
         }
         
     });
@@ -41,7 +39,7 @@ Moodbile.aux.loadAlert = function (){
         Moodbile.infoViewer(alertTitle, "alert", alertHTML);
         
         setTimeout(function(){
-            Moodbile.fx('#info-viewer');
+            Moodbile.fx.SlideUpDown('#info-viewer');
         }, Moodbile.intervalDelay*20*3);
     }
 }

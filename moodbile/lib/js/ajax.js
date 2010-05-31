@@ -95,8 +95,8 @@ Moodbile.ajaxJson = function(currentQueueKey, callbackFunction, cache) {
                     Moodbile.queueJson[currentQueueKey] = null;
                     Moodbile.currentJson = null;
                 },
-                error: function() {
-                    alert('oops!');
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    alert(textStatus);
                 } 
             });
             clearInterval(initRequest);

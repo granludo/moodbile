@@ -1,38 +1,4 @@
 <?php
-function moodbile_process_client_templates_script() {
-    //Cargamos en un array, los templates que son por defecto
-    //Comprobamos si existen templates en el directorio del tema, si es si, substituimos el default por el del tema. Si es no, nada.
-    global $CFG, $Moodbile;
-
-    $theme = $CFG['theme'];
-    $templatepath = $CFG['basepath'].'/misc/templates';
-
-    if($templates_files = scandir($templatepath)) {
-
-        $templates_files = array_diff($templates_files, array('.', '..'));
-        
-        //Comprobamos si los templates existen en el directorio del tema y a su vez, formamos la url donde estan los templates
-        foreach($templates_files as $key => $value) {
-            $template_name = explode(".", $value);
-            $template_name = $template_name[0];
-
-            if(file_exists('themes/'. $theme .'/templates/'. $value)) {
-                $templates[$template_name] = 'themes/'. $theme .'/'.$value;
-            } else {
-                $templates[$template_name] = 'misc/templates/'.$value;
-            }
-
-            $templates_lastmod[$template_name] = filemtime($templates[$template_name]);
-        }
-    } else {
-        moodbile_add_alert("error", "No_templates");
-    }
-
-    //Procesamos el array para ser imprimido.
-    $Moodbile['djs']['templatesUrl'] =  $templates;
-    $Moodbile['djs']['templatesLastMod'] =  $templates_lastmod;
-}
-
 function moodbile_get_theme_scripts() {
     global $CFG;
 
@@ -91,7 +57,7 @@ function moodbile_get_client_scripts() {
     $Moodbile['js'] = $js;
 
     //Ejecutar funciones que cargan arrays asociativos a globales
-    moodbile_process_client_templates_script();
+    //moodbile_process_client_templates_script();
 
     return $js;
 }
@@ -231,8 +197,9 @@ function moodbile_process_theme_variables() {
     $scripts = moodbile_render_scripts();
     $manifest = moodbile_performance_create_manifest();
     $breadcrumb = moodbile_render_breadcrumb(); //Sera descartado, se encargara el JS de generar el breadcrumb
+    $templates = moodbile_templates_load_html();
     
-    $variables = array("title", "styles", "scripts", "manifest", "breadcrumb", "menu_items");
+    $variables = array("title", "styles", "scripts", "manifest", "breadcrumb", "templates");
     $variables = compact($variables);
     
     return $variables;
@@ -265,6 +232,4 @@ function moodbile_render_theme() {
             moodbile_performance_set_page_headers($content);
         }
     ob_end_flush();
-
-    //print $content;
 }

@@ -44,7 +44,7 @@ Moodbile.login = function (user, pass) {
                 });
             }
             
-            Moodbile.getTemplate('user-options', '#content header', callback);
+            Moodbile.cloneTemplate('user-options', '#content header', callback);
         }
         
         //AJAX
@@ -53,7 +53,7 @@ Moodbile.login = function (user, pass) {
     } else {
         //Misma peticion ajax que en if, esta vez para chequear si la contraseña es valida
         var callback = function () {
-            var userInfo = $.toJSON({'user': user,'pass': pass, 'lastLogin': Date.parse(Moodbile.actualDate)});
+            var userInfo = $.toJSON({'user': user,'pass': pass, 'lastLogin': Moodbile.user.lastlogin});
         
             cookie = $.setCookie('Moodbile', userInfo, {
                 duration: 14 // in days
@@ -84,12 +84,15 @@ Moodbile.ajaxLogin = function(user, pass, callback){
             
             if(!userData.msg) {
                 Moodbile.user = {
-                    'id' : userData.id,
+                    'id'        : userData.id,
                     'lastlogin' : userData.lastlogin,
-                    'name' : userData.name,
-                    'lastname' : userData.lastname,
-                    'email0' : userData.email0,
-                    'avatar' : userData.avatar
+                    'firstname' : userData.firstname,
+                    'lastname'  : userData.lastname,
+                    'email'     : userData.email,
+                    'avatar'    : userData.avatar,
+                    'country'   : userData.country,
+                    'city'      : userData.city,
+                    'avatar'    : Moodbile.serverLocation+'/user/pix.php/'+userData.id+'/f2.jpg'
                 };
             
                 if(callback) {
@@ -108,8 +111,8 @@ Moodbile.ajaxLogin = function(user, pass, callback){
             
             Moodbile.showMask(false);
         },
-        error: function() {
-            alert('oops!');
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest + textStatus + errorThrown);
         } 
     });
 }
@@ -196,5 +199,5 @@ Moodbile.aux.authentication = function () {
         });
     }
     
-    Moodbile.getTemplate('authentication', '#wrapper', callback);
+    Moodbile.cloneTemplate('authentication', '#wrapper', callback);
 }

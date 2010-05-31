@@ -21,6 +21,7 @@
                 <footer></footer>
             </div>
         </div>
+        <?php print $templates; ?>
         <?php print $scripts; ?>
   </body>
 </html>

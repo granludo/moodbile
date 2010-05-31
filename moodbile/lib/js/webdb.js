@@ -215,5 +215,4 @@ Moodbile.behaviors.webdb = function (context) {
     
     //Creamos una tablas
     Moodbile.webdb.createTable('requestJSON', {'requestName':'TEXT','JSON':'TEXT', 'date':'DATETIME', 'userid':'INTEGER' });
-    Moodbile.webdb.createTable('templates', {'templateName':'TEXT','HTML':'TEXT', 'modDate':'DATETIME'});
 }

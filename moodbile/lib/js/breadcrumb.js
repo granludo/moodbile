@@ -32,7 +32,6 @@ Moodbile.behaviors.breadcrumb = function(context){
             $('nav#toolbar #secondary-menu').hide();
             $('nav#toolbar #main-menu').show();
             $('nav#toolbar #main-menu').find('li#courses').addClass('active');
-            $('.moodbile-course-shortname').show();
             $('#wrapper').find('.moodbile-frontpage').children().hide();
             $('.moodbile-courses').show();
         }
