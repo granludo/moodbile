@@ -57,6 +57,60 @@ function moodbile_include_modules(){
     }
 }
 
+function moodbile_get_client_scripts() {
+    //Se encargara de unificar los js tanto de los modulos como del sistema
+    global $CFG, $Moodbile;
+
+    $basepath = $CFG['basepath'];
+    $active_modules = $CFG['active_modules'];
+
+    //client scripts
+    $js[] = 'misc/jquery/jquery.js';
+    $js[] = 'misc/jquery/jquery.cooquery.min.js';
+    $js[] = 'misc/jquery/jquery.json.min.js';
+
+    $js[] = 'lib/js/core.js';
+    $js[] = 'lib/js/authentication.js';
+    $js[] = 'lib/js/ajax.js';
+    $js[] = 'lib/js/alert.js';
+    $js[] = 'lib/js/webdb.js';
+    $js[] = 'lib/js/templates.js';
+    $js[] = 'lib/js/fx.js';
+    $js[] = 'lib/js/filter.js';
+    $js[] = 'lib/js/toolbar.js';
+    $js[] = 'lib/js/breadcrumb.js';
+    $js[] = 'lib/js/footer.js';
+    
+    //lang str library
+    $js[] = moodbile_i18n();
+    
+    //module scripts        
+    foreach($active_modules as $module) {
+        $module_files = moodbile_get_module($module);
+        $file = array_intersect($module_files, array($module .'.mod.js'));
+        $key = array_keys($file);
+        $js[] = 'modules/'. $module .'/'.$file[$key[0]];
+    }
+    
+    //Solucionar problemas a la hora de abrir la directorios y meterlo en cache
+    if($themejs = moodbile_get_theme_scripts()) {
+        foreach ($themejs as $themejs){
+            $js[] = 'themes/'.$CFG['theme'].'/'.$themejs;
+        }
+    }
+    
+    if($CFG['cache'] !== FALSE) {
+        $js = moodbile_performance($CFG['cache'], $js, 'js');
+    }
+
+    $Moodbile['js'] = $js;
+
+    //Ejecutar funciones que cargan arrays asociativos a globales
+    //moodbile_process_client_templates_script();
+
+    return $js;
+}
+
 function moodbile_load_globals(){
 //TODO: funcion encargada de generar los globales necesarios para un inicio correcto.
 }
@@ -68,7 +122,7 @@ function moodbile_start_client(){
     moodbile_include_modules();
     
     
-    moodbile_i18n();
+    //moodbile_i18n();
     moodbile_render_theme();
 }
 

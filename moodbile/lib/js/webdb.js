@@ -17,6 +17,7 @@ Moodbile.webdb.open = function() {
 
 Moodbile.webdb.onError = function(tx, e) {
     alert('Something unexpected happened: ' + e.message );
+    //AÑADIR ESTO Y USAR LA FUNCION DE LOS ERRORES
 }
 
 Moodbile.webdb.onSuccess = function(tx, r) {
@@ -121,7 +122,7 @@ Moodbile.webdb.getAllValues = function(tableName, callback) {
     }
 }
 
-Moodbile.webdb.getDateByOpts = function(tableName, opts, callback) {
+Moodbile.webdb.getDataByOpts = function(tableName, opts, callback) {
     if(Moodbile.webdb.isCompatible()) {
         var valuesToGet = [];
         var optsSQL = "";
@@ -137,75 +138,24 @@ Moodbile.webdb.getDateByOpts = function(tableName, opts, callback) {
         }
     
         Moodbile.webdb.db.transaction(function(tx) {
-            tx.executeSql("SELECT date FROM "+tableName+" WHERE "+optsSQL+"", valuesToGet, callback, Moodbile.webdb.onError);
-        });
-    }
-}
-
-Moodbile.webdb.getTemplate = function(templateName, callback) {
-    if(Moodbile.webdb.isCompatible()) {
-        Moodbile.webdb.db.transaction(function(tx) {
-            tx.executeSql("SELECT * FROM templates", [], callback, Moodbile.webdb.onError);
-        });
-    } else {
-        callback();
-    }
-}
-
-Moodbile.webdb.getRequestJSONbyUserID = function(tableName, requestName, userid, callback) {
-    if(Moodbile.webdb.isCompatible()) {
-        Moodbile.webdb.db.transaction(function(tx) {
-            tx.executeSql("SELECT * FROM "+tableName+" WHERE requestName=? AND userid=?", [requestName, userid], callback, Moodbile.webdb.onError);
+            tx.executeSql("SELECT data FROM "+tableName+" WHERE "+optsSQL+"", valuesToGet, callback, Moodbile.webdb.onError);
         });
     }
 }
 
 //Other functions
-Moodbile.webdb.isEmpty = function(tableName, trueCallback, falseCallback) {
+Moodbile.webdb.isEmpty = function(tableName, opts, callbacks) {
     if(Moodbile.webdb.isCompatible()) {
-        Moodbile.DBisEmpty = false;
         var callback = function(tx, rs) {
             if(rs.rows.length === 0) {
-                trueCallback();
+                callbacks.t();
             } else {
-                falseCallback();
+                callbacks.f();
             }
         }
-        Moodbile.webdb.getAllValues(tableName, callback);
+        Moodbile.webdb.getDataByOpts(tableName, opts, callback); //Cambiar por get data by opts
     } else {
-        trueCallback();
-    }
-}
-
-Moodbile.webdb.needReload = function(tableName, opts, callback) {
-    if(Moodbile.webdb.isCompatible()) {
-        var checkdb = setInterval(function() {
-            if(Moodbile.webdb.db != null) {
-                clearInterval(checkdb);        
-                var getValueCallback = function(tx, rs) {
-                    if(rs.rows.length != 0) {
-                        var timeToCompare = Moodbile.ExpireTimes[tableName] * 60 * 1000; //minutos a milisegundos
-                        var dateToCheck = rs.rows.item(0).date;
-                        var actualDate = Date.parse(Moodbile.actualDate);
-                        
-                        if(actualDate-dateToCheck <= timeToCompare) {
-                            Moodbile.needReload = false;
-                        } else {
-                            Moodbile.needReload = true;
-                        }
-                    } else {
-                        Moodbile.needReload = true;
-                    }
-            
-                    callback();
-                }
-                
-                Moodbile.webdb.getDateByOpts(tableName, opts, getValueCallback);
-            }
-        }, Moodbile.intervalDelay);
-    } else {
-        Moodbile.needReload = true;
-        callback();
+        callbacks.t();
     }
 }
 
@@ -214,5 +164,11 @@ Moodbile.behaviors.webdb = function (context) {
     Moodbile.webdb.open();
     
     //Creamos una tablas
-    Moodbile.webdb.createTable('requestJSON', {'requestName':'TEXT','JSON':'TEXT', 'date':'DATETIME', 'userid':'INTEGER' });
+    Moodbile.webdb.createTable('requestData', {
+        'name'             : 'TEXT',
+        'userid'           : 'INTEGER',
+        'context'          : 'TEXT',
+        'data'             : 'TEXT',
+        'lastmodification' : 'DATETIME' 
+    });
 }

@@ -6,8 +6,7 @@ Moodbile.behaviors.breadcrumb = function(context){
     //Acciones cuando se pulsa un link permitido
     //level-1
     $('.moodbile-courses a').live('click', function(){
-        var courseid = $(this).parent().attr('id');
-        var item = $(this).text();
+        var courseid = $(this).parent().attr('id'), item = $(this).find('div.moodbile-course-fullname').text();
         
         if($('nav#breadcrumb li:eq(1)').is('#level-1') == false) {
             $('nav#breadcrumb ul').append('<li id="level-1"><span><a href="#" class="'+courseid+'">'+item+'</a></span></li>');
@@ -28,12 +27,10 @@ Moodbile.behaviors.breadcrumb = function(context){
             $('nav#breadcrumb li:eq(2)').remove();
             $('.frontpage-'+courseid).children().show();
         } else {
-            $('nav#breadcrumb').hide();
-            $('nav#toolbar #secondary-menu').hide();
-            $('nav#toolbar #main-menu').show();
+            $('nav#breadcrumb, nav#toolbar #secondary-menu').hide();
+            $('#wrapper').children().hide();
+            $('nav#toolbar #main-menu, .moodbile-courses, .moodbile-event-course').show();
             $('nav#toolbar #main-menu').find('li#courses').addClass('active');
-            $('#wrapper').find('.moodbile-frontpage').children().hide();
-            $('.moodbile-courses').show();
         }
         
         return false;

@@ -1,12 +1,10 @@
-var Moodbile = {'user': null, 'modules': {}, 'behaviors': {}, 'aux': {}, 'templatesUrl': [], 'templatesLastMod': [], 'i18n': [], 'alert': { 'error':[], 'warning':[], 'success':[] }, 'fx' : {}};
-Moodbile.wsurl = "dummie/ws.dum.php";
-//Moodbile.wsurl = "http://localhost/~index02/moodbile/moodle/webservice/json/server.php";
+var Moodbile = {'user': null, 'modules': {},  'init': {}, 'behaviors': {}, 'events': {}, 'aux': {}, 'i18n': {}, 'alert': { 'error':[], 'warning':[], 'success':[] }, 'fx' : {}};
+//Moodbile.wsurl = "dummie/ws.dum.php";
+Moodbile.wsurl = "http://localhost/~index02/moodbile/moodle/webservice/json/server.php";
 Moodbile.serverLocation = "http://localhost/~index02/moodbile/moodle";
 Moodbile.location =  location.href;
-Moodbile.lang = "es_ES";
 Moodbile.tStrings = null;
 Moodbile.currentJson = null;
-Moodbile.requestJson = [];
 Moodbile.queueJson = [];
 Moodbile.processedData = []; //Array con datos JSON ya procesados o filtrados
 Moodbile.enroledCourses = []; //Array donde dentro se guardan los ids de los cursos del cual el usuario esta enrolado
@@ -14,33 +12,31 @@ Moodbile.intervalDelay = 25;
 Moodbile.actualDate = new Date();
 Moodbile.ExpireTimes = [];//in minutes
 Moodbile.ExpireTimes['requestJSON'] = 5;
-Moodbile.needReload = true;
-Moodbile.templatesHTML = [];
-Moodbile.dbCache = null;
 Moodbile.enableFx = true;
 
 //Funcion que ejecuta los comportamientos de los js de cada modulo
-Moodbile.attachBehaviors = function(context) {
+Moodbile.startClient = function(context) {
     var context = context || document;
     
-    //Attach general purpouse behaviours
+    //Attach general purpouse behaviours     
     jQuery.each(Moodbile.behaviors, function() {
         this(context);
     });
     
     //Attach modules behaviours
     Moodbile.showMask(true);
+    
     var userCheck = setInterval(function(){
         if(Moodbile.user != null) {
             clearInterval(userCheck);
-            jQuery.each(Moodbile.modules, function() {
-                if(this.initBehavior != null) {
-                    this.initBehavior(context);
+            
+            jQuery.each(Moodbile.modules, function(i, module) {
+                if(module.initBehavior != null) {
+                    module.initBehavior(context);
                 }
       
-                if(this.dependency != null){
-                    var depend = Moodbile.modules[this.dependency];
-                    var behavior = this.depBehavior;
+                if(module.dependency != null){
+                    var depend = Moodbile.modules[module.dependency], behavior = module.depBehavior;
         
                     var depInterval = setInterval(function() {
                         if(depend.status.dataLoaded) {
@@ -49,9 +45,14 @@ Moodbile.attachBehaviors = function(context) {
                         }
                     }, Moodbile.intervalDelay);
                 }
-            }); 
+                
+                if (Moodbile.modules.length == i+1) {
+                    alert(true);
+                }
+            });
         }
     }, Moodbile.intervalDelay);
+    
     Moodbile.showMask(false);
 }
 
@@ -106,17 +107,7 @@ Moodbile.behaviors.infoViewer = function() {
 
 Moodbile.behaviors.collapsible = function() {
     $(".collapse").live('click', function(){
-        var toCollapse = $(this).next().attr('class');
-        toCollapse = toCollapse.split(' ');
-        toCollapse = toCollapse[0];
-        
-        if($(this).parent().find('.'+toCollapse).is('.expanded')) {
-            $(this).parent().find('.'+toCollapse).removeClass('expanded');
-            $(this).parent().find('.'+toCollapse).addClass('collapsed');
-        } else {
-            $(this).parent().find('.'+toCollapse).removeClass('collapsed');
-            $(this).parent().find('.'+toCollapse).addClass('expanded');
-        }
+        $(this).next('.collapsible').toggle().toggleClass('collapsed');
         
         return false;
     });
@@ -143,9 +134,10 @@ Moodbile.t = function(stringToTranslate) {
     return string;
 }
 
-
-Moodbile.infoViewer = function(title, type, info) {
-    $('#info-viewer').find('.moodbile-info-view-title').find('h1').text(title);
+//Info-viewer
+Moodbile.infoViewer = function(header, type, info) {
+    $('#info-viewer .moodbile-info-view-title').find('h1').html(header.title);
+    $('#info-viewer .moodbile-info-view-title').find('h2').html(header.subtitle);
     
     //Añadimos info
     if ($('#info-viewer').is(':hidden')) {
@@ -177,10 +169,35 @@ Moodbile.infoViewer = function(title, type, info) {
     }
 }
 
+//INDEPENDIZAR FUNCIONES
+Moodbile.time = {
+    'getDate' : function (unixTimestamp) {
+        var date = new Date();
+        date.setTime(unixTimestamp*1000);
+    
+        return date.toLocaleDateString();
+    },
+    'getTime' : function (unixTimestamp) {
+        var date = new Date();
+        date.setTime(unixTimestamp*1000);
+        
+        return date.toLocaleTimeString();
+    },
+    'getDateTime' : function (unixTimestamp) {
+        var date = new Date();
+        date.setTime(unixTimestamp*1000);
+        
+        return date.toLocaleString();
+    },
+    'convertTimestamp' : function(unixTimestamp) {
+        return unixTimestamp*1000;
+    }
+}
+
 Moodbile.userAvatarUrl = function(userid) {
     return Moodbile.serverLocation+'/user/pix.php/'+userid+'/f2.jpg';
 }
 
-$(document).ready(function() { 
-    Moodbile.attachBehaviors(this);
+$(window).ready(function() { 
+    Moodbile.startClient(this);
 });

@@ -4,26 +4,21 @@
 function moodbile_i18n(){
     global $CFG, $Moodbile;
     
-    if(!isset($CFG['lang'])){
-        $lang = 'en_EN';
+    if(moodbile_is_loged()){
+        $cookie = json_decode($_COOKIE['Moodbile']);
+        
+        $lang = $cookie->lang;
     } else {
-        $lang = $CFG['lang'];
+        if(!isset($CFG['lang'])){
+            $lang = 'en';
+        } else {
+            $lang = $CFG['lang'];
+        }
     }
     
-    if(file_exists('languages/'.$lang.'/'.$lang.'.php')){
-        include('languages/'.$lang.'/'.$lang.'.php');
-    }
-    
-    $Moodbile['djs']['i18n'] =  $string;
-}
-
-//funcion encargada de devolver el string adecuado
-function moodbile_get_string($string){
-    global $Moodbile;
-    
-    if(isset($Moodbile['djs']['i18n'][$string])){
-        return $Moodbile['djs']['i18n'][$string];
+    if(file_exists('languages/'.$lang.'/'.$lang.'.js')){
+        return 'languages/'.$lang.'/'.$lang.'.js';
     } else {
-        return "String!";
+        return 'languages/en/en.js';
     }
 }

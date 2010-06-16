@@ -26,7 +26,7 @@ Moodbile.login = function (user, pass) {
                 //Acciones para las opciones de menu del usuario
                 $('#user-profile').toggle(
                     function(){
-                        $('#user-nav').show();
+                        $('#user-nav').show().children().show();
                     },
                     function () {
                         $('#user-nav').hide();
@@ -53,7 +53,7 @@ Moodbile.login = function (user, pass) {
     } else {
         //Misma peticion ajax que en if, esta vez para chequear si la contraseña es valida
         var callback = function () {
-            var userInfo = $.toJSON({'user': user,'pass': pass, 'lastLogin': Moodbile.user.lastlogin});
+            var userInfo = $.toJSON({'user': user,'pass': pass, 'lang': Moodbile.user.lang,'lastLogin': Moodbile.user.lastlogin});
         
             cookie = $.setCookie('Moodbile', userInfo, {
                 duration: 14 // in days
@@ -67,8 +67,7 @@ Moodbile.login = function (user, pass) {
 }
 
 Moodbile.ajaxLogin = function(user, pass, callback){
-    var usernames = [user];
-    var userdata = {'wsusername': user, 'wspassword': pass, 'wsfunction': 'moodle_user_get_users_by_username', 'usernames': usernames}
+    var usernames = [user], userdata = {'wsusername': user, 'wspassword': pass, 'wsfunction': 'moodle_user_get_users_by_username', 'usernames': usernames}
 
     $.ajax({
         type: "POST",
@@ -92,6 +91,7 @@ Moodbile.ajaxLogin = function(user, pass, callback){
                     'avatar'    : userData.avatar,
                     'country'   : userData.country,
                     'city'      : userData.city,
+                    'lang'      : userData.lang,
                     'avatar'    : Moodbile.serverLocation+'/user/pix.php/'+userData.id+'/f2.jpg'
                 };
             
@@ -141,9 +141,7 @@ Moodbile.behaviors.authentication = function(context){
         //Mostramos la pantalla de logeo.
         
     if(Moodbile.isLoged()) {
-        var cookie = $.readCookie('Moodbile');
-        var user = $.evalJSON(cookie).user;
-        var pass = $.evalJSON(cookie).pass;
+        var cookie = $.readCookie('Moodbile'), user = $.evalJSON(cookie).user, pass = $.evalJSON(cookie).pass;
         
         if(user && pass) {
             Moodbile.login(user, pass);
@@ -174,9 +172,7 @@ Moodbile.aux.authentication = function () {
         });
     
         $("#login-button").live('click', function(){
-            var user = $('#login-form-input-user').val();
-            var pass = $('#login-form-input-pass').val();
-            var formCheck = true;
+            var user = $('#login-form-input-user').val(), pass = $('#login-form-input-pass').val(), formCheck = true;
             
             //checking user
             if (user == "" || user == Moodbile.t('Username')) {

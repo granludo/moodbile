@@ -17,7 +17,7 @@
                 </header>
                 <nav id="breadcrumb"><?php print $breadcrumb; ?></nav>
                 <nav id="toolbar"></nav>
-                <div id="wrapper"></div>
+                <section id="wrapper"></section>
                 <footer></footer>
             </div>
         </div>
