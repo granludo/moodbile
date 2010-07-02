@@ -1,0 +1,10 @@
+# Compressed javascript files
+AddEncoding x-gzip .gzjs
+AddType application/x-javascript .gzjs
+
+# Compressed css files
+AddEncoding x-gzip .gzcss
+AddType text/css .gzcss
+
+# Manifest to App Cache
+AddType text/cache-manifest .wac
