@@ -422,15 +422,26 @@ div[data-type='course'] div, #info-viewer div, #info-viewer div div div, div[dat
 }
 
 .moodbile-post a.reply-this-post {
-    position:absolute;
-    right:25px;
-    top:6px;
+    bottom: -5px;
+    position: absolute;
+    right: 0;
 }
 
 .moodbile-post-msg {
     padding:10px 10px 10px 40px !important;
     font-size: 12px;
     text-align: justify;
+}
+
+.moodbile-post .edit-in-place {
+    background:none repeat scroll 0 0 transparent;
+    border:0 none;
+    bottom: 12px;
+    height:20px;
+    position:absolute;
+    right:25px;
+    width:25px;
+    z-index:555;
 }
 
 .moodbile-new-discussion {
@@ -599,6 +610,18 @@ footer a#about {
     margin: 5px;
     text-indent:-9999px;
 }
+.icon-edit {
+    background:transparent url(../images/icons.png) no-repeat scroll 0 -327px;
+    text-indent:-9999px;
+}
+.icon-save {
+    background:transparent url(../images/icons.png) no-repeat scroll 0 -310px;
+    text-indent:-9999px;
+}
+.icon-cancel {
+    background:transparent url(../images/icons.png) no-repeat scroll 0 -292px;
+    text-indent:-9999px;
+}
 .icon-user-op-decoration {
     border-color:transparent transparent #000000 transparent;
     border-style: solid;
@@ -661,4 +684,18 @@ details div{
     padding:2px 10px !important;
     position:static !important;
     text-shadow:0 1px 0 #FFFFFF;
+}
+.moodbile-edit-in-place textarea {
+    color:#333;
+    font-size:12px;
+    height:100px;
+    margin:0;
+    width:100%;
+    font-style: normal;
+    font-family: Verdana, Arial, Helvetica;
+}
+.moodbile-edit-in-place button {
+    background:none repeat scroll 0 0 transparent;
+    border:0 none;
+    margin-top: 5px;
 }

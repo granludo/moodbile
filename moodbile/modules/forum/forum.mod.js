@@ -56,7 +56,7 @@ Moodbile.modules.forum.auxFunc.loadForums = function(data){
         currentItem.attr({'data-forum-id': forumid, 'data-course-id': courseid, 'data-type': 'forum'});
         currentItem.find('.moodbile-forum-title').append(this.name).attr('title', this.name).addClass('arrow');
         currentItem.find('.moodbile-forum-title').find('.moodbile-icon').addClass('icon-'+this.modname);
-                
+            
         if (this.intro != "") {
             currentItem.find('details .intro').append(this.intro);
         } else {
@@ -118,7 +118,7 @@ Moodbile.modules.forum.auxFunc.loadDiscussions = function (data) {
 
 Moodbile.modules.forum.auxFunc.loadPosts = function (data) {
     var discussionid = data[0].discussionid, posts = data[0].posts, postid = null;
-    var currentPost = null, str = null, title = null;
+    var currentPost = null, _str = null, title = null;
     var selector = "#templates .moodbile-posts[data-discussion-id='"+discussionid+"']";
             
     if($(selector).length == 0) {
@@ -133,13 +133,22 @@ Moodbile.modules.forum.auxFunc.loadPosts = function (data) {
             }
                 
             currentPost = $(selector +" .moodbile-post:last");
-            currentPost.attr('data-post-id', postid);
+            currentPost.attr({'data-post-id': postid, 'data-type' : 'post'});
             currentPost.find('.moodbile-avatar').css({'background-image' : 'url('+Moodbile.userAvatarUrl(this.userid)+')'});
             currentPost.find('.moodbile-post-link').attr('data-user-id', this.userid).addClass('arrow');
             currentPost.find('.moodbile-post-link .moodbile-post-title').append(this.subject);
-                
-            str = Moodbile.t('lastModified')+" "+this.firstname+" "+this.lastname +" - "+Moodbile.time.getDateTime(this.modified);
-            currentPost.find('.moodbile-post-link .moodbile-post-autor').append(str);
+            
+            _str = Moodbile.t('lastModified')+" "+this.firstname+" "+this.lastname +" - "+Moodbile.time.getDateTime(this.modified);
+            currentPost.find('.moodbile-post-link .moodbile-post-autor').append(_str);
+            
+            if (this.userid == Moodbile.user.id) {
+                _str = '<button class="edit-in-place"><span class="moodbile-icon icon-edit">';
+                _str += Moodbile.t('Edit');
+                _str += '</span></button>';
+                currentPost.find('a:last').after(_str);
+                currentPost.find('.moodbile-post-msg').addClass('editable');
+            }
+            
             currentPost.find('.moodbile-post-msg').append(this.message);
         });
     }
@@ -159,6 +168,41 @@ Moodbile.modules.forum.auxFunc.loadPosts = function (data) {
     }];
             
     Moodbile.infoViewer.show(title, 'discussion-'+discussionid+'-posts', str, extraButton, null);
+    
+    //attach essential for edit in place
+    Moodbile.editInPlace.options.post = {
+        'callback' : function () {
+            var _selector = "div[data-"+ Moodbile.editInPlace.context +"-id='"+ Moodbile.editInPlace.id +"']:visible";
+            var _subject = $(_selector).find('.moodbile-post-title').text();
+            var _message = $(_selector).find('textarea').val();
+            var _petition = {};
+            
+            //renueva contenido en objecto
+            Moodbile.editInPlace.content = _message;
+            
+            //rellenara las opciones necesarias
+            _petition.name = 'editInPlace', 
+            _petition.wsfunction = 'moodle_forum_update_posts';
+            _petition.context    = {
+                'posts' : [{
+                    'postid'  : Moodbile.editInPlace.id,
+                    'subject' : _subject,
+                    'message' : _message
+                }]
+            };
+            _petition.callback = function (data) {
+                var _editable = $(_selector).find('.editable');
+
+                _editable.html(Moodbile.editInPlace.content);
+            };
+            _petition.cache = false;
+            
+            //completamos la peticion
+            Moodbile.editInPlace.options.post.petition = _petition;
+        },
+        'petition' : {}
+    }
+    
 };
 
 //Auxiliar function to load Form
@@ -186,18 +230,25 @@ Moodbile.events.extraEvents = $('button.newDiscussion, button.newPost, a.reply-t
     id = $(selector).attr('data-infoviewer-id');
       
     if ( $(this).is('button.newDiscussion') ) {
+    
         type = 'newDiscussion';
+        
     } else if ( $(this).is('button.newPost') ) {
+    
         id = $(selector +" div.moodbile-post:first").attr('data-post-id');
         type = 'newPost';
         subject = "Re: " + $(selector +" div.moodbile-post:first").find("div.moodbile-post-title").text();
+    
     } else {
+        
         id = $(this).parent().attr('data-post-id');
         type = 'replyThisPost';
         subject = "Re: " + $(this).parent().find('div.moodbile-post-title').text();
+    
     }
             
     if ( $(selector +' div.moodbile-extra-options').length == 0 ) {
+        
         $(selector +' .moodbile-info-view-title').after('<div class="moodbile-extra-options" />');
     }
             

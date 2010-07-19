@@ -166,24 +166,51 @@ Moodbile.userAvatarUrl = function(userid) {
  * @return String with avatar location in server
  */
 Moodbile.editInPlace = {
-    'events' : {},
-    'content' : null
+    'id'       : 0,
+    'events'   : {},
+    'content'  : null,
+    'context'  : null,
+    'options'  : {}
 };
-Moodbile.editInPlace.events.edit = $('.edit-in-place').live('click', function () {
+
+Moodbile.editInPlace.events.edit = $('button.edit-in-place').live('click', function () {
 //busca la clase .editable dentro del parent y cambia el contenido por un textarea con el contenido editable
     var _this = $(this);
     var _editable = $(this).parent().find('.editable');
+    Moodbile.editInPlace.context = _this.parent().attr('data-type');
+    Moodbile.editInPlace.id      = _this.parent().attr('data-'+ Moodbile.editInPlace.context +'-id');
     
-    Moodbile.editInPlace.content = _editable.html();
+    if ( _editable.find('#edit-in-place').length == 0 ) {
+        Moodbile.editInPlace.content = _editable.html();
     
-    _editable.html('<textarea>'+  Moodbile.editInPlace.content +'</textarea>');
-    _this.after('');
+        _editable.empty();
+        Moodbile.cloneTemplate('edit-in-place', _editable);
+    
+        _editable.find('#edit-in-place textarea').text(Moodbile.editInPlace.content);
+        _editable.find('#edit-in-place button.save span').text(Moodbile.t('Save'));
+        _editable.find('#edit-in-place button.cancel span').text(Moodbile.t('Cancel'));
+    }
+    
+    return false;
 });
-Moodbile.editInPlace.events.save = $('.edit-in-place').live('click', function () {
-//una vez se pulsa se envia la informacion dentro del textarea. Si es igual, se cancela la operacion 
-});
-Moodbile.editInPlace.events.cancel = $('.edit-in-place').live('click', function () {
 
+Moodbile.editInPlace.events.save = $('#edit-in-place button.save').live('click', function () {
+    var _context = Moodbile.editInPlace.context;
+    
+    if (Moodbile.editInPlace.options[_context].callback) {
+        Moodbile.editInPlace.options[_context].callback();      
+        Moodbile.json(Moodbile.editInPlace.options[_context].petition);
+    }
+    
+    return false;
+});
+
+Moodbile.editInPlace.events.cancel = $('#edit-in-place button.cancel').live('click', function () {
+    var _editable = $(this).parent().parent();
+
+    _editable.html(Moodbile.editInPlace.content);
+    
+    return false;
 });
 
 
