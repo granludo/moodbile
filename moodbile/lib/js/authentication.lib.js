@@ -54,18 +54,11 @@ Moodbile.ajaxLogin = function(user, pass, authenticationCallback){
     var callback = function(userData) {
         userData = userData[0]; 
         if(!userData.msg) {
-            Moodbile.user = {
-                'id'        : userData.id,
-                'lastlogin' : userData.lastlogin,
-                'firstname' : userData.firstname,
-                'lastname'  : userData.lastname,
-                'email'     : userData.email,
-                'avatar'    : userData.avatar,
-                'country'   : userData.country,
-                'city'      : userData.city,
-                'lang'      : userData.lang,
-                'avatar'    : Moodbile.serverLocation+'/user/pix.php/'+userData.id+'/f2.jpg'
-            };
+            Moodbile.user = {};
+            
+            for(data in userData) {
+                Moodbile.user[data] = userData[data];
+            }
             
             if(authenticationCallback) {
                 authenticationCallback();

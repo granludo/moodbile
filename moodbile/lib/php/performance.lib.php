@@ -1,4 +1,4 @@
-<?
+<?php
 function moodbile_performance($cache = "basic", $files = NULL, $filetype = NULL) {
 
     //moodbile_performance_check_last_mod();

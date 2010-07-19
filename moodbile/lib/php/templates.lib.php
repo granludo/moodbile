@@ -1,4 +1,4 @@
-<?
+<?php
 function moodbile_templates_load_html() {
     //Cargamos en un array, los templates que son por defecto
     //Comprobamos si existen templates en el directorio del tema, si es si, substituimos el default por el del tema. Si es no, nada.
