@@ -118,7 +118,7 @@ Moodbile.modules.forum.auxFunc.loadDiscussions = function (data) {
 
 Moodbile.modules.forum.auxFunc.loadPosts = function (data) {
     var discussionid = data[0].discussionid, posts = data[0].posts, postid = null;
-    var currentPost = null, _str = null, title = null;
+    var _currentPost = null, _str = null, title = null;
     var selector = "#templates .moodbile-posts[data-discussion-id='"+discussionid+"']";
             
     if($(selector).length == 0) {
@@ -132,24 +132,28 @@ Moodbile.modules.forum.auxFunc.loadPosts = function (data) {
                 Moodbile.cloneTemplate('post:first', "#templates .moodbile-posts[data-discussion-id='"+discussionid+"']");
             }
                 
-            currentPost = $(selector +" .moodbile-post:last");
-            currentPost.attr({'data-post-id': postid, 'data-type' : 'post'});
-            currentPost.find('.moodbile-avatar').css({'background-image' : 'url('+Moodbile.userAvatarUrl(this.userid)+')'});
-            currentPost.find('.moodbile-post-link').attr('data-user-id', this.userid).addClass('arrow');
-            currentPost.find('.moodbile-post-link .moodbile-post-title').append(this.subject);
+            _currentPost = $(selector +" .moodbile-post:last");
+            _currentPost.attr({'data-post-id': postid, 'data-type' : 'post'});
+            _currentPost.find('.moodbile-avatar').css({'background-image' : 'url('+Moodbile.userAvatarUrl(this.userid)+')'});
+            _currentPost.find('.moodbile-post-link').attr('data-user-id', this.userid).addClass('arrow');
+            _currentPost.find('.moodbile-post-link .moodbile-post-title').append(this.subject);
             
             _str = Moodbile.t('lastModified')+" "+this.firstname+" "+this.lastname +" - "+Moodbile.time.getDateTime(this.modified);
-            currentPost.find('.moodbile-post-link .moodbile-post-autor').append(_str);
+            _currentPost.find('.moodbile-post-link .moodbile-post-autor').append(_str);
             
             if (this.userid == Moodbile.user.id) {
-                _str = '<button class="edit-in-place"><span class="moodbile-icon icon-edit">';
+                //user
+                _currentPost.find('.moodbile-post-link').addClass('me');
+                
+                //edit-in-place
+                _str = '<button class="edit-in-place" type="button"><span class="moodbile-icon icon-edit">';
                 _str += Moodbile.t('Edit');
                 _str += '</span></button>';
-                currentPost.find('a:last').after(_str);
-                currentPost.find('.moodbile-post-msg').addClass('editable');
+                _currentPost.find('a:last').after(_str);
+                _currentPost.find('.moodbile-post-msg').addClass('editable');
             }
             
-            currentPost.find('.moodbile-post-msg').append(this.message);
+            _currentPost.find('.moodbile-post-msg').append(this.message);
         });
     }
             
@@ -207,21 +211,22 @@ Moodbile.modules.forum.auxFunc.loadPosts = function (data) {
 
 //Auxiliar function to load Form
 Moodbile.modules.forum.auxFunc.loadForm = function (id, type, subject) {
-    var selector = "#container section.moodbile-info-viewer div.moodbile-info-viewer-wrapper:last div.moodbile-extra-options";
+    var _selector = "#container section.moodbile-info-viewer div.moodbile-info-viewer-wrapper:last div.moodbile-extra-options";
+    var _target = $(_selector);
     
-    $(selector).children().remove();
-    Moodbile.cloneTemplate('new-discussion', selector);
+    _target.children().remove();
+    Moodbile.cloneTemplate('new-discussion', _selector);
             
     //Labels
-    $("div.moodbile-new-discussion label[for='subject']").text(Moodbile.t('Subject'));
-    $("div.moodbile-new-discussion label[for='discussion-message']").text(Moodbile.t('Message'));
+    _target = $("div.moodbile-new-discussion");
+    _target.find("label[for='subject']").text(Moodbile.t('Subject'));
+    _target.find("label[for='discussion-message']").text(Moodbile.t('Message'));
 
     //Inputs
-    $("div.moodbile-new-discussion input#subject").val(subject);
+    _target.find("input#subject").val(subject);
             
     //submit
-    $("div.moodbile-new-discussion button[type='submit']").attr({'data-submit-type': type, 'data-send-id': id});
-    $("div.moodbile-new-discussion button[type='submit']").html(Moodbile.t('Submit')+'<span class=""/>');
+    _target.find("input[type='submit']").attr({'value': Moodbile.t('Submit'), 'data-submit-type': type, 'data-send-id': id});
 };
 
 Moodbile.events.extraEvents = $('button.newDiscussion, button.newPost, a.reply-this-post').live('click', function() {
@@ -293,7 +298,7 @@ Moodbile.events.getPostFromDiscussion = $('a.moodbile-discussion-link').live('cl
     return false;
 });
         
-Moodbile.events.create = $("button[type='submit']").live('click', function () {
+Moodbile.events.create = $("input[type='submit']").live('click', function () {
     var submitType = $(this).attr('data-submit-type');
     var id = $(this).attr('data-send-id');
     var subject = $("#info-viewer div.moodbile-discussion-subject").find("input#subject").val();

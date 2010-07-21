@@ -144,7 +144,7 @@ function moodbile_process_theme_variables() {
     $title = $CFG['sitename'];
     $styles = moodbile_render_css();
     $scripts = moodbile_render_scripts();
-    $manifest = moodbile_performance_create_manifest();
+    //$manifest = moodbile_performance_create_manifest();
     $breadcrumb = moodbile_render_breadcrumb(); //Sera descartado, se encargara el JS de generar el breadcrumb
     $templates = moodbile_templates_load_html();
     
@@ -158,11 +158,14 @@ function moodbile_process_theme_variables() {
 function moodbile_render_theme() {
     global $CFG;
     
-    $filename = "misc/cache/page.tpl.html";
-    
-    //moodbile_performance_check_last_mod();
-    
     if($CFG['cache'] != false && file_exists($filename)) {
+        if (moodbile_is_loged()) {
+            $user_hash = hash('md5', moodbile_get_username());
+            $filename = "misc/cache/page.$user_hash.tpl.html";
+        } else {
+            $filename = "misc/cache/page.tpl.html";
+        }
+        
         $template = $filename;
     } else {
         $template = moodbile_get_theme_template();
@@ -176,7 +179,7 @@ function moodbile_render_theme() {
         include "$template";
         $content = ob_get_contents();
         
-        if($CFG['cache'] != false) {
+        if($CFG['cache'] != false && !file_exists($filename)) {
             moodbile_performance_create_page_cacheable($content);
             moodbile_performance_set_page_headers($content);
         }

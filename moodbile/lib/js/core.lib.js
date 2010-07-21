@@ -1,9 +1,10 @@
 var Moodbile = {'user': null, 'modules': {}, 'behaviors': {}, 'events': {}, 'i18n': {}};
-Moodbile.wsurl = "http://localhost/~index02/moodbile/moodle/webservice/json/server.php";
+Moodbile.wsurl = "http://trooper.lsi.upc.edu/demos/moodbile/webservice/json/server.php";
+//Moodbile.wsurl = "http://localhost/~index02/moodbile/moodle/webservice/json/server.php";
 //Moodbile.wsurl = "http://omega-72-243.lsi.upc.edu:8888/moodle20/webservice/json/server.php";
 Moodbile.serverLocation = "http://omega-72-243.lsi.upc.edu:8888/moodle20";
 Moodbile.location =  location.href;
-//Moodbile.online = navigator.onLine ? true : false;
+Moodbile.online = navigator.onLine ? true : false;
 Moodbile.intervalDelay = 25;
 Moodbile.actualDate = new Date();
 Moodbile.enableFx = true;
@@ -88,7 +89,7 @@ Moodbile.mask = {};
 Moodbile.mask.show = function(){
     var _mask = $('#mask');
     
-    _mask.css({'height': '100%'});
+    _mask.css({'height': $(document).height()+'px'});
     
     if (_mask.is(':hidden')) {
         _mask.show();

@@ -1,21 +1,21 @@
 <?php
-function moodbile_performance($cache = "basic", $files = NULL, $filetype = NULL) {
+function moodbile_performance($cache = "basic", $files = NULL, $filetype = NULL, $filename = NULL) {
 
     //moodbile_performance_check_last_mod();
 
     switch ($cache) {
         case "basic":
-            $file = moodbile_performance_minify_files($files, $filetype);
+            $file = moodbile_performance_minify_files($files, $filetype, $filename);
 
             break;
         case "medium":
-            $file = moodbile_performance_minify_files($files, $filetype);
-            $file = moodbile_performance_gzip_file($file, $filetype);
+            $file = moodbile_performance_minify_files($files, $filetype, $filename);
+            $file = moodbile_performance_gzip_file($file, $filetype, $filename);
 
             break;
         case "advanced":
-            $file = moodbile_performance_minify_files($files, $filetype);
-            $file = moodbile_performance_gzip_file($file, $filetype);
+            $file = moodbile_performance_minify_files($files, $filetype, $filename);
+            $file = moodbile_performance_gzip_file($file, $filetype, $filename);
             moodbile_performance_make_htaccess();
 
             break;
@@ -47,10 +47,14 @@ function moodbile_performance_check_last_mod() {
     }
 }
 
-function moodbile_performance_minify_files($files, $filetype) {
+function moodbile_performance_minify_files($files, $filetype, $filename) {
     global $CFG;
 
-    $filename = "misc/cache/moodbile.min.$filetype";
+    if($filename){
+        $filename = "misc/cache/$filename.min.$filetype";
+    } else {
+        $filename = "misc/cache/default.min.$filetype";
+    }
 
     if (!is_array($files)) {
         $files = (array) $files;
@@ -84,7 +88,7 @@ function moodbile_performance_minify_files($files, $filetype) {
 }
 function moodbile_performance_minify_js( $js ) {
     global $CFG;
-    include($CFG['basepath'].'misc/jsmin.php');
+    require_once($CFG['basepath'].'misc/jsmin.php');
 
     $js = JSMin::minify($js);
 
@@ -105,7 +109,7 @@ function moodbile_performance_minify_css( $css ) {
     return trim($css);
 }
 
-function moodbile_performance_make_css_images_cacheable($css_string) {
+function moodbile_performance_make_css_images_cacheable( $css_string ) {
     global $CFG;
 
     //replace string, old css image path by new path in cache
@@ -130,8 +134,15 @@ function moodbile_performance_make_cacheable($source, $type = NULL) {
     $file_cache_path = $CFG['basepath'].'misc/cache/files';
     $file_cache_path_by_type = $CFG['basepath'].'misc/cache/files/'.$type.'/';
     
-    if(!file_exists($file_cache_path)) mkdir($file_cache_path);
-    if(!file_exists($file_cache_path_by_type)) mkdir($file_cache_path_by_type);
+    if(!file_exists($file_cache_path)) {
+        mkdir($file_cache_path);
+        chmod($file_cache_path, 0777);
+    }
+    
+    if(!file_exists($file_cache_path_by_type)) {
+        mkdir($file_cache_path_by_type);
+        chmod($file_cache_path_by_type, 0777);
+    }
     
     if(is_file($source)) {
         $filename = explode('/', $source);
@@ -154,10 +165,14 @@ function moodbile_performance_make_cacheable($source, $type = NULL) {
     }
 }
 
-function moodbile_performance_gzip_file($file, $filetype) {
+function moodbile_performance_gzip_file($file, $filetype, $filename) {
     global $CFG;
 
-    $gzfilename = "misc/cache/moodbile.min.gz$filetype";
+    if($filename){
+        $gzfilename = "misc/cache/$filename.min.gz$filetype";
+    } else {
+        $gzfilename = "misc/cache/default.min.gz$filetype";
+    }
     
     if (!file_exists($gzfilename) && file_exists($file)) {
         $data = file_get_contents($CFG['basepath'].$file);
@@ -187,9 +202,9 @@ function moodbile_performance_create_manifest () {
     $filename = "misc/cache/moodbile.wac";
     if($CFG['cache'] == "advanced") {
         if (!file_exists($filename)) {
-            $cacheable_files = array_merge_recursive((array) $Moodbile['css'], (array) $Moodbile['js']);
+            $cacheable_files = array_merge_recursive((array) $Moodbile['css'], (array) $Moodbile['js'], (array) "index.php", (array) "misc/cache/page.tpl.php");
             $manifest['CACHE MANIFEST'] = $cacheable_files;
-            $manifest['NETWORK'] = (array) "testclient.php";
+            //$manifest['NETWORK'] = (array) "index.php";
         
             if (is_array($manifest)) {
                 $manifest_content = "";
@@ -225,7 +240,13 @@ function moodbile_performance_set_page_headers($content){
 
 function moodbile_performance_create_page_cacheable($content) {
     //Crea si es necesario y devuelve ruta de la pagina a incluir o false para que cree pagina
-    $filename = "misc/cache/page.tpl.html";
+    if (moodbile_is_loged()) {
+        //get username and give md5 for customize page template
+        $user_hash = hash('md5', moodbile_get_username());
+        $filename = "misc/cache/page.$user_hash.tpl.html";
+    } else {
+        $filename = "misc/cache/page.tpl.html";
+    }
 
     if(!file_exists($filename)) {
         file_put_contents($filename, $content);

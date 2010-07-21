@@ -66,54 +66,88 @@ function moodbile_get_client_scripts() {
 
     $basepath = $CFG['basepath'];
     $active_modules = $CFG['active_modules'];
+    $js = array();
 
     //client scripts
-    $js[] = 'misc/jquery/jquery.js';
-    $js[] = 'misc/jquery/jquery.cooquery.min.js';
-    $js[] = 'misc/jquery/jquery.json.min.js';
-    $js[] = 'misc/jquery/jquery.md5.js';
+    $js_jq[] = 'misc/jquery/jquery.js';
+    $js_jq[] = 'misc/jquery/jquery.cooquery.min.js';
+    $js_jq[] = 'misc/jquery/jquery.json.min.js';
+    $js_jq[] = 'misc/jquery/jquery.md5.js';
+    
+    if($CFG['cache'] !== FALSE) {
+        $js[] = moodbile_performance($CFG['cache'], $js_jq, 'js', 'moodbile.jq');
+    } else {
+        $js = array_merge_recursive($js, $js_jq);
+    }
     
     //client libs
-    $js[] = 'lib/js/core.lib.js';
-    $js[] = 'lib/js/authentication.lib.js';
-    $js[] = 'lib/js/ajax.lib.js';
-    $js[] = 'lib/js/alert.lib.js';
-    $js[] = 'lib/js/notifications.lib.js';
-    $js[] = 'lib/js/webdb.lib.js';
-    $js[] = 'lib/js/templates.lib.js';
-    $js[] = 'lib/js/fx.lib.js';
-    $js[] = 'lib/js/infoviewer.lib.js';
-    $js[] = 'lib/js/filter.lib.js';
-    $js[] = 'lib/js/toolbar.lib.js';
-    $js[] = 'lib/js/breadcrumb.lib.js';
-    $js[] = 'lib/js/footer.lib.js';
+    $js_lib[] = 'lib/js/core.lib.js';
+    $js_lib[] = 'lib/js/authentication.lib.js';
+    $js_lib[] = 'lib/js/ajax.lib.js';
+    $js_lib[] = 'lib/js/alert.lib.js';
+    $js_lib[] = 'lib/js/notifications.lib.js';
+    $js_lib[] = 'lib/js/webdb.lib.js';
+    $js_lib[] = 'lib/js/templates.lib.js';
+    $js_lib[] = 'lib/js/fx.lib.js';
+    $js_lib[] = 'lib/js/infoviewer.lib.js';
+    $js_lib[] = 'lib/js/filter.lib.js';
+    $js_lib[] = 'lib/js/toolbar.lib.js';
+    $js_lib[] = 'lib/js/breadcrumb.lib.js';
+    $js_lib[] = 'lib/js/footer.lib.js';
+    
+    if($CFG['cache'] !== FALSE) {
+        $js[] = moodbile_performance($CFG['cache'], $js_lib, 'js', 'moodbile.lib');
+    } else {
+        $js = array_merge_recursive($js, $js_lib);
+    }
     
     //lang str library
-    $js[] = moodbile_i18n();
+    $js_lang[] = moodbile_i18n();
+    
+    if (moodbile_is_loged()) {
+        $cookie = json_decode($_COOKIE['Moodbile']);
+        $lang = $cookie->lang;
+        
+        $filename = 'moodbile.lang.'.$lang;
+    } else {
+        $filename = 'moodbile.lang';
+    }
+    
+    if($CFG['cache'] !== FALSE) {
+        $js[] = moodbile_performance($CFG['cache'], $js_lang, 'js', $filename);
+    } else {
+        $js = array_merge_recursive($js, $js_lang);
+    }
     
     //module scripts        
     foreach($active_modules as $module) {
         $module_files = moodbile_get_module($module);
         $file = array_intersect($module_files, array($module .'.mod.js'));
         $key = array_keys($file);
-        $js[] = 'modules/'. $module .'/'.$file[$key[0]];
+        $js_mod[] = 'modules/'. $module .'/'.$file[$key[0]];
     }
+    
+    if($CFG['cache'] !== FALSE) {
+        $js[] = moodbile_performance($CFG['cache'], $js_mod, 'js', 'moodbile.mod');
+    } else {
+        $js = array_merge_recursive($js, $js_mod);
+    }
+    
     
     //Solucionar problemas a la hora de abrir la directorios y meterlo en cache
     if($themejs = moodbile_get_theme_scripts()) {
         foreach ($themejs as $themejs){
-            $js[] = 'themes/'.$CFG['theme'].'/'.$themejs;
+            $js_thm[] = 'themes/'.$CFG['theme'].'/'.$themejs;
         }
-    }
-    
-    if($CFG['cache'] !== FALSE) {
-        $js = moodbile_performance($CFG['cache'], $js, 'js');
+        
+        if($CFG['cache'] !== FALSE) {
+            $js[] = moodbile_performance($CFG['cache'], $js_thm, 'js', 'moodbile.thm');
+        } else {
+            $js = array_merge_recursive($js, $js_thm);
+        }
     }
 
     $Moodbile['js'] = $js;
-
-    //Ejecutar funciones que cargan arrays asociativos a globales
-    //moodbile_process_client_templates_script();
 
     return $js;
 }

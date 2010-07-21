@@ -31,8 +31,8 @@ Moodbile.infoViewer.show = function(opts, type, info, extraButtons, callback) {
                 alert(Moodbile.t('Undeclared event')+': '+eventName);
             }
             
-            dom += '<button class="custom-button '+buttonName+'">';
-            dom += '<span class="moodbile-icon icon-'+buttonName+'">'+buttonStr+'</span>';
+            dom += '<button class="custom-button '+ buttonName +'" type="button">';
+            dom += '<span class="moodbile-icon icon-'+ buttonName +'">'+ buttonStr +'</span>';
             dom += '</button>';
             
         });
@@ -54,6 +54,7 @@ Moodbile.infoViewer.show = function(opts, type, info, extraButtons, callback) {
     
     if ($(firstWrapper).is(':hidden')) {
         $(selector).show();
+        $(document).scrollTop(0);
         Moodbile.fx.SlideUpDown(firstWrapper);
     } else {
         _aux.find('button.back').show();

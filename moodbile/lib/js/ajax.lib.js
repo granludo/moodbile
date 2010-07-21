@@ -31,15 +31,16 @@ Moodbile.json = function(opts) {
             getValueCallback = function(tx, rs) {
                 var dataDB = $.evalJSON(rs.rows.item(0).data);
                 
-                requestOpts.callback(dataDB);
-                
-                requestOpts.callback = function (requestData) {
-                    if ($.toJSON(dataDB) != $.toJSON(requestData)) {
-                        window.location = Moodbile.location;
+                //if (Moodbile.online) {
+                    requestOpts.callback(dataDB);
+                    requestOpts.callback = function (requestData) {
+                        if ($.toJSON(dataDB) != $.toJSON(requestData)) {
+                            window.location.reload();
+                        }
                     }
-                }
                 
-                Moodbile.ajax(requestOpts);
+                    Moodbile.ajax(requestOpts);
+                //}
             }
             
             Moodbile.webdb.getDataByOpts('requestData', dbOpts, getValueCallback);

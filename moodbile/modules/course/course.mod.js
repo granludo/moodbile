@@ -5,7 +5,7 @@
 Moodbile.modules.course = {};
 
 Moodbile.modules.course.status = {
-        'dataLoaded': false
+    'dataLoaded': false
 };
 
 Moodbile.modules.course.menu = {
@@ -35,6 +35,7 @@ Moodbile.modules.course.initBehavior = function(context) {
                 'callback'   : Moodbile.modules.course.auxFunc.jsonCallback,
                 'cache'      : true
             }
+            
             Moodbile.json(petitionOpts);
         }
     }, Moodbile.intervalDelay);
@@ -44,7 +45,7 @@ Moodbile.modules.course.depBehavior = null;
 
 Moodbile.modules.course.auxFunc = {};
 Moodbile.modules.course.auxFunc.jsonCallback = function(data) {
-    var currentCourse = null, courseid = null, courses = data[0], coursename = null;
+    var _currentCourse = null, courseid = null, courses = data[0], coursename = null;
     var modules = null, modname = null, str = null;
         
     Moodbile.courses = courses;
@@ -70,13 +71,13 @@ Moodbile.modules.course.auxFunc.jsonCallback = function(data) {
 
         Moodbile.cloneTemplate('courses', '#wrapper');
                     
-        currentCourse = $('.moodbile-course:last-child');
-        currentCourse.attr({'data-course-id' : courseid, 'data-type' : 'course'});
-        currentCourse.find('.moodbile-course-title').attr('title', coursename);
-        currentCourse.find('.moodbile-course-fullname').append(coursename);
-        currentCourse.find('.moodbile-course-shortname').append(this.shortname);
-        currentCourse.find('.moodbile-course-title .moodbile-icon').addClass('icon-courses');
-        currentCourse.find('details .summary').append(this.summary);
+        _currentCourse = $('.moodbile-course:last-child');
+        _currentCourse.attr({'data-course-id' : courseid, 'data-type' : 'course'});
+        _currentCourse.find('.moodbile-course-title').attr('title', coursename);
+        _currentCourse.find('.moodbile-course-fullname').append(coursename);
+        _currentCourse.find('.moodbile-course-shortname').append(this.shortname);
+        _currentCourse.find('.moodbile-course-title .moodbile-icon').addClass('icon-courses');
+        _currentCourse.find('details .summary').append(this.summary);
                 
         Moodbile.cloneTemplate('course-name:last', '#wrapper');
         $('#wrapper a.moodbile-course-name:last').attr('data-course-id', courseid).addClass('collapse').text(coursename);

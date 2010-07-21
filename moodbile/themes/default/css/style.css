@@ -33,7 +33,6 @@ input[type='text'], input[type='password'], textarea {
 
 /* Default theme */
 #container{
-    overflow:hidden;
     position:relative;
     top: 0;
 }
@@ -132,6 +131,7 @@ nav#toolbar {
     border-bottom: 2px solid #F90;
     display: none;
     padding-top: 5px;
+    overflow: hidden;
 }
 nav#toolbar li {
     background-color: #cfcfcf;
@@ -322,6 +322,9 @@ div[data-type='course'] div, #info-viewer div, #info-viewer div div div, div[dat
     background-color: #fff;
     width: 100%;
 }
+#info-viewer .moodbile-info-viewer-wrapper:last-child {
+   
+}
 #info-viewer .moodbile-extra-options {
     position:absolute;
     top:37px;
@@ -441,7 +444,6 @@ div[data-type='course'] div, #info-viewer div, #info-viewer div div div, div[dat
     position:absolute;
     right:25px;
     width:25px;
-    z-index:555;
 }
 
 .moodbile-new-discussion {

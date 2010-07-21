@@ -23,7 +23,7 @@ Moodbile.login = function (user, pass) {
                 $('#user-options-logout a').text(Moodbile.t('Logout'));
                 $('#user-nav').hide();
             
-                $("#user-options-profile a").addClass('user fx '+ Moodbile.user.id.toString());
+                $("#user-options-profile a").attr('data-user-id', Moodbile.user.id.toString()).addClass('user me');
                 //Acciones para las opciones de menu del usuario
             }
             
@@ -42,7 +42,7 @@ Moodbile.login = function (user, pass) {
                 duration: 14 // in days
             });
         
-            window.location = Moodbile.location;
+            window.location.reload();
         }
         
         Moodbile.ajaxLogin(user, pass, callback);
@@ -82,7 +82,7 @@ Moodbile.ajaxLogin = function(user, pass, authenticationCallback){
         'wspassword' : pass,
         'context'    : { 'usernames': [user] },
         'callback'   : callback,
-        'cache'      : false
+        'cache'      : true
     };
         
     Moodbile.ajax(petitionOpts);
@@ -91,7 +91,7 @@ Moodbile.ajaxLogin = function(user, pass, authenticationCallback){
 Moodbile.logout = function () {
     //Destruye cookie y redirecciona
     var delCookie = $.delCookie('Moodbile');
-    window.location = Moodbile.location;
+    window.location.reload();
 }
 
 Moodbile.isLoged = function () {
@@ -129,8 +129,7 @@ Moodbile.authenticationForm = function () {
         
         auth.find('#login-form-input-user').attr('placeholder', Moodbile.t('Username'));
         auth.find('#login-form-input-pass').attr('placeholder', Moodbile.t('Password'));
-        auth.find('.login-form').find('form');
-        auth.find('#login-button').text(Moodbile.t('Login'));
+        auth.find('#login-button').attr('value' , Moodbile.t('Login'));
         
         Moodbile.cloneTemplate('site-summary', '#wrapper .moodbile-authentication .login-info');
     }
@@ -169,7 +168,7 @@ Moodbile.events.loginButton = $("#login-button").live('click', function(){
     }
             
     //if check is true, login
-        if(formCheck) {
+    if(formCheck) {
         Moodbile.login(user, pass);
     }
             
