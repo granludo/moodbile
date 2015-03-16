@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/moodbileserver/db" VERSION="20111123" COMMENT="XMLDB file for Moodbile"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="mbl_oauth_server_registry" COMMENT="Table holding consumer key/secret combos an user issued to consumers. Used for verification of incoming requests." NEXT="mbl_oauth_server_nonce">
+      <FIELDS>
+        <FIELD NAME="osr_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" NEXT="osr_usa_id_ref"/>
+        <FIELD NAME="osr_usa_id_ref" TYPE="int" LENGTH="11" NOTNULL="false" UNSIGNED="false" SEQUENCE="false" PREVIOUS="osr_id" NEXT="osr_consumer_key"/>
+        <FIELD NAME="osr_consumer_key" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_usa_id_ref" NEXT="osr_consumer_secret"/>
+        <FIELD NAME="osr_consumer_secret" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_consumer_key" NEXT="osr_enabled"/>
+        <FIELD NAME="osr_enabled" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="false" DEFAULT="1" SEQUENCE="false" PREVIOUS="osr_consumer_secret" NEXT="osr_status"/>
+        <FIELD NAME="osr_status" TYPE="char" LENGTH="16" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_enabled" NEXT="osr_requester_name"/>
+        <FIELD NAME="osr_requester_name" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_status" NEXT="osr_requester_email"/>
+        <FIELD NAME="osr_requester_email" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_requester_name" NEXT="osr_callback_uri"/>
+        <FIELD NAME="osr_callback_uri" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_requester_email" NEXT="osr_application_uri"/>
+        <FIELD NAME="osr_application_uri" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_callback_uri" NEXT="osr_application_title"/>
+        <FIELD NAME="osr_application_title" TYPE="char" LENGTH="80" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_application_uri" NEXT="osr_application_descr"/>
+        <FIELD NAME="osr_application_descr" TYPE="text" LENGTH="medium" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_application_title" NEXT="osr_application_notes"/>
+        <FIELD NAME="osr_application_notes" TYPE="text" LENGTH="medium" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_application_descr" NEXT="osr_application_type"/>
+        <FIELD NAME="osr_application_type" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_application_notes" NEXT="osr_application_commercial"/>
+        <FIELD NAME="osr_application_commercial" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="osr_application_type" NEXT="osr_issue_date"/>
+        <FIELD NAME="osr_issue_date" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_application_commercial" NEXT="osr_timestamp"/>
+        <FIELD NAME="osr_timestamp" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="osr_issue_date"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="osr_id" NEXT="osr_consumer_key"/>
+        <KEY NAME="osr_consumer_key" TYPE="unique" FIELDS="osr_consumer_key" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+
+    <TABLE NAME="mbl_oauth_server_nonce" COMMENT="Nonce used by a certain consumer, every used nonce should be unique, this prevents replaying attacks.  We need to store all timestamp/nonce combinations for the maximum timestamp received." PREVIOUS="mbl_oauth_server_registry" NEXT="mbl_oauth_server_token">
+      <FIELDS>
+        <FIELD NAME="osn_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" NEXT="osn_consumer_key"/>
+        <FIELD NAME="osn_consumer_key" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="osn_id" NEXT="osn_token"/>
+        <FIELD NAME="osn_token" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="osn_consumer_key" NEXT="osn_timestamp"/>
+        <FIELD NAME="osn_timestamp" TYPE="int" LENGTH="20" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="osn_token" NEXT="osn_nonce"/>
+        <FIELD NAME="osn_nonce" TYPE="char" LENGTH="80" NOTNULL="true" SEQUENCE="false" PREVIOUS="osn_timestamp"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="osn_id_key" TYPE="primary" FIELDS="osn_id" NEXT="unique"/>
+        <KEY NAME="unique" TYPE="unique" FIELDS="osn_consumer_key, osn_token, osn_timestamp, osn_nonce" PREVIOUS="osn_id_key"/>
+      </KEYS>
+    </TABLE>
+
+    <TABLE NAME="mbl_oauth_server_token" COMMENT="Table used to verify signed requests sent to a server by the consumer. When the verification is succesful then the associated user id is returned." PREVIOUS="mbl_oauth_server_nonce" NEXT="mbl_tokens">
+      <FIELDS>
+        <FIELD NAME="ost_id" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="false" SEQUENCE="true" NEXT="ost_osr_id_ref"/>
+        <FIELD NAME="ost_osr_id_ref" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="ost_id" NEXT="ost_usa_id_ref"/>
+        <FIELD NAME="ost_usa_id_ref" TYPE="int" LENGTH="11" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="ost_osr_id_ref" NEXT="ost_token"/>
+        <FIELD NAME="ost_token" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="ost_usa_id_ref" NEXT="ost_token_secret"/>
+        <FIELD NAME="ost_token_secret" TYPE="char" LENGTH="64" NOTNULL="true" SEQUENCE="false" PREVIOUS="ost_token" NEXT="ost_token_type"/>
+        <FIELD NAME="ost_token_type" TYPE="char" LENGTH="10" NOTNULL="true" SEQUENCE="false" PREVIOUS="ost_token_secret" NEXT="ost_authorized"/>
+        <FIELD NAME="ost_authorized" TYPE="int" LENGTH="1" NOTNULL="true" UNSIGNED="false" DEFAULT="0" SEQUENCE="false" PREVIOUS="ost_token_type" NEXT="ost_referrer_host"/>
+        <FIELD NAME="ost_referrer_host" TYPE="char" LENGTH="128" NOTNULL="true" SEQUENCE="false" PREVIOUS="ost_authorized" NEXT="ost_token_ttl"/>
+        <FIELD NAME="ost_token_ttl" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="9999-12-31 000000" SEQUENCE="false" PREVIOUS="ost_referrer_host" NEXT="ost_timestamp"/>
+        <FIELD NAME="ost_timestamp" TYPE="char" LENGTH="20" NOTNULL="true" SEQUENCE="false" PREVIOUS="ost_token_ttl" NEXT="ost_verifier"/>
+        <FIELD NAME="ost_verifier" TYPE="char" LENGTH="10" NOTNULL="false" SEQUENCE="false" PREVIOUS="ost_timestamp" NEXT="ost_callback_url"/>
+        <FIELD NAME="ost_callback_url" TYPE="text" LENGTH="medium" NOTNULL="false" SEQUENCE="false" PREVIOUS="ost_verifier"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="ost_id" NEXT="unique"/>
+        <KEY NAME="unique" TYPE="unique" FIELDS="ost_token" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+
+    <TABLE NAME="mbl_tokens" COMMENT="Table used to save tokens to access files" PREVIOUS="mbl_oauth_server_token">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="token"/>
+        <FIELD NAME="token" TYPE="char" LENGTH="128" NOTNULL="true" UNSIGNED="false" SEQUENCE="false" PREVIOUS="id" NEXT="userid"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="token" NEXT="fid"/>
+        <FIELD NAME="fid" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="userid" NEXT="timedue"/>
+        <FIELD NAME="timedue" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="false" PREVIOUS="fid"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" NEXT="unique"/>
+        <KEY NAME="unique" TYPE="unique" FIELDS="token" PREVIOUS="primary"/>
+      </KEYS>
+    </TABLE>
+  </TABLES>
+</XMLDB>
