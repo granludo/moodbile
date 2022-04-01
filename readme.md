@@ -1,5 +1,5 @@
-About Moodbile
---------------
+# About Moodbile
+
 Since Moodle 2.0 (and the backport to 1,9) Moodle has a set of webservices connectors. Moodbile is a PHP based web Application that plugs into these services, and allows the Student to access part of the Moodle's Learning Tools from a Mobile Browser (Android, iPhone, etc) and devices like the OLPC XO.
 
 Moodbile is also intended to be a reference implementation of a client for the Moodle Webservices, since the Moodbile team is also responsible for developing and maintaining Webservices at Moodle.org
